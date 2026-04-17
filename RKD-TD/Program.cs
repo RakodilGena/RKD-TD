@@ -1,2 +1,4 @@
-﻿using var game = new MonoGameProject1.Game1();
+﻿using RKD_TD;
+
+using var game = new Game1();
 game.Run();

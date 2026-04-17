@@ -8,6 +8,7 @@
         <UseWindowsForms>true</UseWindowsForms>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <RootNamespace>RKD_TD</RootNamespace>
     </PropertyGroup>
     <PropertyGroup>
         <ApplicationManifest>app.manifest</ApplicationManifest>
