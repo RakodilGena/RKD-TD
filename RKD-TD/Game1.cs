@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using RKD_TD.Models.UI;
@@ -25,7 +24,8 @@ public class Game1 : Core
         width: 1280, //GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
         height: 720, //GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height,
         targetFps: 60,
-        fullScreen: false)
+        fullScreen: false,
+        exitOnEscape: true)
     {
     }
 
@@ -78,10 +78,6 @@ public class Game1 : Core
 
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-            Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
-
         _startButton.Update(gameTime);
 
         base.Update(gameTime);

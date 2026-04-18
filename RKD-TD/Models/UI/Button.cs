@@ -1,9 +1,9 @@
 using System;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Input;
 
 namespace RKD_TD.Models.UI;
 
@@ -25,7 +25,7 @@ internal sealed class Button : IMyDrawable
     private readonly Color _textColor, _textHoverColor;
 
     private Rectangle _body;
-    private bool _buttonPressed, _hovered, _lmbPressed;
+    private bool _buttonPressed, _hovered;
 
     public event EventHandler? Pressed;
 
@@ -73,22 +73,22 @@ internal sealed class Button : IMyDrawable
 
     public void Update(GameTime gameTime)
     {
-        var ms = Mouse.GetState();
-        if (_body.Contains(ms.Position))
+        var mouseInfo = Core.Input.Mouse;
+        if (_body.Contains(mouseInfo.Position))
         {
             _hovered = true;
 
-            //added controll over prev lmb mouse state to prevent cases when button 
+            //added control over prev lmb mouse state to prevent cases when button 
             //wasn't pressed but the lmb was - outside the button - and that still
             //invoked the click event
             if (!_buttonPressed)
             {
-                if (!_lmbPressed && ms.LeftButton is ButtonState.Pressed)
+                if (mouseInfo.WasButtonJustPressed(MouseButton.Left))
                     _buttonPressed = true;
             }
             else
             {
-                if (ms.LeftButton == ButtonState.Released)
+                if (mouseInfo.WasButtonJustReleased(MouseButton.Left))
                 {
                     _buttonPressed = false;
                     Pressed?.Invoke(this, EventArgs.Empty);
@@ -100,8 +100,6 @@ internal sealed class Button : IMyDrawable
             _hovered = false;
             _buttonPressed = false;
         }
-
-        _lmbPressed = ms.LeftButton is ButtonState.Pressed;
     }
 
     public void Draw(SpriteBatch spriteBatch)
