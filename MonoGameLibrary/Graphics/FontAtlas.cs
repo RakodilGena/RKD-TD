@@ -46,7 +46,7 @@ public sealed class FontAtlas
     /// <param name="atlasFileName">The name of the xml-file without path.</param>
     /// <returns>The fonts atlas created by this method.</returns>
     public static FontAtlas FromFile(
-        ContentManager content, 
+        ContentManager content,
         string folderWithFontsName,
         string atlasFileName)
     {

@@ -18,7 +18,7 @@ public abstract class Scene : IDisposable
     /// Gets a value that indicates if the scene has been disposed of.
     /// </summary>
     public bool IsDisposed { get; private set; }
-    
+
     /// <summary>
     /// Creates a new scene instance.
     /// </summary>
@@ -31,7 +31,7 @@ public abstract class Scene : IDisposable
         // for the game's content.
         Content.RootDirectory = Core.Content.RootDirectory;
     }
-    
+
     /// <summary>
     /// Initializes the scene.
     /// </summary>
@@ -47,7 +47,9 @@ public abstract class Scene : IDisposable
     /// <summary>
     /// Override to provide logic to load content for the scene.
     /// </summary>
-    public virtual void LoadContent() { }
+    public virtual void LoadContent()
+    {
+    }
 
     /// <summary>
     /// Unloads scene-specific content.
@@ -63,7 +65,6 @@ public abstract class Scene : IDisposable
     /// <param name="gameTime">A snapshot of the timing values for the current frame.</param>
     public virtual void Update(GameTime gameTime)
     {
-        
     }
 
     /// <summary>
@@ -72,12 +73,11 @@ public abstract class Scene : IDisposable
     /// <param name="gameTime">A snapshot of the timing values for the current frame.</param>
     public virtual void Draw(GameTime gameTime)
     {
-        
     }
 
     // Finalizer, called when object is cleaned up by garbage collector.
     ~Scene() => Dispose(false);
-    
+
     /// <summary>
     /// Disposes of this scene.
     /// </summary>
@@ -107,6 +107,7 @@ public abstract class Scene : IDisposable
             UnloadContent();
             Content.Dispose();
         }
-        IsDisposed = true; 
+
+        IsDisposed = true;
     }
 }

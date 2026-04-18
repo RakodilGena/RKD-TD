@@ -11,11 +11,11 @@ internal static class GlobalAssets
     public static void Load(ContentManager content)
     {
         TextureAtlas = TextureAtlas.FromFile(
-            content, 
+            content,
             fileName: "images/atlas-definition.xml");
-        
+
         FontAtlas = FontAtlas.FromFile(
-            content, 
+            content,
             folderWithFontsName: "fonts",
             atlasFileName: "font-atlas-definition.xml");
     }

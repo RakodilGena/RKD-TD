@@ -184,4 +184,12 @@ public class Core : Game
 
         base.Draw(gameTime);
     }
+
+    /// <summary>
+    /// Exit the game at the end of this tick.
+    /// </summary>
+    public new static void Exit()
+    {
+        ((Game)Instance).Exit();
+    }
 }
