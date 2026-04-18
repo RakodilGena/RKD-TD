@@ -39,6 +39,18 @@
 /processorParam:TextureFormat=Color
 /build:images/button300x80.bmp
 
+#begin images/button300x80p.bmp
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/button300x80p.bmp
+
 #begin images/exit.png
 /importer:TextureImporter
 /processor:TextureProcessor

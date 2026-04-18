@@ -2,63 +2,67 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameLibrary;
 using RKD_TD.Models.UI;
 
 namespace RKD_TD;
 
-public class Game1 : Game
+public class Game1 : Core
 {
-    private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch = null!;
-
-    private Texture2D 
+    private Texture2D
         _title = null!,
-        _button300x80 = null!;
+        _button300x80 = null!,
+        _button300x80pressed = null!;
+
     // The Sprite Font reference to draw with
-    private SpriteFont _kwFont120= null!, _kwFont80= null!;
+    private SpriteFont _kwFont120 = null!, _kwFont80 = null!;
 
-    private Button _startButton= null!;
+    private Button _startButton = null!;
+    private Title _gameTitle = null!;
 
-    public Game1()
+    public Game1() : base(
+        title: "RKD Tower Defense",
+        width: 1280,
+        height: 720,
+        targetFps: 60,
+        fullScreen: false)
     {
-        _graphics = new GraphicsDeviceManager(this);
-        Content.RootDirectory = "Content";
-        IsMouseVisible = true;
-        
-        
-        IsFixedTimeStep = true; 
-        TargetElapsedTime = TimeSpan.FromSeconds(1d / 60);
+        // _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+        // _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
     }
 
     protected override void Initialize()
     {
-        // _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-        // _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-
-        
-        _graphics.PreferredBackBufferWidth = 1280;  // Desired width
-        _graphics.PreferredBackBufferHeight = 720; // Desired height
-        _graphics.ApplyChanges();                  // Apply settings to the window
-       
         base.Initialize();
     }
 
     protected override void LoadContent()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-
         _title = Content.Load<Texture2D>("images/title");
         _button300x80 = Content.Load<Texture2D>("images/button300x80");
-        
+        _button300x80pressed = Content.Load<Texture2D>("images/button300x80p");
+
         _kwFont120 = Content.Load<SpriteFont>("fonts/knightwarrior120");
         _kwFont80 = Content.Load<SpriteFont>("fonts/knightwarrior80");
-        
-        var screenCenter = _graphics.GraphicsDevice.Viewport.Width / 2;
+
+        var screenCenter = GraphicsDevice.Viewport.Width / 2;
         var topButtonYPos = 140 + 140 + 80 / 2;
+
+        _gameTitle = new Title(
+            position: new Vector2(
+                screenCenter,
+                90),
+            "RKD TOWER DEFENSE",
+            _kwFont120,
+            Color.DarkGreen,
+            scale: 1,
+            layerDepth: 1);
+
         _startButton = new Button(
             position: new Vector2(screenCenter, topButtonYPos),
             _button300x80,
-            scale: 1.5f,
+            _button300x80pressed,
+            scale: 1,
             color: Color.White,
             hoverColor: Color.AntiqueWhite,
             text: "Start",
@@ -67,6 +71,9 @@ public class Game1 : Game
             textColor: Color.Black,
             textHoverColor: Color.Black,
             layerDepth: 0.5f);
+
+        _startButton.Pressed += (sender, args) =>
+            Console.WriteLine("Clicked!");
     }
 
     protected override void Update(GameTime gameTime)
@@ -74,9 +81,9 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
-        
+
         _startButton.Update(gameTime);
-        
+
         base.Update(gameTime);
     }
 
@@ -85,60 +92,35 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.PeachPuff);
 
         // Begin the sprite batch to prepare for rendering.
-        _spriteBatch.Begin();
+        SpriteBatch.Begin();
 
-        // _spriteBatch.Draw(
-        //     _title, 
-        //     new Rectangle(0,0, 
-        //         _graphics.GraphicsDevice.Viewport.Width, 
-        //         _graphics.GraphicsDevice.Viewport.Height),
-        //     null,
-        //     Color.White);
-
+        _gameTitle.Draw(SpriteBatch);
         DrawMenu();
 
-        _spriteBatch.End();
+        SpriteBatch.End();
 
         base.Draw(gameTime);
     }
 
     private void DrawMenu()
     {
-        var screenCenter = _graphics.GraphicsDevice.Viewport.Width / 2;
-        
-        var title = "RKD TOWER DEFENCE";
-        Vector2 titleCenter = _kwFont120.MeasureString(title) / 2;
-        Vector2 titlePosition = new Vector2(
-            screenCenter, 
-            80);
-        
-        _spriteBatch.DrawString(
-            _kwFont120, 
-            title, 
-            titlePosition, 
-            Color.DarkGreen,
-            0, 
-            titleCenter, 
-            1.0f, 
-            SpriteEffects.None, 
-            0.5f);
-
+        var screenCenter = GraphicsDevice.Viewport.Width / 2;
 
         var topButtonYPos = 140 + 140 + 80 / 2;
 
-        _startButton.Draw(_spriteBatch);
+        _startButton.Draw(SpriteBatch);
         // DrawButton(
         //     new Vector2(screenCenter, topButtonYPos),
         //     "Start");
-        
+
         DrawButton(
             new Vector2(screenCenter, topButtonYPos + 100),
             "Settings");
-        
+
         DrawButton(
             new Vector2(screenCenter, topButtonYPos + 200),
             "Credits");
-        
+
         DrawButton(
             new Vector2(screenCenter, topButtonYPos + 300),
             "Exit");
@@ -148,29 +130,29 @@ public class Game1 : Game
         Vector2 position,
         string text)
     {
-        var buttonCenter = new Vector2(300 / 2, 80/2);
-        
-        _spriteBatch.Draw(
-            _button300x80, 
+        var buttonCenter = new Vector2(300 / 2, 80 / 2);
+
+        SpriteBatch.Draw(
+            _button300x80,
             position,
             null,
             Color.White,
             0f,
             origin: buttonCenter,
-            scale:1,
+            scale: 1,
             SpriteEffects.None,
             layerDepth: 0.4f);
-        
+
         Vector2 textCenter = _kwFont80.MeasureString(text) / 2;
-        _spriteBatch.DrawString(
-            _kwFont80, 
-            text, 
-            position, 
+        SpriteBatch.DrawString(
+            _kwFont80,
+            text,
+            position,
             Color.Black,
-            0, 
-            textCenter, 
-            0.7f, 
-            SpriteEffects.None, 
+            0,
+            textCenter,
+            0.7f,
+            SpriteEffects.None,
             0.5f);
     }
 }
