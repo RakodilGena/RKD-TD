@@ -16,8 +16,8 @@ public class Game1 : Core
     // The Sprite Font reference to draw with
     private SpriteFont _kwFont120 = null!, _kwFont80 = null!;
 
-    private Button _startButton = null!;
-    private Title _gameTitle = null!;
+    private LabeledButton _startButton = null!;
+    private Label _gameTitle = null!;
 
     public Game1() : base(
         title: "RKD Tower Defense",
@@ -48,7 +48,7 @@ public class Game1 : Core
         var screenCenter = GraphicsDevice.Viewport.Width / 2;
         var topButtonYPos = 140 + 140 + 80 / 2;
 
-        _gameTitle = new Title(
+        _gameTitle = new Label(
             position: new Vector2(
                 screenCenter,
                 90),
@@ -58,7 +58,7 @@ public class Game1 : Core
             scale: 1,
             layerDepth: 1);
 
-        _startButton = new Button(
+        _startButton = new LabeledButton(
             position: new Vector2(screenCenter, topButtonYPos),
             _button300X80,
             _button300X80Pressed,

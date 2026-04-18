@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RKD_TD.Models.UI;
 
-internal sealed class Title : IMyDrawable
+internal sealed class Label : IMyDrawable
 {
     private readonly Vector2 _position, _center;
     private readonly string _text;
@@ -11,7 +11,7 @@ internal sealed class Title : IMyDrawable
     private readonly float _scale, _layerDepth;
     private readonly SpriteFont _font;
 
-    public Title(
+    public Label(
         Vector2 position,
         string text,
         SpriteFont font,

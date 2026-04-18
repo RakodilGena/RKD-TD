@@ -7,25 +7,21 @@ using MonoGameLibrary.Input;
 
 namespace RKD_TD.Models.UI;
 
-internal sealed class Button : IMyDrawable
+internal class Button : IMyDrawable
 {
-    private readonly Vector2 _position;
-
     private readonly TextureRegion _textureIdle, _texturePressed;
     private readonly Vector2 _center;
     private readonly float _scale;
     private readonly Color _color, _hoverColor;
 
-    private readonly float _layerDepth;
-
-    private readonly string _text;
-    private readonly SpriteFont _textFont;
-    private readonly Vector2 _textCenter;
-    private readonly float _textScale;
-    private readonly Color _textColor, _textHoverColor;
 
     private Rectangle _body;
-    private bool _buttonPressed, _hovered;
+    private bool _buttonPressed;
+
+    protected Vector2 Position { get; }
+    protected float LayerDepth { get; }
+
+    protected bool Hovered { get; private set; }
 
     public event EventHandler? Pressed;
 
@@ -36,14 +32,9 @@ internal sealed class Button : IMyDrawable
         float scale,
         Color color,
         Color hoverColor,
-        string text,
-        SpriteFont textFont,
-        float textScale,
-        Color textColor,
-        Color textHoverColor,
         float layerDepth)
     {
-        _position = position;
+        Position = position;
         _textureIdle = textureIdle;
         _texturePressed = texturePressed;
 
@@ -54,11 +45,6 @@ internal sealed class Button : IMyDrawable
         _scale = scale;
         _color = color;
         _hoverColor = hoverColor;
-        _text = text;
-        _textFont = textFont;
-        _textScale = textScale;
-        _textColor = textColor;
-        _textHoverColor = textHoverColor;
 
         _body = new Rectangle(
             (int)(position.X - textureIdle.Width / 2 * scale),
@@ -66,9 +52,7 @@ internal sealed class Button : IMyDrawable
             (int)(textureIdle.Width * scale),
             (int)(textureIdle.Height * scale));
 
-        _textCenter = _textFont.MeasureString(text) / 2;
-
-        _layerDepth = layerDepth;
+        LayerDepth = layerDepth;
     }
 
     public void Update(GameTime gameTime)
@@ -76,7 +60,7 @@ internal sealed class Button : IMyDrawable
         var mouseInfo = Core.Input.Mouse;
         if (_body.Contains(mouseInfo.Position))
         {
-            _hovered = true;
+            Hovered = true;
 
             //added control over prev lmb mouse state to prevent cases when button 
             //wasn't pressed but the lmb was - outside the button - and that still
@@ -97,12 +81,12 @@ internal sealed class Button : IMyDrawable
         }
         else
         {
-            _hovered = false;
+            Hovered = false;
             _buttonPressed = false;
         }
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public virtual void Draw(SpriteBatch spriteBatch)
     {
         var (texture, srcRect) = _buttonPressed
             ? (_texturePressed.Texture, _texturePressed.SourceRectangle)
@@ -110,24 +94,13 @@ internal sealed class Button : IMyDrawable
 
         spriteBatch.Draw(
             texture,
-            _position,
+            Position,
             srcRect,
-            _hovered ? _hoverColor : _color,
+            Hovered ? _hoverColor : _color,
             0f,
             origin: _center,
             _scale,
             SpriteEffects.None,
-            layerDepth: _layerDepth);
-
-        spriteBatch.DrawString(
-            _textFont,
-            _text,
-            _position,
-            _hovered ? _textHoverColor : _textColor,
-            0,
-            _textCenter,
-            _textScale,
-            SpriteEffects.None,
-            _layerDepth);
+            layerDepth: LayerDepth);
     }
 }
