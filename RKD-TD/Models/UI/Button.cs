@@ -3,28 +3,26 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameLibrary.Graphics;
 
 namespace RKD_TD.Models.UI;
 
 internal sealed class Button : IMyDrawable
 {
-    private Vector2 _position;
+    private readonly Vector2 _position;
 
-    private Texture2D _textureIdle;
-    private Texture2D _texturePressed;
-    private Vector2 _center;
-    private float _scale;
-    private Color _color;
-    private Color _hoverColor;
+    private readonly TextureRegion _textureIdle, _texturePressed;
+    private readonly Vector2 _center;
+    private readonly float _scale;
+    private readonly Color _color, _hoverColor;
 
-    private float _layerDepth;
+    private readonly float _layerDepth;
 
-    private string _text;
-    private SpriteFont _textFont;
-    private Vector2 _textCenter;
-    private float _textScale;
-    private Color _textColor;
-    private Color _textHoverColor;
+    private readonly string _text;
+    private readonly SpriteFont _textFont;
+    private readonly Vector2 _textCenter;
+    private readonly float _textScale;
+    private readonly Color _textColor, _textHoverColor;
 
     private Rectangle _body;
     private bool _buttonPressed, _hovered, _lmbPressed;
@@ -33,8 +31,8 @@ internal sealed class Button : IMyDrawable
 
     public Button(
         Vector2 position,
-        Texture2D textureIdle,
-        Texture2D texturePressed,
+        TextureRegion textureIdle,
+        TextureRegion texturePressed,
         float scale,
         Color color,
         Color hoverColor,
@@ -108,10 +106,14 @@ internal sealed class Button : IMyDrawable
 
     public void Draw(SpriteBatch spriteBatch)
     {
+        var (texture, srcRect) = _buttonPressed
+            ? (_texturePressed.Texture, _texturePressed.SourceRectangle)
+            : (_textureIdle.Texture, _textureIdle.SourceRectangle);
+
         spriteBatch.Draw(
-            _buttonPressed ? _texturePressed : _textureIdle,
+            texture,
             _position,
-            null,
+            srcRect,
             _hovered ? _hoverColor : _color,
             0f,
             origin: _center,

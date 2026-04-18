@@ -3,16 +3,16 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
+using MonoGameLibrary.Graphics;
 using RKD_TD.Models.UI;
 
 namespace RKD_TD;
 
 public class Game1 : Core
 {
-    private Texture2D
-        _title = null!,
-        _button300x80 = null!,
-        _button300x80pressed = null!;
+    private TextureRegion
+        _button300X80 = null!,
+        _button300X80Pressed = null!;
 
     // The Sprite Font reference to draw with
     private SpriteFont _kwFont120 = null!, _kwFont80 = null!;
@@ -22,13 +22,11 @@ public class Game1 : Core
 
     public Game1() : base(
         title: "RKD Tower Defense",
-        width: 1280,
-        height: 720,
+        width: 1280, //GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
+        height: 720, //GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height,
         targetFps: 60,
         fullScreen: false)
     {
-        // _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-        // _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
     }
 
     protected override void Initialize()
@@ -38,9 +36,11 @@ public class Game1 : Core
 
     protected override void LoadContent()
     {
-        _title = Content.Load<Texture2D>("images/title");
-        _button300x80 = Content.Load<Texture2D>("images/button300x80");
-        _button300x80pressed = Content.Load<Texture2D>("images/button300x80p");
+        var atlas = TextureAtlas.FromFile(Content, "images/atlas-definition.xml");
+
+        _button300X80 = atlas.GetRegion("button300x80"); //Content.Load<Texture2D>("images/button300x80");
+        _button300X80Pressed =
+            atlas.GetRegion("button300x80pressed"); //Content.Load<Texture2D>("images/button300x80p");
 
         _kwFont120 = Content.Load<SpriteFont>("fonts/knightwarrior120");
         _kwFont80 = Content.Load<SpriteFont>("fonts/knightwarrior80");
@@ -60,8 +60,8 @@ public class Game1 : Core
 
         _startButton = new Button(
             position: new Vector2(screenCenter, topButtonYPos),
-            _button300x80,
-            _button300x80pressed,
+            _button300X80,
+            _button300X80Pressed,
             scale: 1,
             color: Color.White,
             hoverColor: Color.AntiqueWhite,
@@ -133,9 +133,9 @@ public class Game1 : Core
         var buttonCenter = new Vector2(300 / 2, 80 / 2);
 
         SpriteBatch.Draw(
-            _button300x80,
+            _button300X80.Texture,
             position,
-            null,
+            _button300X80.SourceRectangle,
             Color.White,
             0f,
             origin: buttonCenter,

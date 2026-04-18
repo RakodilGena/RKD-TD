@@ -5,12 +5,11 @@ namespace RKD_TD.Models.UI;
 
 internal sealed class Title : IMyDrawable
 {
-    private Vector2 _position, _center;
-    private string _text;
-    private Color _color;
-    private float _scale;
-    private float _layerDepth;
-    private SpriteFont _font;
+    private readonly Vector2 _position, _center;
+    private readonly string _text;
+    private readonly Color _color;
+    private readonly float _scale, _layerDepth;
+    private readonly SpriteFont _font;
 
     public Title(
         Vector2 position,
