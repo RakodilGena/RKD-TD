@@ -3,23 +3,26 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
+using RKD_TD.Assets;
 using RKD_TD.Models.UI;
 
 namespace RKD_TD;
 
-public class Game1 : Core
+internal sealed class GameCore : Core
 {
     private TextureRegion
         _button300X80 = null!,
         _button300X80Pressed = null!;
 
     // The Sprite Font reference to draw with
-    private SpriteFont _kwFont120 = null!, _kwFont80 = null!;
+    private SpriteFont _kwFont120 = null!, 
+        _kwFont80 = null!, 
+        _kwFont56 = null!;
 
-    private LabeledButton _startButton = null!;
     private Label _gameTitle = null!;
+    private LabeledButton _startButton = null!;
 
-    public Game1() : base(
+    public GameCore() : base(
         title: "RKD Tower Defense",
         width: 1280, //GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
         height: 720, //GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height,
@@ -36,14 +39,15 @@ public class Game1 : Core
 
     protected override void LoadContent()
     {
-        var atlas = TextureAtlas.FromFile(Content, "images/atlas-definition.xml");
-
-        _button300X80 = atlas.GetRegion("button300x80"); //Content.Load<Texture2D>("images/button300x80");
+        GlobalAssets.Load(Content);
+        
+        _button300X80 = GlobalAssets.TextureAtlas.GetRegion(Textures.BUTTON_300_80); //Content.Load<Texture2D>("images/button300x80");
         _button300X80Pressed =
-            atlas.GetRegion("button300x80pressed"); //Content.Load<Texture2D>("images/button300x80p");
+            GlobalAssets.TextureAtlas.GetRegion(Textures.BUTTON_300_80_PRESSED); //Content.Load<Texture2D>("images/button300x80p");
 
-        _kwFont120 = Content.Load<SpriteFont>("fonts/knightwarrior120");
-        _kwFont80 = Content.Load<SpriteFont>("fonts/knightwarrior80");
+        _kwFont120 = GlobalAssets.FontAtlas.GetFont(Fonts.KW120);
+        _kwFont80 = GlobalAssets.FontAtlas.GetFont(Fonts.KW80);
+        _kwFont56 = GlobalAssets.FontAtlas.GetFont(Fonts.KW56);
 
         var screenCenter = GraphicsDevice.Viewport.Width / 2;
         var topButtonYPos = 140 + 140 + 80 / 2;
@@ -66,8 +70,8 @@ public class Game1 : Core
             color: Color.White,
             hoverColor: Color.AntiqueWhite,
             text: "Start",
-            _kwFont80,
-            textScale: 0.7f,
+            _kwFont56,
+            textScale: 1,
             textColor: Color.Black,
             textHoverColor: Color.Black,
             layerDepth: 0.5f);

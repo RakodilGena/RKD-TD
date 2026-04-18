@@ -4,17 +4,24 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary.Input;
+using MonoGameLibrary.Scenes;
 
 namespace MonoGameLibrary;
 
 public class Core : Game
 {
-    private static Core s_instance = null!;
+    private static Core _instance = null!;
+
+    // The scene that is currently active.
+    private static Scene? _activeScene;
+
+    // The next scene to switch to, if there is one.
+    private static Scene? _nextScene;
 
     /// <summary>
     /// Gets a reference to the Core instance.
     /// </summary>
-    public static Core Instance => s_instance;
+    public static Core Instance => _instance;
 
     /// <summary>
     /// Gets the graphics device manager to control the presentation of graphics.
@@ -34,7 +41,7 @@ public class Core : Game
     /// <summary>
     /// Gets the content manager used to load global assets.
     /// </summary>
-    public static new ContentManager Content { get; private set; } = null!;
+    public new static ContentManager Content { get; private set; } = null!;
 
     /// <summary>
     /// Gets a reference to the input management system.
@@ -54,6 +61,7 @@ public class Core : Game
     /// <param name="height">The initial height, in pixels, of the game window.</param>
     /// <param name="targetFps">Target FPS.</param>
     /// <param name="fullScreen">Indicates if the game should start in fullscreen mode.</param>
+    /// <param name="exitOnEscape">Should the game exit when Escape is pressed.</param>
     protected Core(
         string title,
         int width,
@@ -63,13 +71,13 @@ public class Core : Game
         bool exitOnEscape)
     {
         // Ensure that multiple cores are not created.
-        if (s_instance != null)
+        if (_instance != null)
         {
             throw new InvalidOperationException($"Only a single Core instance can be created");
         }
 
         // Store reference to engine for global member access.
-        s_instance = this;
+        _instance = this;
 
         // Create a new graphics device manager.
         Graphics = new GraphicsDeviceManager(this);
@@ -126,6 +134,54 @@ public class Core : Game
             Exit();
         }
 
+        // if there is a next scene waiting to be switch to,
+        // then transition to that scene.
+        if (_nextScene is not null)
+        {
+            TransitionScene();
+        }
+
+        // If there is an active scene, update it.
+        _activeScene?.Update(gameTime);
+
         base.Update(gameTime);
+    }
+
+    private static void TransitionScene()
+    {
+        // If there is an active scene, dispose of it.
+        _activeScene?.Dispose();
+
+        // Force the garbage collector to collect to ensure memory is cleared.
+        GC.Collect();
+
+        // Change the currently active scene to the new scene.
+        _activeScene = _nextScene;
+
+        // Null out the next scene value so it does not trigger a change over and over.
+        _nextScene = null;
+
+        // If the active scene now is not null, initialize it.
+        // Remember, just like with Game, the Initialize call also calls the
+        // Scene.LoadContent
+        _activeScene?.Initialize();
+    }
+
+    public static void ChangeScene(Scene next)
+    {
+        // Only set the next scene value if it is not the same
+        // instance as the currently active scene.
+        if (_activeScene != next)
+        {
+            _nextScene = next;
+        }
+    }
+
+    protected override void Draw(GameTime gameTime)
+    {
+        // If there is an active scene, draw it.
+        _activeScene?.Draw(gameTime);
+
+        base.Draw(gameTime);
     }
 }

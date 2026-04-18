@@ -13,12 +13,22 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin fonts/font-atlas-definition.xml
+/copy:fonts/font-atlas-definition.xml
+
 #begin fonts/knightwarrior120.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:fonts/knightwarrior120.spritefont
+
+#begin fonts/knightwarrior56.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/knightwarrior56.spritefont
 
 #begin fonts/knightwarrior80.spritefont
 /importer:FontDescriptionImporter
