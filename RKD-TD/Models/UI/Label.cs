@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RKD_TD.Models.Interfaces;
 
 namespace RKD_TD.Models.UI;
 

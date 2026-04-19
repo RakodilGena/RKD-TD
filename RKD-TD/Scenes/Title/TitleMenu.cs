@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
 using RKD_TD.Assets;
+using RKD_TD.Models.Interfaces;
 using RKD_TD.Models.UI;
 
 namespace RKD_TD.Scenes.Title;
@@ -25,12 +26,8 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
 
         var buttonsMargin = 150;
 
-        var button450X130 =
-            textureAtlas.GetRegion(
-                Textures.BUTTON_450_130);
-        var button450X130Pressed =
-            textureAtlas.GetRegion(
-                Textures.BUTTON_450_130_PRESSED);
+        var button450X130 = textureAtlas.GetRegion(Textures.Title.BUTTON_450_130);
+        var button450X130Pressed = textureAtlas.GetRegion(Textures.Title.BUTTON_450_130_PRESSED);
 
         var startButton = CreateLabeledButton(
             position: menuPosition,

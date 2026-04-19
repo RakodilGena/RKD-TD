@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace RKD_TD.Models.UI;
+namespace RKD_TD.Models.Interfaces;
 
 internal interface IMyUpdatable
 {

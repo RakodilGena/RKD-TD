@@ -2,8 +2,8 @@
 <TextureAtlas>
     <Texture>images/map-selection/ms-atlas</Texture>
     <Regions>
-        <Region name="map_empty_500_300" x="0" y="0" width="500" height="300"/>
-        <Region name="map_empty_500_300_pressed" x="0" y="300" width="500" height="300"/>
+        <Region name="map_blank_500_300" x="0" y="0" width="500" height="300"/>
+        <Region name="map_blank_500_300_pressed" x="0" y="300" width="500" height="300"/>
         <Region name="button_300_100" x="0" y="600" width="300" height="100"/>
         <Region name="button_300_100_pressed" x="0" y="700" width="300" height="100"/>
     </Regions>

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
@@ -12,7 +13,7 @@ namespace RKD_TD.Scenes.MapSelection;
 internal sealed class MapSelectionScene : Scene
 {
     private Label _selectMapLabel = null!;
-    private Map[] _maps = [];
+    private MapSelectionMenu _mapSelectionMenu = null!;
     private LabeledButton _backButton = null!;
 
     private TextureAtlas _msAtlas = null!;
@@ -27,6 +28,7 @@ internal sealed class MapSelectionScene : Scene
 
         InitTitle(screenCenter);
         InitBackButton();
+        InitMapSelectionMenu();
     }
 
     private void InitTitle(int screenCenter)
@@ -56,8 +58,10 @@ internal sealed class MapSelectionScene : Scene
 
         const string btnText = "BACK";
 
-        var textureIdle = _msAtlas.GetRegion("button_300_100");
-        var texturePressed = _msAtlas.GetRegion("button_300_100_pressed");
+        var textureIdle = _msAtlas.GetRegion(
+            Textures.MapSelection.BUTTON_300_100);
+        var texturePressed = _msAtlas.GetRegion(
+            Textures.MapSelection.BUTTON_300_100_PRESSED);
 
         _backButton = new LabeledButton(
             position: new Vector2(1570, 930),
@@ -77,6 +81,20 @@ internal sealed class MapSelectionScene : Scene
         _backButton.Clicked += (_, _) => BackToTitle();
     }
 
+    private void InitMapSelectionMenu()
+    {
+        _mapSelectionMenu = new MapSelectionMenu(
+            _msAtlas,
+            new Vector2(150, 220));
+
+        _mapSelectionMenu.MapClicked += OnMapClicked;
+    }
+
+    private static void OnMapClicked(object? sender, Map map)
+    {
+        Console.WriteLine($"Map clicked: {map.Name}");
+    }
+
     private static void BackToTitle()
     {
         Core.ChangeScene(new TitleScene());
@@ -94,6 +112,7 @@ internal sealed class MapSelectionScene : Scene
     public override void Update(GameTime gameTime)
     {
         _backButton.Update(gameTime);
+        _mapSelectionMenu.Update(gameTime);
 
         HandleEscape();
 
@@ -115,6 +134,7 @@ internal sealed class MapSelectionScene : Scene
         sb.Begin();
 
         _selectMapLabel.Draw(sb);
+        _mapSelectionMenu.Draw(sb);
         _backButton.Draw(sb);
 
         sb.End();
