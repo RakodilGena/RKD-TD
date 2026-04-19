@@ -1,7 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using RKD_TD.Assets;
 using RKD_TD.Models.UI;
@@ -10,19 +9,27 @@ namespace RKD_TD.Scenes.Title;
 
 public sealed class TitleMenu : IMyDrawable, IMyUpdatable
 {
-    private LabeledButton[] _menuButtons;
+    private readonly LabeledButton[] _menuButtons;
 
-    public TitleMenu(Vector2 menuPosition)
+    public event EventHandler?
+        StartClicked,
+        SettingsClicked,
+        CreditsClicked,
+        ExitClicked;
+
+    public TitleMenu(
+        TextureAtlas textureAtlas,
+        Vector2 menuPosition)
     {
         var kwFont90 = GlobalAssets.FontAtlas.GetFont(Fonts.MAIN_MENU_BTN_TEXT);
 
         var buttonsMargin = 150;
 
         var button450X130 =
-            GlobalAssets.TextureAtlas.GetRegion(
+            textureAtlas.GetRegion(
                 Textures.BUTTON_450_130);
         var button450X130Pressed =
-            GlobalAssets.TextureAtlas.GetRegion(
+            textureAtlas.GetRegion(
                 Textures.BUTTON_450_130_PRESSED);
 
         var startButton = CreateLabeledButton(
@@ -32,8 +39,8 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
             texturePressed: button450X130Pressed,
             font: kwFont90);
 
-        startButton.Pressed += (sender, args) =>
-            Console.WriteLine("Start clicked!");
+        startButton.Clicked += (_, args) =>
+            StartClicked?.Invoke(this, args);
 
 
         var settingsButton = CreateLabeledButton(
@@ -43,8 +50,8 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
             texturePressed: button450X130Pressed,
             font: kwFont90);
 
-        settingsButton.Pressed += (sender, args) =>
-            Console.WriteLine("Settings clicked!");
+        settingsButton.Clicked += (_, args) =>
+            SettingsClicked?.Invoke(this, args);
 
 
         var creditsButton = CreateLabeledButton(
@@ -54,8 +61,8 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
             texturePressed: button450X130Pressed,
             font: kwFont90);
 
-        creditsButton.Pressed += (sender, args) =>
-            Console.WriteLine("Credits clicked!");
+        creditsButton.Clicked += (_, args) =>
+            CreditsClicked?.Invoke(this, args);
 
 
         var exitButton = CreateLabeledButton(
@@ -65,11 +72,8 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
             texturePressed: button450X130Pressed,
             font: kwFont90);
 
-        exitButton.Pressed += (sender, args) =>
-        {
-            Console.WriteLine("Exit clicked!");
-            Core.Exit();
-        };
+        exitButton.Clicked += (_, args) =>
+            ExitClicked?.Invoke(this, args);
 
         _menuButtons =
         [

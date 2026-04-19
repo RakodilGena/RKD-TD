@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas>
-    <Texture>images/atlas</Texture>
+    <Texture>images/main-title/mt-atlas</Texture>
     <Regions>
         <Region name="button_450_130" x="0" y="0" width="450" height="130"/>
-        <Region name="button_450_130pressed" x="0" y="130" width="450" height="130"/>
+        <Region name="button_450_130_pressed" x="0" y="130" width="450" height="130"/>
     </Regions>
 </TextureAtlas>

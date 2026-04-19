@@ -23,7 +23,7 @@ internal class Button : IMyDrawable, IMyUpdatable
 
     protected bool Hovered { get; private set; }
 
-    public event EventHandler? Pressed;
+    public event EventHandler? Clicked;
 
     public Button(
         Vector2 position,
@@ -75,7 +75,7 @@ internal class Button : IMyDrawable, IMyUpdatable
                 if (mouseInfo.WasButtonJustReleased(MouseButton.Left))
                 {
                     _buttonPressed = false;
-                    Pressed?.Invoke(this, EventArgs.Empty);
+                    Clicked?.Invoke(this, EventArgs.Empty);
                 }
             }
         }

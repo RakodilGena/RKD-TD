@@ -1,8 +1,11 @@
+using System;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary;
+using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Scenes;
 using RKD_TD.Assets;
 using RKD_TD.Models.UI;
+using RKD_TD.Scenes.MapSelection;
 
 namespace RKD_TD.Scenes.Title;
 
@@ -10,11 +13,29 @@ internal sealed class TitleScene : Scene
 {
     private Label _gameTitle = null!;
     private TitleMenu _titleMenu = null!;
+    private TextureAtlas _tsAtlas = null!;
 
     public override void Initialize()
     {
         base.Initialize();
 
+        Core.ExitOnEscape = true;
+
+        InitTitleLabel();
+        InitTitleMenu();
+    }
+
+    public override void LoadContent()
+    {
+        base.LoadContent();
+
+        _tsAtlas = TextureAtlas.FromFile(
+            Content,
+            fileName: "images/main-title/mt-atlas-definition.xml");
+    }
+
+    private void InitTitleLabel()
+    {
         var screenCenter = Core.GraphicsDevice.Viewport.Width / 2;
 
         var kwFont180 = GlobalAssets.FontAtlas.GetFont(Fonts.MAIN_TITLE);
@@ -34,8 +55,38 @@ internal sealed class TitleScene : Scene
             Color.Black,
             scale: 1,
             layerDepth: 1);
+    }
 
-        _titleMenu = new TitleMenu(new Vector2(65, 435));
+    private void InitTitleMenu()
+    {
+        _titleMenu = new TitleMenu(_tsAtlas, new Vector2(65, 435));
+
+        _titleMenu.StartClicked += OnStartClicked;
+        _titleMenu.SettingsClicked += OnSettingsClicked;
+        _titleMenu.CreditsClicked += OnCreditsClicked;
+        _titleMenu.ExitClicked += OnExitClicked;
+    }
+
+    private static void OnStartClicked(object? sender, EventArgs eventArgs)
+    {
+        Console.WriteLine("Start clicked!");
+        Core.ChangeScene(new MapSelectionScene());
+    }
+
+    private static void OnSettingsClicked(object? sender, EventArgs eventArgs)
+    {
+        Console.WriteLine("Settings clicked!");
+    }
+
+    private static void OnCreditsClicked(object? sender, EventArgs eventArgs)
+    {
+        Console.WriteLine("Credits clicked!");
+    }
+
+    private static void OnExitClicked(object? sender, EventArgs eventArgs)
+    {
+        Console.WriteLine("Exit clicked!");
+        Core.Exit();
     }
 
 

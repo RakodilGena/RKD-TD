@@ -3,5 +3,7 @@
     <Fonts>
         <Font name="main_title"/>
         <Font name="main_menu_btn_text"/>
+        <Font name="map_selection_title"/>
+        <Font name="regular_btn_text"/>
     </Fonts>
 </FontAtlas>
