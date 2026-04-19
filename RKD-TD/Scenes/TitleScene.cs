@@ -21,68 +21,70 @@ internal sealed class TitleScene : Scene
 
         var screenCenter = Core.GraphicsDevice.Viewport.Width / 2;
 
-        var kwFont120 = GlobalAssets.FontAtlas.GetFont(Fonts.KW120);
+        var kwFont180 = GlobalAssets.FontAtlas.GetFont(Fonts.MAIN_TITLE);
 
         _gameTitle = new Label(
             position: new Vector2(
                 screenCenter,
-                90),
+                170),
             "RKD TOWER DEFENSE",
-            kwFont120,
-            Color.DarkGreen,
+            kwFont180,
+            Color.Black,
             scale: 1,
             layerDepth: 1);
 
-        var kwFont56 = GlobalAssets.FontAtlas.GetFont(Fonts.KW56);
-        var topButtonYPos = 140 + 140 + 80 / 2;
+        var kwFont90 = GlobalAssets.FontAtlas.GetFont(Fonts.MAIN_MENU_BTN_TEXT);
 
-        var button300X80 =
-            GlobalAssets.TextureAtlas.GetRegion(Textures
-                .BUTTON_300_80); //Content.Load<Texture2D>("images/button300x80");
-        var button300X80Pressed =
-            GlobalAssets.TextureAtlas.GetRegion(Textures
-                .BUTTON_300_80_PRESSED); //Content.Load<Texture2D>("images/button300x80p");
+        var startButtonYPos = 500;
+        var menuButtonLeftMargin = 290;
+        var buttonsMargin = 150;
 
+        var button450X130 =
+            GlobalAssets.TextureAtlas.GetRegion(
+                Textures.BUTTON_450_130);
+        var button450X130Pressed =
+            GlobalAssets.TextureAtlas.GetRegion(
+                Textures.BUTTON_450_130_PRESSED);
 
         var startButton = CreateLabeledButton(
-            position: new Vector2(screenCenter, topButtonYPos),
+            position: new Vector2(menuButtonLeftMargin, startButtonYPos),
             label: "Start",
-            textureIdle: button300X80,
-            texturePressed: button300X80Pressed,
-            font: kwFont56);
+            textureIdle: button450X130,
+            texturePressed: button450X130Pressed,
+            font: kwFont90);
 
         startButton.Pressed += (sender, args) =>
             Console.WriteLine("Start clicked!");
 
 
         var settingsButton = CreateLabeledButton(
-            position: new Vector2(screenCenter, topButtonYPos + 100),
+            position: new Vector2(menuButtonLeftMargin, startButtonYPos + buttonsMargin),
             label: "Settings",
-            textureIdle: button300X80,
-            texturePressed: button300X80Pressed,
-            font: kwFont56);
+            textureIdle: button450X130,
+            texturePressed: button450X130Pressed,
+            font: kwFont90);
 
         settingsButton.Pressed += (sender, args) =>
             Console.WriteLine("Settings clicked!");
 
 
         var creditsButton = CreateLabeledButton(
-            position: new Vector2(screenCenter, topButtonYPos + 200),
+            position: new Vector2(menuButtonLeftMargin, startButtonYPos + buttonsMargin * 2),
             label: "Credits",
-            textureIdle: button300X80,
-            texturePressed: button300X80Pressed,
-            font: kwFont56);
+            textureIdle: button450X130,
+            texturePressed: button450X130Pressed,
+            font: kwFont90);
 
         creditsButton.Pressed += (sender, args) =>
             Console.WriteLine("Credits clicked!");
 
 
         var exitButton = CreateLabeledButton(
-            position: new Vector2(screenCenter, topButtonYPos + 300),
+            position: new Vector2(menuButtonLeftMargin, startButtonYPos + buttonsMargin * 3),
             label: "Exit",
-            textureIdle: button300X80,
-            texturePressed: button300X80Pressed,
-            font: kwFont56);
+            textureIdle: button450X130,
+            texturePressed: button450X130Pressed,
+            font: kwFont90);
 
         exitButton.Pressed += (sender, args) =>
         {
@@ -111,8 +113,8 @@ internal sealed class TitleScene : Scene
             textureIdle,
             texturePressed,
             scale: 1,
-            color: Color.White,
-            hoverColor: Color.AntiqueWhite,
+            color: Color.DarkGray,
+            hoverColor: Color.Gray,
             text: label,
             font,
             textScale: 1,
@@ -133,7 +135,7 @@ internal sealed class TitleScene : Scene
 
     public override void Draw(GameTime gameTime)
     {
-        Core.GraphicsDevice.Clear(Color.PeachPuff);
+        Core.GraphicsDevice.Clear(Color.LightGray);
 
         var sb = Core.SpriteBatch;
 

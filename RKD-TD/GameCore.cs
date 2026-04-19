@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
 using RKD_TD.Assets;
 using RKD_TD.Scenes;
@@ -9,10 +10,10 @@ internal sealed class GameCore : Core
 {
     public GameCore() : base(
         title: "RKD Tower Defense",
-        width: 1280, //GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
-        height: 720, //GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height,
+        width: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
+        height: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height,
         targetFps: 60,
-        fullScreen: false,
+        fullScreen: true,
         exitOnEscape: true)
     {
     }

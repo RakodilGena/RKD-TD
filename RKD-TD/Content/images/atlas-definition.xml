@@ -2,7 +2,7 @@
 <TextureAtlas>
     <Texture>images/atlas</Texture>
     <Regions>
-        <Region name="button300x80" x="0" y="0" width="300" height="80"/>
-        <Region name="button300x80pressed" x="0" y="80" width="300" height="80"/>
+        <Region name="button_450_130" x="0" y="0" width="450" height="130"/>
+        <Region name="button_450_130pressed" x="0" y="130" width="450" height="130"/>
     </Regions>
 </TextureAtlas>

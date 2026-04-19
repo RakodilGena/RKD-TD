@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <FontAtlas>
     <Fonts>
-        <Font name="knightwarrior56"/>
-        <Font name="knightwarrior80"/>
-        <Font name="knightwarrior120"/>
+        <Font name="main_title"/>
+        <Font name="main_menu_btn_text"/>
     </Fonts>
 </FontAtlas>
