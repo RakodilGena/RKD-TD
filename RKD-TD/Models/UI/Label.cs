@@ -5,7 +5,7 @@ namespace RKD_TD.Models.UI;
 
 internal sealed class Label : IMyDrawable
 {
-    private readonly Vector2 _position, _center;
+    private readonly Vector2 _position, _origin;
     private readonly string _text;
     private readonly Color _color;
     private readonly float _scale, _layerDepth;
@@ -13,6 +13,7 @@ internal sealed class Label : IMyDrawable
 
     public Label(
         Vector2 position,
+        Vector2 origin,
         string text,
         SpriteFont font,
         Color color,
@@ -20,7 +21,7 @@ internal sealed class Label : IMyDrawable
         float layerDepth)
     {
         _position = position;
-        _center = font.MeasureString(text) / 2;
+        _origin = origin;
         _text = text;
         _font = font;
         _color = color;
@@ -35,8 +36,8 @@ internal sealed class Label : IMyDrawable
             _text,
             _position,
             _color,
-            0,
-            _center,
+            rotation: 0,
+            _origin,
             _scale,
             SpriteEffects.None,
             _layerDepth);

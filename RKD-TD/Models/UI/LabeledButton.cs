@@ -8,12 +8,13 @@ internal sealed class LabeledButton : Button
 {
     private readonly string _text;
     private readonly SpriteFont _textFont;
-    private readonly Vector2 _textCenter;
+    private readonly Vector2 _textPosition, _textCenter;
     private readonly float _textScale;
     private readonly Color _textColor, _textHoverColor;
 
     public LabeledButton(
         Vector2 position,
+        Vector2 origin,
         TextureRegion textureIdle,
         TextureRegion texturePressed,
         float scale,
@@ -25,7 +26,7 @@ internal sealed class LabeledButton : Button
         Color textColor,
         Color textHoverColor,
         float layerDepth)
-        : base(position, textureIdle, texturePressed,
+        : base(position, origin, textureIdle, texturePressed,
             scale, color, hoverColor, layerDepth)
     {
         _text = text;
@@ -33,7 +34,13 @@ internal sealed class LabeledButton : Button
         _textScale = textScale;
         _textColor = textColor;
         _textHoverColor = textHoverColor;
+
         _textCenter = _textFont.MeasureString(text) / 2;
+
+        var buttonCenter = new Vector2(
+            textureIdle.Width / 2f,
+            textureIdle.Height / 2f);
+        _textPosition = position + (-origin + buttonCenter) * scale;
     }
 
 
@@ -44,10 +51,10 @@ internal sealed class LabeledButton : Button
         spriteBatch.DrawString(
             _textFont,
             _text,
-            Position,
+            _textPosition,
             Hovered ? _textHoverColor : _textColor,
-            0,
-            _textCenter,
+            rotation: 0,
+            origin: _textCenter,
             _textScale,
             SpriteEffects.None,
             LayerDepth);

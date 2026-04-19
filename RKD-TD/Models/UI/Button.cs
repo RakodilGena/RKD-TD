@@ -7,10 +7,10 @@ using MonoGameLibrary.Input;
 
 namespace RKD_TD.Models.UI;
 
-internal class Button : IMyDrawable
+internal class Button : IMyDrawable, IMyUpdatable
 {
     private readonly TextureRegion _textureIdle, _texturePressed;
-    private readonly Vector2 _center;
+    private readonly Vector2 _origin;
     private readonly float _scale;
     private readonly Color _color, _hoverColor;
 
@@ -18,7 +18,7 @@ internal class Button : IMyDrawable
     private Rectangle _body;
     private bool _buttonPressed;
 
-    protected Vector2 Position { get; }
+    private readonly Vector2 _position;
     protected float LayerDepth { get; }
 
     protected bool Hovered { get; private set; }
@@ -27,6 +27,7 @@ internal class Button : IMyDrawable
 
     public Button(
         Vector2 position,
+        Vector2 origin,
         TextureRegion textureIdle,
         TextureRegion texturePressed,
         float scale,
@@ -34,21 +35,20 @@ internal class Button : IMyDrawable
         Color hoverColor,
         float layerDepth)
     {
-        Position = position;
+        _position = position;
+        _origin = origin;
+
         _textureIdle = textureIdle;
         _texturePressed = texturePressed;
 
-        _center = new Vector2(
-            textureIdle.Width / 2,
-            textureIdle.Height / 2);
 
         _scale = scale;
         _color = color;
         _hoverColor = hoverColor;
 
         _body = new Rectangle(
-            (int)(position.X - textureIdle.Width / 2 * scale),
-            (int)(position.Y - textureIdle.Height / 2 * scale),
+            (int)(position.X - origin.X * scale),
+            (int)(position.Y - origin.Y * scale),
             (int)(textureIdle.Width * scale),
             (int)(textureIdle.Height * scale));
 
@@ -94,11 +94,11 @@ internal class Button : IMyDrawable
 
         spriteBatch.Draw(
             texture,
-            Position,
+            _position,
             srcRect,
             Hovered ? _hoverColor : _color,
             0f,
-            origin: _center,
+            origin: _origin,
             _scale,
             SpriteEffects.None,
             layerDepth: LayerDepth);

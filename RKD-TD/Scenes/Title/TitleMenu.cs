@@ -3,40 +3,19 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
-using MonoGameLibrary.Scenes;
 using RKD_TD.Assets;
 using RKD_TD.Models.UI;
 
-namespace RKD_TD.Scenes;
+namespace RKD_TD.Scenes.Title;
 
-internal sealed class TitleScene : Scene
+public sealed class TitleMenu : IMyDrawable, IMyUpdatable
 {
-    private Label _gameTitle = null!;
+    private LabeledButton[] _menuButtons;
 
-    private LabeledButton[] _menuButtons = null!;
-
-    public override void Initialize()
+    public TitleMenu(Vector2 menuPosition)
     {
-        base.Initialize();
-
-        var screenCenter = Core.GraphicsDevice.Viewport.Width / 2;
-
-        var kwFont180 = GlobalAssets.FontAtlas.GetFont(Fonts.MAIN_TITLE);
-
-        _gameTitle = new Label(
-            position: new Vector2(
-                screenCenter,
-                170),
-            "RKD TOWER DEFENSE",
-            kwFont180,
-            Color.Black,
-            scale: 1,
-            layerDepth: 1);
-
         var kwFont90 = GlobalAssets.FontAtlas.GetFont(Fonts.MAIN_MENU_BTN_TEXT);
 
-        var startButtonYPos = 500;
-        var menuButtonLeftMargin = 290;
         var buttonsMargin = 150;
 
         var button450X130 =
@@ -47,7 +26,7 @@ internal sealed class TitleScene : Scene
                 Textures.BUTTON_450_130_PRESSED);
 
         var startButton = CreateLabeledButton(
-            position: new Vector2(menuButtonLeftMargin, startButtonYPos),
+            position: menuPosition,
             label: "Start",
             textureIdle: button450X130,
             texturePressed: button450X130Pressed,
@@ -58,7 +37,7 @@ internal sealed class TitleScene : Scene
 
 
         var settingsButton = CreateLabeledButton(
-            position: new Vector2(menuButtonLeftMargin, startButtonYPos + buttonsMargin),
+            position: menuPosition + new Vector2(0, buttonsMargin),
             label: "Settings",
             textureIdle: button450X130,
             texturePressed: button450X130Pressed,
@@ -69,7 +48,7 @@ internal sealed class TitleScene : Scene
 
 
         var creditsButton = CreateLabeledButton(
-            position: new Vector2(menuButtonLeftMargin, startButtonYPos + buttonsMargin * 2),
+            position: menuPosition + new Vector2(0, buttonsMargin * 2),
             label: "Credits",
             textureIdle: button450X130,
             texturePressed: button450X130Pressed,
@@ -80,7 +59,7 @@ internal sealed class TitleScene : Scene
 
 
         var exitButton = CreateLabeledButton(
-            position: new Vector2(menuButtonLeftMargin, startButtonYPos + buttonsMargin * 3),
+            position: menuPosition + new Vector2(0, buttonsMargin * 3),
             label: "Exit",
             textureIdle: button450X130,
             texturePressed: button450X130Pressed,
@@ -108,8 +87,10 @@ internal sealed class TitleScene : Scene
         TextureRegion texturePressed,
         SpriteFont font)
     {
+        //var origin = new Vector2(textureIdle.Width / 2f, textureIdle.Height / 2f);
         return new LabeledButton(
             position: position,
+            origin: Vector2.Zero,
             textureIdle,
             texturePressed,
             scale: 1,
@@ -123,32 +104,19 @@ internal sealed class TitleScene : Scene
             layerDepth: 0.5f);
     }
 
-    public override void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
     {
         foreach (var menuButton in _menuButtons)
         {
             menuButton.Update(gameTime);
         }
-
-        base.Update(gameTime);
     }
 
-    public override void Draw(GameTime gameTime)
+    public void Draw(SpriteBatch spriteBatch)
     {
-        Core.GraphicsDevice.Clear(Color.LightGray);
-
-        var sb = Core.SpriteBatch;
-
-        sb.Begin();
-        _gameTitle.Draw(sb);
-
         foreach (var menuButton in _menuButtons)
         {
-            menuButton.Draw(sb);
+            menuButton.Draw(spriteBatch);
         }
-
-        sb.End();
-
-        base.Draw(gameTime);
     }
 }
