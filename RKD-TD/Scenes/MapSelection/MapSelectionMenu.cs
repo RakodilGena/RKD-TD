@@ -23,10 +23,6 @@ internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
         TextureAtlas textures,
         Vector2 position)
     {
-        var mapTextureIdle = textures.GetRegion(
-            Textures.MapSelection.MAP_BLANK_500_300);
-        var mapTexturePressed = textures.GetRegion(
-            Textures.MapSelection.MAP_BLANK_500_300_PRESSED);
         var mapNameFont = GlobalAssets.FontAtlas.GetFont(Fonts.MAP_TITLE);
 
         var mapsCount = 6;
@@ -36,8 +32,7 @@ internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
             var mapName = $"MOCK MAP {mapIndex + 1}";
             var map = CreateMockMap(
                 position,
-                mapTextureIdle,
-                mapTexturePressed,
+                textures,
                 mapNameFont,
                 mapName,
                 mapIndex);
@@ -54,20 +49,24 @@ internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
 
     private static Map CreateMockMap(
         Vector2 menuPosition,
-        TextureRegion textureIdle,
-        TextureRegion texturePressed,
+        TextureAtlas textures,
         SpriteFont mapNameFont,
         string mapName,
         int mapIndex)
     {
         var mapPosition = GetMapPosition(menuPosition, mapIndex);
+        
+        var spriteIdle = textures.CreateSprite(
+            Textures.MapSelection.MAP_BLANK_500_300);
+        var spritePressed = textures.CreateSprite(
+            Textures.MapSelection.MAP_BLANK_500_300_PRESSED);
 
         return new Map(
             mapPosition,
             origin: Vector2.Zero,
-            textureIdle,
-            texturePressed,
-            scale: 1,
+            spriteIdle,
+            spritePressed,
+            scale: Vector2.One,
             color: Color.White,
             hoverColor: Color.Gray,
             mapName,

@@ -58,19 +58,19 @@ internal sealed class MapSelectionScene : Scene
 
         const string btnText = "BACK";
 
-        var textureIdle = _msAtlas.GetRegion(
+        var spriteIdle = _msAtlas.CreateSprite(
             Textures.MapSelection.BUTTON_300_100);
-        var texturePressed = _msAtlas.GetRegion(
+        var spritePressed = _msAtlas.CreateSprite(
             Textures.MapSelection.BUTTON_300_100_PRESSED);
 
         _backButton = new LabeledButton(
             position: new Vector2(1570, 930),
             origin: Vector2.Zero,
-            textureIdle,
-            texturePressed,
-            scale: 1,
-            color: Color.DarkGray,
-            hoverColor: Color.Gray,
+            spriteIdle,
+            spritePressed,
+            scale: Vector2.One,
+            colorIdle: Color.DarkGray,
+            colorHover: Color.Gray,
             btnText,
             btnFont,
             textScale: 1,

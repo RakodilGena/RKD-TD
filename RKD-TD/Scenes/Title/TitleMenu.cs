@@ -26,14 +26,9 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
 
         var buttonsMargin = 150;
 
-        var button450X130 = textureAtlas.GetRegion(Textures.Title.BUTTON_450_130);
-        var button450X130Pressed = textureAtlas.GetRegion(Textures.Title.BUTTON_450_130_PRESSED);
-
         var startButton = CreateLabeledButton(
             position: menuPosition,
-            label: "Start",
-            textureIdle: button450X130,
-            texturePressed: button450X130Pressed,
+            label: "Start", textureAtlas,
             font: kwFont90);
 
         startButton.Clicked += (_, args) =>
@@ -42,9 +37,7 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
 
         var settingsButton = CreateLabeledButton(
             position: menuPosition + new Vector2(0, buttonsMargin),
-            label: "Settings",
-            textureIdle: button450X130,
-            texturePressed: button450X130Pressed,
+            label: "Settings", textureAtlas,
             font: kwFont90);
 
         settingsButton.Clicked += (_, args) =>
@@ -53,9 +46,7 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
 
         var creditsButton = CreateLabeledButton(
             position: menuPosition + new Vector2(0, buttonsMargin * 2),
-            label: "Credits",
-            textureIdle: button450X130,
-            texturePressed: button450X130Pressed,
+            label: "Credits", textureAtlas,
             font: kwFont90);
 
         creditsButton.Clicked += (_, args) =>
@@ -64,9 +55,7 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
 
         var exitButton = CreateLabeledButton(
             position: menuPosition + new Vector2(0, buttonsMargin * 3),
-            label: "Exit",
-            textureIdle: button450X130,
-            texturePressed: button450X130Pressed,
+            label: "Exit", textureAtlas,
             font: kwFont90);
 
         exitButton.Clicked += (_, args) =>
@@ -84,19 +73,20 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
     private static LabeledButton CreateLabeledButton(
         Vector2 position,
         string label,
-        TextureRegion textureIdle,
-        TextureRegion texturePressed,
+        TextureAtlas textureAtlas,
         SpriteFont font)
     {
-        //var origin = new Vector2(textureIdle.Width / 2f, textureIdle.Height / 2f);
+        var spriteIdle = textureAtlas.CreateSprite(Textures.Title.BUTTON_450_130);
+        var spritePressed = textureAtlas.CreateSprite(Textures.Title.BUTTON_450_130_PRESSED);
+
         return new LabeledButton(
             position: position,
             origin: Vector2.Zero,
-            textureIdle,
-            texturePressed,
-            scale: 1,
-            color: Color.DarkGray,
-            hoverColor: Color.Gray,
+            spriteIdle,
+            spritePressed,
+            scale: Vector2.One,
+            colorIdle: Color.DarkGray,
+            colorHover: Color.Gray,
             text: label,
             font,
             textScale: 1,

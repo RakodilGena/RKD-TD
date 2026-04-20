@@ -10,50 +10,48 @@ namespace RKD_TD.Models.UI;
 
 internal class Button : IMyDrawable, IMyUpdatable, IMyClickable
 {
-    private readonly TextureRegion _textureIdle, _texturePressed;
-    private readonly Vector2 _origin;
-    private readonly float _scale;
-    private readonly Color _color, _hoverColor;
-
-
-    private Rectangle _body;
-    private bool _buttonPressed;
-
     private readonly Vector2 _position;
-    protected float LayerDepth { get; }
-
+    private readonly Sprite _spriteIdle, _spritePressed;
+    private bool _inPressedState;
     protected bool Hovered { get; private set; }
+
+    private readonly Color _colorIdle, _colorHovered;
+    private Rectangle _body;
+    
+    protected float LayerDepth => _spriteIdle.LayerDepth;
 
     public event EventHandler? Clicked;
 
     public Button(
         Vector2 position,
         Vector2 origin,
-        TextureRegion textureIdle,
-        TextureRegion texturePressed,
-        float scale,
-        Color color,
-        Color hoverColor,
+        Sprite spriteIdle,
+        Sprite spritePressed,
+        Vector2 scale,
+        Color colorIdle,
+        Color colorHover,
         float layerDepth)
     {
         _position = position;
-        _origin = origin;
+        
+        _spriteIdle = spriteIdle;
+        _spriteIdle.Origin = origin;
+        _spriteIdle.Scale = scale;
+        _spriteIdle.LayerDepth = layerDepth;
+        
+        _spritePressed = spritePressed;
+        _spritePressed.Origin = origin;
+        _spritePressed.Scale = scale;
+        _spritePressed.LayerDepth = layerDepth;
 
-        _textureIdle = textureIdle;
-        _texturePressed = texturePressed;
-
-
-        _scale = scale;
-        _color = color;
-        _hoverColor = hoverColor;
+        _colorIdle = colorIdle;
+        _colorHovered = colorHover;
 
         _body = new Rectangle(
-            (int)(position.X - origin.X * scale),
-            (int)(position.Y - origin.Y * scale),
-            (int)(textureIdle.Width * scale),
-            (int)(textureIdle.Height * scale));
-
-        LayerDepth = layerDepth;
+            (int)(position.X - origin.X * scale.X),
+            (int)(position.Y - origin.Y * scale.Y),
+            (int)_spriteIdle.Width,
+            (int)_spriteIdle.Height);
     }
 
     public void Update(GameTime gameTime)
@@ -66,16 +64,16 @@ internal class Button : IMyDrawable, IMyUpdatable, IMyClickable
             //added control over prev lmb mouse state to prevent cases when button 
             //wasn't pressed but the lmb was - outside the button - and that still
             //invoked the click event
-            if (!_buttonPressed)
+            if (!_inPressedState)
             {
                 if (mouseInfo.WasButtonJustPressed(MouseButton.Left))
-                    _buttonPressed = true;
+                    _inPressedState = true;
             }
             else
             {
                 if (mouseInfo.WasButtonJustReleased(MouseButton.Left))
                 {
-                    _buttonPressed = false;
+                    _inPressedState = false;
                     Clicked?.Invoke(this, EventArgs.Empty);
                 }
             }
@@ -83,25 +81,23 @@ internal class Button : IMyDrawable, IMyUpdatable, IMyClickable
         else
         {
             Hovered = false;
-            _buttonPressed = false;
+            _inPressedState = false;
         }
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
-        var (texture, srcRect) = _buttonPressed
-            ? (_texturePressed.Texture, _texturePressed.SourceRectangle)
-            : (_textureIdle.Texture, _textureIdle.SourceRectangle);
-
-        spriteBatch.Draw(
-            texture,
-            _position,
-            srcRect,
-            Hovered ? _hoverColor : _color,
-            0f,
-            origin: _origin,
-            _scale,
-            SpriteEffects.None,
-            layerDepth: LayerDepth);
+        var spriteToDraw = _inPressedState
+            ? _spritePressed
+            : _spriteIdle;
+        
+        var colorToDraw = Hovered
+            ? _colorHovered 
+            : _colorIdle;
+        spriteToDraw.Color = colorToDraw;
+        
+        spriteToDraw.Draw(
+            spriteBatch,
+            _position);
     }
 }

@@ -15,19 +15,19 @@ internal sealed class LabeledButton : Button
     public LabeledButton(
         Vector2 position,
         Vector2 origin,
-        TextureRegion textureIdle,
-        TextureRegion texturePressed,
-        float scale,
-        Color color,
-        Color hoverColor,
+        Sprite spriteIdle,
+        Sprite spritePressed,
+        Vector2 scale,
+        Color colorIdle,
+        Color colorHover,
         string text,
         SpriteFont textFont,
         float textScale,
         Color textColor,
         Color textHoverColor,
         float layerDepth)
-        : base(position, origin, textureIdle, texturePressed,
-            scale, color, hoverColor, layerDepth)
+        : base(position, origin, spriteIdle, spritePressed,
+            scale, colorIdle, colorHover, layerDepth)
     {
         _text = text;
         _textFont = textFont;
@@ -38,8 +38,9 @@ internal sealed class LabeledButton : Button
         _textCenter = _textFont.MeasureString(text) / 2;
 
         var buttonCenter = new Vector2(
-            textureIdle.Width / 2f,
-            textureIdle.Height / 2f);
+            spriteIdle.Width * 0.5f,
+            spriteIdle.Height * 0.5f);
+        
         _textPosition = position + (-origin + buttonCenter) * scale;
     }
 

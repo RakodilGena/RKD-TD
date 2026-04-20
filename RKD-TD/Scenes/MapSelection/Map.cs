@@ -15,9 +15,9 @@ internal sealed class Map : IMyDrawable, IMyUpdatable, IMyClickable
     public Map(
         Vector2 position,
         Vector2 origin,
-        TextureRegion textureIdle,
-        TextureRegion texturePressed,
-        float scale,
+        Sprite spriteIdle,
+        Sprite spritePressed,
+        Vector2 scale,
         Color color,
         Color hoverColor,
         string mapName,
@@ -32,8 +32,8 @@ internal sealed class Map : IMyDrawable, IMyUpdatable, IMyClickable
         _mapDisplay = new LabeledButton(
             position,
             origin,
-            textureIdle,
-            texturePressed,
+            spriteIdle,
+            spritePressed,
             scale,
             color,
             hoverColor,
