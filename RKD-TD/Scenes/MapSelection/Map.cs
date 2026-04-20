@@ -22,9 +22,8 @@ internal sealed class Map : IMyDrawable, IMyUpdatable, IMyClickable
         Color hoverColor,
         string mapName,
         SpriteFont mapNameFont,
-        float mapNameScale,
+        Vector2 mapNameScale,
         Color mapNameColor,
-        Color mapNameHoverColor,
         float layerDepth)
     {
         Name = mapName;
@@ -41,7 +40,6 @@ internal sealed class Map : IMyDrawable, IMyUpdatable, IMyClickable
             mapNameFont,
             mapNameScale,
             mapNameColor,
-            mapNameHoverColor,
             layerDepth);
 
         _mapDisplay.Clicked += (_, args) =>

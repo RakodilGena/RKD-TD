@@ -6,11 +6,7 @@ namespace RKD_TD.Models.UI;
 
 internal sealed class LabeledButton : Button
 {
-    private readonly string _text;
-    private readonly SpriteFont _textFont;
-    private readonly Vector2 _textPosition, _textCenter;
-    private readonly float _textScale;
-    private readonly Color _textColor, _textHoverColor;
+    private readonly Label _btnLabel;
 
     public LabeledButton(
         Vector2 position,
@@ -22,26 +18,28 @@ internal sealed class LabeledButton : Button
         Color colorHover,
         string text,
         SpriteFont textFont,
-        float textScale,
+        Vector2 textScale,
         Color textColor,
-        Color textHoverColor,
         float layerDepth)
         : base(position, origin, spriteIdle, spritePressed,
             scale, colorIdle, colorHover, layerDepth)
     {
-        _text = text;
-        _textFont = textFont;
-        _textScale = textScale;
-        _textColor = textColor;
-        _textHoverColor = textHoverColor;
-
-        _textCenter = _textFont.MeasureString(text) / 2;
-
         var buttonCenter = new Vector2(
             spriteIdle.Width * 0.5f,
             spriteIdle.Height * 0.5f);
-        
-        _textPosition = position + (-origin + buttonCenter) * scale;
+
+        var textCenter = textFont.MeasureString(text) / 2;
+
+        var textPosition = position + (-origin + buttonCenter) * scale;
+
+        _btnLabel = new Label(
+            textPosition,
+            origin: textCenter,
+            text,
+            textFont,
+            textColor,
+            textScale,
+            layerDepth);
     }
 
 
@@ -49,15 +47,6 @@ internal sealed class LabeledButton : Button
     {
         base.Draw(spriteBatch);
 
-        spriteBatch.DrawString(
-            _textFont,
-            _text,
-            _textPosition,
-            Hovered ? _textHoverColor : _textColor,
-            rotation: 0,
-            origin: _textCenter,
-            _textScale,
-            SpriteEffects.None,
-            LayerDepth);
+        _btnLabel.Draw(spriteBatch);
     }
 }

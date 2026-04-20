@@ -4,7 +4,6 @@ using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Scenes;
 using RKD_TD.Assets;
-using RKD_TD.Models.UI;
 using RKD_TD.Scenes.MapSelection;
 
 namespace RKD_TD.Scenes.Title;
@@ -53,7 +52,7 @@ internal sealed class TitleScene : Scene
             mainTitleText,
             kwFont180,
             Color.Black,
-            scale: 1,
+            scale: Vector2.One,
             layerDepth: 1);
     }
 

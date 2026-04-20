@@ -12,13 +12,10 @@ internal class Button : IMyDrawable, IMyUpdatable, IMyClickable
 {
     private readonly Vector2 _position;
     private readonly Sprite _spriteIdle, _spritePressed;
-    private bool _inPressedState;
-    protected bool Hovered { get; private set; }
-
     private readonly Color _colorIdle, _colorHovered;
+
+    private bool _wasPressed, _hovered;
     private Rectangle _body;
-    
-    protected float LayerDepth => _spriteIdle.LayerDepth;
 
     public event EventHandler? Clicked;
 
@@ -33,12 +30,12 @@ internal class Button : IMyDrawable, IMyUpdatable, IMyClickable
         float layerDepth)
     {
         _position = position;
-        
+
         _spriteIdle = spriteIdle;
         _spriteIdle.Origin = origin;
         _spriteIdle.Scale = scale;
         _spriteIdle.LayerDepth = layerDepth;
-        
+
         _spritePressed = spritePressed;
         _spritePressed.Origin = origin;
         _spritePressed.Scale = scale;
@@ -59,43 +56,43 @@ internal class Button : IMyDrawable, IMyUpdatable, IMyClickable
         var mouseInfo = Core.Input.Mouse;
         if (_body.Contains(mouseInfo.Position))
         {
-            Hovered = true;
+            _hovered = true;
 
             //added control over prev lmb mouse state to prevent cases when button 
             //wasn't pressed but the lmb was - outside the button - and that still
             //invoked the click event
-            if (!_inPressedState)
+            if (!_wasPressed)
             {
                 if (mouseInfo.WasButtonJustPressed(MouseButton.Left))
-                    _inPressedState = true;
+                    _wasPressed = true;
             }
             else
             {
                 if (mouseInfo.WasButtonJustReleased(MouseButton.Left))
                 {
-                    _inPressedState = false;
+                    _wasPressed = false;
                     Clicked?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
         else
         {
-            Hovered = false;
-            _inPressedState = false;
+            _hovered = false;
+            _wasPressed = false;
         }
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
-        var spriteToDraw = _inPressedState
+        var spriteToDraw = _wasPressed
             ? _spritePressed
             : _spriteIdle;
-        
-        var colorToDraw = Hovered
-            ? _colorHovered 
+
+        var colorToDraw = _hovered
+            ? _colorHovered
             : _colorIdle;
         spriteToDraw.Color = colorToDraw;
-        
+
         spriteToDraw.Draw(
             spriteBatch,
             _position);

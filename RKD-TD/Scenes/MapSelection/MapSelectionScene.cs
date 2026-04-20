@@ -48,7 +48,7 @@ internal sealed class MapSelectionScene : Scene
             mstText,
             mstFont,
             Color.Black,
-            scale: 1,
+            scale: Vector2.One,
             layerDepth: 1);
     }
 
@@ -73,9 +73,8 @@ internal sealed class MapSelectionScene : Scene
             colorHover: Color.Gray,
             btnText,
             btnFont,
-            textScale: 1,
+            textScale: Vector2.One,
             textColor: Color.Black,
-            textHoverColor: Color.Black,
             layerDepth: 1f);
 
         _backButton.Clicked += (_, _) => BackToTitle();

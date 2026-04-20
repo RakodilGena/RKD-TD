@@ -89,9 +89,8 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
             colorHover: Color.Gray,
             text: label,
             font,
-            textScale: 1,
+            textScale: Vector2.One,
             textColor: Color.Black,
-            textHoverColor: Color.Black,
             layerDepth: 0.5f);
     }
 

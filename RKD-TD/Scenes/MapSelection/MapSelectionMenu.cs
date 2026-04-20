@@ -55,7 +55,7 @@ internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
         int mapIndex)
     {
         var mapPosition = GetMapPosition(menuPosition, mapIndex);
-        
+
         var spriteIdle = textures.CreateSprite(
             Textures.MapSelection.MAP_BLANK_500_300);
         var spritePressed = textures.CreateSprite(
@@ -71,9 +71,8 @@ internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
             hoverColor: Color.Gray,
             mapName,
             mapNameFont,
-            mapNameScale: 1,
+            mapNameScale: Vector2.One,
             mapNameColor: Color.Black,
-            mapNameHoverColor: Color.Black,
             layerDepth: 1);
     }
 
