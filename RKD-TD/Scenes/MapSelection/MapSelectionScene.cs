@@ -60,17 +60,23 @@ internal sealed class MapSelectionScene : Scene
 
         var spriteIdle = _msAtlas.CreateSprite(
             Textures.MapSelection.BUTTON_300_100);
+        spriteIdle.Color = Color.DarkGray;
+
+        var spriteHovered = _msAtlas.CreateSprite(
+            Textures.MapSelection.BUTTON_300_100);
+        spriteHovered.Color = Color.Gray;
+
         var spritePressed = _msAtlas.CreateSprite(
             Textures.MapSelection.BUTTON_300_100_PRESSED);
+        spritePressed.Color = Color.Gray;
 
         _backButton = new LabeledButton(
             position: new Vector2(1570, 930),
             origin: Vector2.Zero,
             spriteIdle,
+            spriteHovered,
             spritePressed,
             scale: Vector2.One,
-            colorIdle: Color.DarkGray,
-            colorHover: Color.Gray,
             btnText,
             btnFont,
             textScale: Vector2.One,

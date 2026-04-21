@@ -58,17 +58,23 @@ internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
 
         var spriteIdle = textures.CreateSprite(
             Textures.MapSelection.MAP_BLANK_500_300);
+        spriteIdle.Color = Color.Wheat;
+
+        var spriteHovered = textures.CreateSprite(
+            Textures.MapSelection.MAP_BLANK_500_300);
+        spriteIdle.Color = Color.Gray;
+
         var spritePressed = textures.CreateSprite(
             Textures.MapSelection.MAP_BLANK_500_300_PRESSED);
+        spriteIdle.Color = Color.Gray;
 
         return new Map(
             mapPosition,
             origin: Vector2.Zero,
             spriteIdle,
+            spriteHovered,
             spritePressed,
             scale: Vector2.One,
-            color: Color.White,
-            hoverColor: Color.Gray,
             mapName,
             mapNameFont,
             mapNameScale: Vector2.One,

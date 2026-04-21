@@ -12,17 +12,17 @@ internal sealed class LabeledButton : Button
         Vector2 position,
         Vector2 origin,
         Sprite spriteIdle,
+        Sprite spriteHovered,
         Sprite spritePressed,
         Vector2 scale,
-        Color colorIdle,
-        Color colorHover,
         string text,
         SpriteFont textFont,
         Vector2 textScale,
         Color textColor,
         float layerDepth)
-        : base(position, origin, spriteIdle, spritePressed,
-            scale, colorIdle, colorHover, layerDepth)
+        : base(position, origin,
+            spriteIdle, spriteHovered, spritePressed,
+            scale, layerDepth)
     {
         var buttonCenter = new Vector2(
             spriteIdle.Width * 0.5f,

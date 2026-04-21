@@ -22,14 +22,31 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
         TextureAtlas textureAtlas,
         Vector2 menuPosition)
     {
+        var buttonsMargin = 150;
+
+
         var kwFont90 = GlobalAssets.FontAtlas.GetFont(Fonts.MAIN_MENU_BTN_TEXT);
 
-        var buttonsMargin = 150;
+        var spriteIdle = textureAtlas.CreateSprite(
+            Textures.Title.BUTTON_450_130);
+        spriteIdle.Color = Color.DarkGray;
+
+        var spriteHovered = textureAtlas.CreateSprite(
+            Textures.Title.BUTTON_450_130);
+        spriteHovered.Color = Color.Gray;
+
+        var spritePressed = textureAtlas.CreateSprite(
+            Textures.Title.BUTTON_450_130_PRESSED);
+        spritePressed.Color = Color.Gray;
+
 
         var startButton = CreateLabeledButton(
             position: menuPosition,
-            label: "Start", textureAtlas,
-            font: kwFont90);
+            label: "Start",
+            font: kwFont90,
+            spriteIdle,
+            spriteHovered,
+            spritePressed);
 
         startButton.Clicked += (_, args) =>
             StartClicked?.Invoke(this, args);
@@ -37,8 +54,11 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
 
         var settingsButton = CreateLabeledButton(
             position: menuPosition + new Vector2(0, buttonsMargin),
-            label: "Settings", textureAtlas,
-            font: kwFont90);
+            label: "Settings",
+            font: kwFont90,
+            spriteIdle,
+            spriteHovered,
+            spritePressed);
 
         settingsButton.Clicked += (_, args) =>
             SettingsClicked?.Invoke(this, args);
@@ -46,8 +66,11 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
 
         var creditsButton = CreateLabeledButton(
             position: menuPosition + new Vector2(0, buttonsMargin * 2),
-            label: "Credits", textureAtlas,
-            font: kwFont90);
+            label: "Credits",
+            font: kwFont90,
+            spriteIdle,
+            spriteHovered,
+            spritePressed);
 
         creditsButton.Clicked += (_, args) =>
             CreditsClicked?.Invoke(this, args);
@@ -55,8 +78,11 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
 
         var exitButton = CreateLabeledButton(
             position: menuPosition + new Vector2(0, buttonsMargin * 3),
-            label: "Exit", textureAtlas,
-            font: kwFont90);
+            label: "Exit",
+            font: kwFont90,
+            spriteIdle,
+            spriteHovered,
+            spritePressed);
 
         exitButton.Clicked += (_, args) =>
             ExitClicked?.Invoke(this, args);
@@ -73,20 +99,18 @@ public sealed class TitleMenu : IMyDrawable, IMyUpdatable
     private static LabeledButton CreateLabeledButton(
         Vector2 position,
         string label,
-        TextureAtlas textureAtlas,
-        SpriteFont font)
+        SpriteFont font,
+        Sprite idle,
+        Sprite hovered,
+        Sprite pressed)
     {
-        var spriteIdle = textureAtlas.CreateSprite(Textures.Title.BUTTON_450_130);
-        var spritePressed = textureAtlas.CreateSprite(Textures.Title.BUTTON_450_130_PRESSED);
-
         return new LabeledButton(
             position: position,
             origin: Vector2.Zero,
-            spriteIdle,
-            spritePressed,
+            idle,
+            hovered,
+            pressed,
             scale: Vector2.One,
-            colorIdle: Color.DarkGray,
-            colorHover: Color.Gray,
             text: label,
             font,
             textScale: Vector2.One,

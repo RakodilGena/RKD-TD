@@ -11,8 +11,13 @@ namespace RKD_TD.Models.UI;
 internal class Button : IMyDrawable, IMyUpdatable, IMyClickable
 {
     private readonly Vector2 _position;
-    private readonly Sprite _spriteIdle, _spritePressed;
-    private readonly Color _colorIdle, _colorHovered;
+
+    private readonly Sprite
+        _spriteIdle,
+        _spriteHovered,
+        _spritePressed;
+
+    private Sprite _current;
 
     private bool _wasPressed, _hovered;
     private Rectangle _body;
@@ -23,26 +28,29 @@ internal class Button : IMyDrawable, IMyUpdatable, IMyClickable
         Vector2 position,
         Vector2 origin,
         Sprite spriteIdle,
+        Sprite spriteHovered,
         Sprite spritePressed,
         Vector2 scale,
-        Color colorIdle,
-        Color colorHover,
         float layerDepth)
     {
         _position = position;
+        _current = spriteIdle;
 
         _spriteIdle = spriteIdle;
         _spriteIdle.Origin = origin;
         _spriteIdle.Scale = scale;
         _spriteIdle.LayerDepth = layerDepth;
 
+        _spriteHovered = spriteHovered;
+        _spriteHovered.Origin = origin;
+        _spriteHovered.Scale = scale;
+        _spriteHovered.LayerDepth = layerDepth;
+
         _spritePressed = spritePressed;
         _spritePressed.Origin = origin;
         _spritePressed.Scale = scale;
         _spritePressed.LayerDepth = layerDepth;
 
-        _colorIdle = colorIdle;
-        _colorHovered = colorHover;
 
         _body = new Rectangle(
             (int)(position.X - origin.X * scale.X),
@@ -80,20 +88,23 @@ internal class Button : IMyDrawable, IMyUpdatable, IMyClickable
             _hovered = false;
             _wasPressed = false;
         }
+
+        SetCurrentSprite();
+    }
+
+    private void SetCurrentSprite()
+    {
+        if (_wasPressed)
+            _current = _spritePressed;
+        else if (_hovered)
+            _current = _spriteHovered;
+        else
+            _current = _spriteIdle;
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
-        var spriteToDraw = _wasPressed
-            ? _spritePressed
-            : _spriteIdle;
-
-        var colorToDraw = _hovered
-            ? _colorHovered
-            : _colorIdle;
-        spriteToDraw.Color = colorToDraw;
-
-        spriteToDraw.Draw(
+        _current.Draw(
             spriteBatch,
             _position);
     }
