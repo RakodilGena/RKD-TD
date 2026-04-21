@@ -11,4 +11,18 @@ TODOs:
 7. And we start at basic scale 1x.
 8. Add simple monster generator and teach the game to end when health 0
 9. Then add scaler (thoughs: viewport at the middle, get %, shrink and return to shrinked distance.)
-10. Then develop and test towers one by one. Roadmap: add turret -> develop buying/purchasing/upgrading system -> damage system, enemies damaging and dying -> develop other towers 
+10. Then develop and test towers one by one. Roadmap: add turret -> develop buying/purchasing/upgrading system -> damage system, enemies damaging and dying -> develop other towers
+
+TILES Types:
+LEGEND
+* E = used by enemies
+* T = used by turrets
+
+1. Field = 00
+2. Road E = 01
+3. Bridge E (Horizontal 02, Vertical 03)
+4. Platform T (04)
+5. Sand 05
+6. River 06
+7. Portal Starting E
+8. Portal Ending E - these 2 are not tiles but objects
