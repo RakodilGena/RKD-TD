@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Maps>
+    <Map name="Test Map 1"
+         mapFileName="maps/map1.xml"
+         textureAlias="map1_500_300"/>
+</Maps>

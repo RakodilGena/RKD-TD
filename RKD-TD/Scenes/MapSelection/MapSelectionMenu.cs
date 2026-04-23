@@ -1,5 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Xml;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
 using RKD_TD.Assets;
@@ -9,7 +14,7 @@ namespace RKD_TD.Scenes.MapSelection;
 
 internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
 {
-    private readonly Map[] _maps;
+    private readonly MapPreview[] _maps;
 
     private const int
         MAP_WIDTH = 500,
@@ -17,65 +22,68 @@ internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
         MARGIN_X = 60,
         MARGIN_Y = 50;
 
-    public event EventHandler<Map>? MapClicked;
+    public event EventHandler<MapPreview>? MapClicked;
 
     public MapSelectionMenu(
+        ContentManager content,
         TextureAtlas textures,
         Vector2 position)
     {
-        var mapNameFont = GlobalAssets.FontAtlas.GetFont(Fonts.MAP_TITLE);
-
-        var mapsCount = 6;
-        _maps = new Map[mapsCount];
-        for (int mapIndex = 0; mapIndex < mapsCount; mapIndex++)
-        {
-            var mapName = $"MOCK MAP {mapIndex + 1}";
-            var map = CreateMockMap(
-                position,
-                textures,
-                mapNameFont,
-                mapName,
-                mapIndex);
-
-            _maps[mapIndex] = map;
-            SubscribeToMapClicked(map);
-        }
+        _maps = InitMaps(content, textures, position);
     }
 
-    private void SubscribeToMapClicked(Map map)
+    private void SubscribeToMapClicked(MapPreview mapPreview)
     {
-        map.Clicked += (_, _) => MapClicked?.Invoke(this, map);
+        mapPreview.Clicked += (_, _) => MapClicked?.Invoke(this, mapPreview);
     }
 
-    private static Map CreateMockMap(
+    private static MapPreview CreateMap(
         Vector2 menuPosition,
-        TextureAtlas textures,
-        SpriteFont mapNameFont,
         string mapName,
-        int mapIndex)
+        SpriteFont mapNameFont,
+        string mapFileName,
+        int mapIndex,
+        Sprite idle,
+        Sprite hovered,
+        Sprite pressed)
     {
         var mapPosition = GetMapPosition(menuPosition, mapIndex);
 
-        var spriteIdle = textures.CreateSprite(
-            Textures.MapSelection.MAP_BLANK_500_300);
-        spriteIdle.Color = Color.Wheat;
-
-        var spriteHovered = textures.CreateSprite(
-            Textures.MapSelection.MAP_BLANK_500_300);
-        spriteIdle.Color = Color.Gray;
-
-        var spritePressed = textures.CreateSprite(
-            Textures.MapSelection.MAP_BLANK_500_300_PRESSED);
-        spriteIdle.Color = Color.Gray;
-
-        return new Map(
+        return new MapPreview(
+            mapName,
+            mapFileName,
             mapPosition,
             origin: Vector2.Zero,
-            spriteIdle,
-            spriteHovered,
-            spritePressed,
+            idle,
+            hovered,
+            pressed,
             scale: Vector2.One,
+            mapNameFont,
+            mapNameScale: Vector2.One,
+            mapNameColor: Color.Black,
+            layerDepth: 1);
+    }
+
+    private static MapPreview CreateMockMap(
+        Vector2 menuPosition,
+        string mapName,
+        SpriteFont mapNameFont,
+        int mapIndex,
+        Sprite idle,
+        Sprite hovered,
+        Sprite pressed)
+    {
+        var mapPosition = GetMapPosition(menuPosition, mapIndex);
+
+        return new MapPreview(
             mapName,
+            mapFileName: "",
+            mapPosition,
+            origin: Vector2.Zero,
+            idle,
+            hovered,
+            pressed,
+            scale: Vector2.One,
             mapNameFont,
             mapNameScale: Vector2.One,
             mapNameColor: Color.Black,
@@ -106,5 +114,103 @@ internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
         {
             map.Update(gameTime);
         }
+    }
+
+    private MapPreview[] InitMaps(
+        ContentManager content,
+        TextureAtlas textures,
+        Vector2 menuPosition)
+    {
+        var spriteIdle = textures.CreateSprite(
+            Textures.MapSelection.MAP_BLANK_500_300);
+        spriteIdle.Color = Color.Wheat;
+
+        var spriteHovered = textures.CreateSprite(
+            Textures.MapSelection.MAP_BLANK_500_300);
+        spriteHovered.Color = Color.Gray;
+
+        var spritePressed = textures.CreateSprite(
+            Textures.MapSelection.MAP_BLANK_500_300_PRESSED);
+        spritePressed.Color = Color.Gray;
+        var mapNameFont = GlobalAssets.FontAtlas.GetFont(Fonts.MAP_TITLE);
+
+        string filePath = Path.Combine(content.RootDirectory, "maps/maps.xml");
+
+        using var stream = TitleContainer.OpenStream(filePath);
+        using var reader = XmlReader.Create(stream);
+        var doc = XDocument.Load(reader);
+        XElement root = doc.Root!;
+
+
+        const int maxMaps = 6;
+
+        var maps = new List<MapPreview>(maxMaps);
+
+        var regions = root.Elements("Map");
+
+        foreach (var region in regions)
+        {
+            if (maps.Count >= maxMaps)
+                continue;
+
+            string? name = region.Attribute("name")?.Value;
+            if (string.IsNullOrEmpty(name))
+                continue;
+
+            var mapFileName = region.Attribute("mapFileName")?.Value;
+            if (string.IsNullOrEmpty(name))
+                continue;
+
+            var textureAlias = region.Attribute("textureAlias")?.Value;
+            Sprite idle, hovered, pressed;
+            if (string.IsNullOrWhiteSpace(textureAlias))
+            {
+                (idle, hovered, pressed) = (spriteIdle, spriteHovered, spritePressed);
+            }
+            else
+            {
+                idle = textures.CreateSprite(textureAlias);
+                idle.Color = Color.White;
+
+                hovered = pressed = textures.CreateSprite(textureAlias);
+                pressed.Color = Color.LightGray;
+            }
+
+            var map = CreateMap(
+                menuPosition,
+                name,
+                mapNameFont,
+                mapFileName!,
+                mapIndex: maps.Count,
+                idle,
+                hovered,
+                pressed);
+
+            maps.Add(map);
+        }
+
+        while (maps.Count < maxMaps)
+        {
+            var mapIndex = maps.Count;
+
+            var mapName = $"MOCK MAP {mapIndex + 1}";
+            var map = CreateMockMap(
+                menuPosition,
+                mapName,
+                mapNameFont,
+                mapIndex,
+                spriteIdle,
+                spriteHovered,
+                spritePressed);
+
+            maps.Add(map);
+        }
+
+        foreach (var map in maps)
+        {
+            SubscribeToMapClicked(map);
+        }
+
+        return maps.ToArray();
     }
 }

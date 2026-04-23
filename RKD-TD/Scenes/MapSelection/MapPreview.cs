@@ -7,25 +7,28 @@ using RKD_TD.Models.UI;
 
 namespace RKD_TD.Scenes.MapSelection;
 
-internal sealed class Map : IMyDrawable, IMyUpdatable, IMyClickable
+internal sealed class MapPreview : IMyDrawable, IMyUpdatable, IMyClickable
 {
     public string Name { get; }
+    public string MapFileName { get; }
     private readonly LabeledButton _mapDisplay;
 
-    public Map(
+    public MapPreview(
+        string mapName,
+        string mapFileName,
         Vector2 position,
         Vector2 origin,
         Sprite spriteIdle,
         Sprite spriteHovered,
         Sprite spritePressed,
         Vector2 scale,
-        string mapName,
         SpriteFont mapNameFont,
         Vector2 mapNameScale,
         Color mapNameColor,
         float layerDepth)
     {
         Name = mapName;
+        MapFileName = mapFileName;
 
         _mapDisplay = new LabeledButton(
             position,

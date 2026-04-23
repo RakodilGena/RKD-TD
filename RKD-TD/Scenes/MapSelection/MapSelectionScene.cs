@@ -6,6 +6,7 @@ using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Scenes;
 using RKD_TD.Assets;
 using RKD_TD.Models.UI;
+using RKD_TD.Scenes.Gaming;
 using RKD_TD.Scenes.Title;
 
 namespace RKD_TD.Scenes.MapSelection;
@@ -89,15 +90,22 @@ internal sealed class MapSelectionScene : Scene
     private void InitMapSelectionMenu()
     {
         _mapSelectionMenu = new MapSelectionMenu(
+            Content,
             _msAtlas,
             new Vector2(150, 220));
 
         _mapSelectionMenu.MapClicked += OnMapClicked;
     }
 
-    private static void OnMapClicked(object? sender, Map map)
+    private static void OnMapClicked(object? sender, MapPreview mapPreview)
     {
-        Console.WriteLine($"Map clicked: {map.Name}");
+        Console.WriteLine($"Map clicked: {mapPreview.Name}");
+
+        if (!string.IsNullOrEmpty(mapPreview.MapFileName))
+        {
+            Console.WriteLine($"Map file: {mapPreview.MapFileName}");
+            Core.ChangeScene(new GamingScene(mapPreview.MapFileName));
+        }
     }
 
     private static void BackToTitle()

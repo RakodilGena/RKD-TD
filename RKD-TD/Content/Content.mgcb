@@ -54,6 +54,33 @@
 #begin images/game/game-atlas-definition.xml
 /copy:images/game/game-atlas-definition.xml
 
+#begin images/game/game-objects-atlas-definition.xml
+/copy:images/game/game-objects-atlas-definition.xml
+
+#begin images/game/game-objects-atlas.bmp
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/game/game-objects-atlas.bmp;images/game/game-objects-atlas
+
+#begin images/game/map1-tiles-atlas.bmp
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/game/map1-tiles-atlas.bmp;images/game/map1-tiles-atlas
+
 #begin images/main-title/mt-atlas-definition.xml
 /copy:images/main-title/mt-atlas-definition.xml
 
@@ -83,4 +110,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:images/map-selection/ms-atlas.bmp;images/map-selection/ms-atlas
+
+#begin maps/map1.xml
+/copy:maps/map1.xml
+
+#begin maps/maps.xml
+/copy:maps/maps.xml
 

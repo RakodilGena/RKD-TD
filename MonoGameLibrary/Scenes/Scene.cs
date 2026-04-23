@@ -12,7 +12,7 @@ public abstract class Scene : IDisposable
     /// <remarks>
     /// Assets loaded through this ContentManager will be automatically unloaded when this scene ends.
     /// </remarks>
-    protected ContentManager Content { get; } = null!;
+    protected ContentManager Content { get; }
 
     /// <summary>
     /// Gets a value that indicates if the scene has been disposed of.
@@ -22,7 +22,7 @@ public abstract class Scene : IDisposable
     /// <summary>
     /// Creates a new scene instance.
     /// </summary>
-    public Scene()
+    protected Scene()
     {
         // Create a content manager for the scene
         Content = new ContentManager(Core.Content.ServiceProvider);
