@@ -1,5 +1,5 @@
+using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace MonoGameLibrary.Graphics;
@@ -9,14 +9,14 @@ public sealed class ViewPort : IViewPort
     private readonly int _screenWidth, _screenHeight;
     private readonly float _mapWidth, _mapHeight;
 
-    private readonly float _maxScale, _minScale, _scaleSpeed;
+    private readonly float _maxZoom, _minZoom, _zoomSpeed, _cameraMoveSpeed;
 
     private float _minX,
         _minY,
         _maxX,
         _maxY;
 
-    private float _positionX, _positionY, _cameraMoveSpeed;
+    private float _positionX, _positionY;
 
     public float PositionX
     {
@@ -45,67 +45,99 @@ public sealed class ViewPort : IViewPort
                 _positionY = _maxY;
             else
                 _positionY = value;
-
-            //SignalPositionChanged();
         }
     }
 
 
     public Vector2 Position => new(_positionX, _positionY);
 
-    public float Scale
+    public float Zoom
     {
         get;
         set
         {
-            if (value < _minScale)
-                field = _minScale;
-            else if (value > _maxScale)
-                field = _maxScale;
+            var oldZoom = field;
+
+
+            if (value < _minZoom)
+                field = _minZoom;
+            else if (value > _maxZoom)
+                field = _maxZoom;
             else field = value;
 
             RecalculateMinMaxWidthHeight();
-            //ScaleChanged?.Invoke(this, value);
+            KeepScreenCentered(oldZoom);
         }
     }
 
 
     public ViewPort(
-        Vector2 position,
-        float initialScale,
-        float minScale,
-        float maxScale,
-        float scaleSpeed,
-        float mapWidth,
-        float mapHeight,
-        float cameraMoveSpeed)
+        float initialZoom,
+        float maxZoom,
+        float zoomSpeed,
+        float cameraMoveSpeed,
+        Tilemap tilemap,
+        bool putToCenter)
     {
-        _minScale = minScale;
-        _maxScale = maxScale;
-        _scaleSpeed = scaleSpeed;
+        // if (sideMarginInPx < 0)
+        //     sideMarginInPx = 0;
+        // _sideMarginInPx = sideMarginInPx;
+
+        _mapWidth = tilemap.TileWidth * tilemap.Columns;
+        _mapHeight = tilemap.TileHeight * tilemap.Rows;
+
+        _screenWidth = Core.GraphicsDevice.Viewport.Width;
+        _screenHeight = Core.GraphicsDevice.Viewport.Height;
+
+        var minScaleX = _screenWidth / _mapWidth;
+        var minScaleY = _screenHeight / _mapHeight;
+        var minScale = Math.Min(minScaleX, minScaleY);
+        minScale = Math.Min(minScale, maxZoom);
+
+        _minZoom = minScale;
+        _maxZoom = maxZoom;
+        _zoomSpeed = zoomSpeed;
         _cameraMoveSpeed = cameraMoveSpeed;
 
-        _mapWidth = mapWidth;
-        _mapHeight = mapHeight;
-        _screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-        _screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+        Zoom = initialZoom;
 
+        if (putToCenter)
+        {
+            var screen = new Vector2(_screenWidth, _screenHeight);
+            var map = new Vector2(_mapWidth, _mapHeight) * Zoom;
+            var vpPos = (map - screen) / 2;
 
-        //no check, recalculated after rescale.
-        _positionX = position.X;
-        _positionY = position.Y;
+            //no check, recalculated after rescale.
+            _positionX = vpPos.X;
+            _positionY = vpPos.Y;
+        }
+        else
+        {
+            _positionX = _minX;
+            _positionY = _minY;
+        }
 
-        Scale = initialScale;
+        tilemap.ViewPort = this;
     }
 
     private void RecalculateMinMaxWidthHeight()
     {
         SetMinMax(out _minX, out _maxX, _screenWidth, _mapWidth);
         SetMinMax(out _minY, out _maxY, _screenHeight, _mapHeight);
+    }
 
-        //reset X Y after recalc because mb they go out of bounds.
-        PositionX = _positionX;
-        PositionY = _positionY;
+    private void KeepScreenCentered(float oldZoom)
+    {
+        var screenCenter = new Vector2(_screenWidth, _screenHeight) / 2;
+
+        var oldCenterPosition = (Position + screenCenter) / oldZoom;
+
+        var newCenterPosition = (Position + screenCenter) / Zoom;
+
+        var centeringDelta = (oldCenterPosition - newCenterPosition) * Zoom;
+
+        PositionX += centeringDelta.X;
+        PositionY += centeringDelta.Y;
     }
 
     private void SetMinMax(
@@ -114,7 +146,7 @@ public sealed class ViewPort : IViewPort
         int screenDim,
         float mapDim)
     {
-        var scaledMapDim = mapDim * Scale;
+        var scaledMapDim = mapDim * Zoom;
 
         var mapMargin = scaledMapDim - screenDim;
 
@@ -130,15 +162,6 @@ public sealed class ViewPort : IViewPort
             min = max = leftMargin;
         }
     }
-
-    // private void SignalPositionChanged()
-    // {
-    //     PositionChanged?.Invoke(this, new Vector2(PositionX, PositionY));
-    // }
-
-
-    // public EventHandler<Vector2>? PositionChanged;
-    // public EventHandler<float>? ScaleChanged;
 
     public void Update(GameTime gameTime)
     {
@@ -161,9 +184,9 @@ public sealed class ViewPort : IViewPort
         float gtDelta)
     {
         if (scrollDelta < 0)
-            Scale -= _scaleSpeed * gtDelta;
+            Zoom -= _zoomSpeed * gtDelta;
         else
-            Scale += _scaleSpeed * gtDelta;
+            Zoom += _zoomSpeed * gtDelta;
     }
 
     private void HandleMotion(float gtDelta)
@@ -196,7 +219,7 @@ public sealed class ViewPort : IViewPort
         var moveVector = new Vector2(moveHorizontal, moveVertical);
         moveVector.Normalize();
 
-        var moveMultiplier = gtDelta * _cameraMoveSpeed * Scale;
+        var moveMultiplier = gtDelta * _cameraMoveSpeed * Zoom;
 
         PositionX += moveVector.X * moveMultiplier;
         PositionY += moveVector.Y * moveMultiplier;

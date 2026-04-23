@@ -5,5 +5,5 @@ namespace MonoGameLibrary.Graphics;
 public interface IViewPort
 {
     public Vector2 Position { get; }
-    public float Scale { get; }
+    public float Zoom { get; }
 }

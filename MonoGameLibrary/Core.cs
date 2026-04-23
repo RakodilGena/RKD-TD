@@ -31,7 +31,7 @@ public class Core : Game
     /// <summary>
     /// Gets the graphics device used to create graphical resources and perform primitive rendering.
     /// </summary>
-    public static new GraphicsDevice GraphicsDevice { get; private set; } = null!;
+    public new static GraphicsDevice GraphicsDevice { get; private set; } = null!;
 
     /// <summary>
     /// Gets the sprite batch used for all 2D rendering.

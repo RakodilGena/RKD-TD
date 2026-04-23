@@ -10,10 +10,10 @@ internal sealed class GameCore : Core
 {
     public GameCore() : base(
         title: "RKD Tower Defense",
-        width: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
-        height: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height,
+        width: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, //1280
+        height: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, //720
         targetFps: 60,
-        fullScreen: true,
+        fullScreen: false,
         exitOnEscape: true)
     {
     }

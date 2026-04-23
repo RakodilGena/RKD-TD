@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
@@ -26,26 +25,13 @@ internal sealed class GamingScene : Scene
     {
         base.Initialize();
 
-        var screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-        var screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-
-        var mapWidth = _tilemap.TileWidth * _tilemap.Columns;
-        var mapHeight = _tilemap.TileHeight * _tilemap.Rows;
-
-        var screen = new Vector2(screenWidth, screenHeight);
-        var map = new Vector2(mapWidth, mapHeight);
-        var vpPos = (map - screen) / 2;
-
         _viewPort = new ViewPort(
-            vpPos,
-            initialScale: 1,
-            minScale: 0.5f,
-            maxScale: 2,
-            scaleSpeed: 0.6f,
-            mapWidth,
-            mapHeight,
-            cameraMoveSpeed: 300);
-        _tilemap.ViewPort = _viewPort;
+            initialZoom: 1,
+            maxZoom: 2,
+            zoomSpeed: 1f,
+            cameraMoveSpeed: 400,
+            _tilemap,
+            putToCenter: true);
     }
 
     public override void LoadContent()

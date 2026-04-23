@@ -120,7 +120,7 @@ public class Tilemap
     {
         (float vpScale, Vector2 vpPosition) =
             ViewPort is not null
-                ? (ViewPort.Scale, ViewPort.Position)
+                ? (Scale: ViewPort.Zoom, ViewPort.Position)
                 : (1, Vector2.Zero);
 
         for (int i = 0; i < Count; i++)
