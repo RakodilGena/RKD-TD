@@ -51,9 +51,6 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/regular_btn_text.spritefont
 
-#begin images/game/game-atlas-definition.xml
-/copy:images/game/game-atlas-definition.xml
-
 #begin images/game/game-objects-atlas-definition.xml
 /copy:images/game/game-objects-atlas-definition.xml
 
