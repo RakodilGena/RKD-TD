@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
@@ -14,9 +15,37 @@ internal sealed class GamingScene : Scene
     private readonly string _mapFile;
     private Tilemap _tilemap = null!;
 
+    private ViewPort _viewPort = null!;
+
     public GamingScene(string mapFile)
     {
         _mapFile = mapFile;
+    }
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        var screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+        var screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+        var mapWidth = _tilemap.TileWidth * _tilemap.Columns;
+        var mapHeight = _tilemap.TileHeight * _tilemap.Rows;
+
+        var screen = new Vector2(screenWidth, screenHeight);
+        var map = new Vector2(mapWidth, mapHeight);
+        var vpPos = (map - screen) / 2;
+
+        _viewPort = new ViewPort(
+            vpPos,
+            initialScale: 1,
+            minScale: 0.5f,
+            maxScale: 2,
+            scaleSpeed: 0.6f,
+            mapWidth,
+            mapHeight,
+            cameraMoveSpeed: 300);
+        _tilemap.ViewPort = _viewPort;
     }
 
     public override void LoadContent()
@@ -45,7 +74,9 @@ internal sealed class GamingScene : Scene
         {
             Core.ChangeScene(new MapSelectionScene());
         }
-        
+
+        _viewPort.Update(gameTime);
+
         base.Update(gameTime);
     }
 }

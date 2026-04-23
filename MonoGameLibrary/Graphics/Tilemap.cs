@@ -45,6 +45,8 @@ public class Tilemap
 
     public float LayerDepth { get; set; } = 1.0f;
 
+    public IViewPort? ViewPort { get; set; }
+
     /// <summary>
     /// Creates a new tilemap.
     /// </summary>
@@ -116,6 +118,11 @@ public class Tilemap
     /// <param name="spriteBatch">The sprite batch used to draw this tilemap.</param>
     public void Draw(SpriteBatch spriteBatch)
     {
+        (float vpScale, Vector2 vpPosition) =
+            ViewPort is not null
+                ? (ViewPort.Scale, ViewPort.Position)
+                : (1, Vector2.Zero);
+
         for (int i = 0; i < Count; i++)
         {
             int tilesetIndex = _tiles[i];
@@ -124,7 +131,9 @@ public class Tilemap
             int x = i % Columns;
             int y = i / Columns;
 
-            Vector2 position = new Vector2(x * TileWidth, y * TileHeight);
+            Vector2 position = new Vector2(
+                x * TileWidth * vpScale,
+                y * TileHeight * vpScale) - vpPosition;
 
             tile.Draw(
                 spriteBatch,
@@ -132,7 +141,7 @@ public class Tilemap
                 Color.White,
                 0.0f,
                 Vector2.Zero,
-                Scale,
+                Scale * vpScale,
                 SpriteEffects.None,
                 LayerDepth);
         }
