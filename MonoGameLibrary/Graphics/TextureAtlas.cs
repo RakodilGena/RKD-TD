@@ -233,6 +233,17 @@ public sealed class TextureAtlas
     }
 
     /// <summary>
+    /// Creates a new rotating sprite using the region from this texture atlas with the specified name.
+    /// </summary>
+    /// <param name="regionName">The name of the region to create the sprite with.</param>
+    /// <returns>A new Sprite using the texture region with the specified name.</returns>
+    public RotatingSprite CreateRotatingSprite(string regionName)
+    {
+        TextureRegion region = GetRegion(regionName);
+        return new RotatingSprite(region);
+    }
+
+    /// <summary>
     /// Creates a new animated sprite using the animation from this texture atlas with the specified name.
     /// </summary>
     /// <param name="animationName">The name of the animation to use.</param>

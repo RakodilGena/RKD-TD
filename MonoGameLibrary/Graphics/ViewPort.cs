@@ -116,8 +116,6 @@ public sealed class ViewPort : IViewPort
             _positionX = _minX;
             _positionY = _minY;
         }
-
-        tilemap.ViewPort = this;
     }
 
     private void RecalculateMinMaxWidthHeight()

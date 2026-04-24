@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas>
-    <Texture>images/main-title/mt-atlas</Texture>
+    <Texture>images/game/game-objects-atlas</Texture>
     <Regions>
-        <Region name="portal" x="0" y="0" width="200" height="200"/>
+        <Region name="portal_200" x="0" y="0" width="200" height="200"/>
     </Regions>
 </TextureAtlas>

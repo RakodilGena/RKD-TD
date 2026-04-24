@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
@@ -12,33 +13,49 @@ internal sealed class GamingScene : Scene
     //titles and meters
 
     private readonly string _mapFile;
-    private Tilemap _tilemap = null!;
+    private readonly TextureAtlas _gameObjects;
+
 
     private ViewPort _viewPort = null!;
+
+
+    private Tilemap _map = null!;
+    private Portals _portals = null!;
+
 
     public GamingScene(string mapFile)
     {
         _mapFile = mapFile;
+        _gameObjects = TextureAtlas.FromFile(
+            Content,
+            fileName: "images/game/game-objects-atlas-definition.xml");
     }
 
     public override void Initialize()
     {
         base.Initialize();
 
+        _map = Tilemap.FromFile(Content, _mapFile);
+
+        Debug.Assert(_map.Scale == Vector2.One);
+
         _viewPort = new ViewPort(
             initialZoom: 1,
             maxZoom: 2,
             zoomSpeed: 1f,
             cameraMoveSpeed: 400,
-            _tilemap,
+            _map,
             putToCenter: true);
+
+        _portals = Portals.FromFile(Content, _mapFile);
+
+        _map.ViewPort = _viewPort;
+        _portals.SetViewPort(_viewPort);
     }
 
     public override void LoadContent()
     {
         base.LoadContent();
-
-        _tilemap = Tilemap.FromFile(Content, _mapFile);
     }
 
     public override void Draw(GameTime gameTime)
@@ -48,7 +65,8 @@ internal sealed class GamingScene : Scene
         var sb = Core.SpriteBatch;
         sb.Begin();
 
-        _tilemap.Draw(sb);
+        _map.Draw(sb);
+        _portals.Draw(sb);
 
         sb.End();
         base.Draw(gameTime);
@@ -62,6 +80,8 @@ internal sealed class GamingScene : Scene
         }
 
         _viewPort.Update(gameTime);
+
+        _portals.Update(gameTime);
 
         base.Update(gameTime);
     }
