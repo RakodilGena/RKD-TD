@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using RKD_TD.Assets;
 using RKD_TD.Models.Interfaces;
@@ -27,9 +26,10 @@ internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
     public MapSelectionMenu(
         ContentManager content,
         TextureAtlas textures,
-        Vector2 position)
+        Vector2 position,
+        string mapsFileName)
     {
-        _maps = InitMaps(content, textures, position);
+        _maps = InitMaps(content, textures, position, mapsFileName);
     }
 
     private void SubscribeToMapClicked(MapPreview mapPreview)
@@ -119,7 +119,8 @@ internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
     private MapPreview[] InitMaps(
         ContentManager content,
         TextureAtlas textures,
-        Vector2 menuPosition)
+        Vector2 menuPosition,
+        string mapsFileName)
     {
         var spriteIdle = textures.CreateSprite(
             Textures.MapSelection.MAP_BLANK_500_300);
@@ -134,11 +135,7 @@ internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
         spritePressed.Color = Color.Gray;
         var mapNameFont = GlobalAssets.FontAtlas.GetFont(Fonts.MAP_TITLE);
 
-        string filePath = Path.Combine(content.RootDirectory, "maps/maps.xml");
-
-        using var stream = TitleContainer.OpenStream(filePath);
-        using var reader = XmlReader.Create(stream);
-        var doc = XDocument.Load(reader);
+        var doc = XmlLoader.Load(content, mapsFileName);
         XElement root = doc.Root!;
 
 

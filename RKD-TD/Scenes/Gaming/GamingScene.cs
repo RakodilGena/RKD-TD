@@ -1,4 +1,4 @@
-using System.Diagnostics;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
@@ -13,7 +13,7 @@ internal sealed class GamingScene : Scene
     //titles and meters
 
     private readonly string _mapFile;
-    private readonly TextureAtlas _gameObjects;
+    private TextureAtlas _gameObjectsTextures = null!;
 
 
     private ViewPort _viewPort = null!;
@@ -21,24 +21,25 @@ internal sealed class GamingScene : Scene
 
     private Tilemap _map = null!;
     private Portals _portals = null!;
+    private UserResources _userResources = null!;
 
 
     public GamingScene(string mapFile)
     {
         _mapFile = mapFile;
-        _gameObjects = TextureAtlas.FromFile(
-            Content,
-            fileName: "images/game/game-objects-atlas-definition.xml");
     }
 
     public override void Initialize()
     {
         base.Initialize();
 
-        _map = Tilemap.FromFile(Content, _mapFile);
+        //after base.Initialize() all graphic elements must be created
 
-        Debug.Assert(_map.Scale == Vector2.One);
+        InitViewPort();
+    }
 
+    private void InitViewPort()
+    {
         _viewPort = new ViewPort(
             initialZoom: 1,
             maxZoom: 2,
@@ -47,16 +48,55 @@ internal sealed class GamingScene : Scene
             _map,
             putToCenter: true);
 
-        _portals = Portals.FromFile(Content, _mapFile);
-
         _map.ViewPort = _viewPort;
-        _portals.SetViewPort(_viewPort);
+        _portals.ViewPort = _viewPort;
     }
 
     public override void LoadContent()
     {
         base.LoadContent();
+
+        var mapDoc = XmlLoader.Load(Content, _mapFile);
+
+        LoadGameObjectsTextures(mapDoc);
+
+        LoadMap(mapDoc);
+
+        LoadPortals(mapDoc);
+
+        LoadUserResources(mapDoc);
     }
+
+    private void LoadGameObjectsTextures(XDocument mapDoc)
+    {
+        string atlasName = mapDoc.Root!.Element("GameObjectsAtlas")!.Value;
+        _gameObjectsTextures = TextureAtlas.FromFile(
+            Content,
+            atlasName);
+    }
+
+    private void LoadMap(XDocument mapDoc)
+    {
+        _map = Tilemap.FromFile(Content, mapDoc);
+        _map.Scale = Vector2.One;
+        _map.LayerDepth = 0;
+    }
+
+    private void LoadPortals(XDocument mapDoc)
+    {
+        _portals = Portals.FromFile(mapDoc, _gameObjectsTextures);
+        _portals.LayerDepth = 0.5f;
+    }
+
+    private void LoadUserResources(XDocument mapDoc)
+    {
+        _userResources = UserResources.FromFile(
+            mapDoc,
+            _gameObjectsTextures,
+            new Vector2(30));
+        _userResources.LayerDepth = 0.9f;
+    }
+
 
     public override void Draw(GameTime gameTime)
     {
@@ -67,6 +107,7 @@ internal sealed class GamingScene : Scene
 
         _map.Draw(sb);
         _portals.Draw(sb);
+        _userResources.Draw(sb);
 
         sb.End();
         base.Draw(gameTime);
@@ -82,6 +123,7 @@ internal sealed class GamingScene : Scene
         _viewPort.Update(gameTime);
 
         _portals.Update(gameTime);
+
 
         base.Update(gameTime);
     }

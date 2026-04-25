@@ -1,10 +1,7 @@
 using System;
-using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
 using RKD_TD.Models.Interfaces;
@@ -16,7 +13,27 @@ internal sealed class Portals : IMyDrawable, IMyUpdatable
     private readonly RotatingSprite _startingPortal, _endingPortal;
     private readonly Vector2 _startingPortalPosition, _endingPortalPosition;
 
-    private IViewPort? _viewPort;
+    public IViewPort? ViewPort
+    {
+        get;
+        set
+        {
+            field = value;
+            _startingPortal.ViewPort = value;
+            _endingPortal.ViewPort = value;
+        }
+    }
+
+    public float LayerDepth
+    {
+        get;
+        set
+        {
+            field = value;
+            _startingPortal.LayerDepth = value;
+            _endingPortal.LayerDepth = value;
+        }
+    }
 
     public Portals(
         RotatingSprite startingPortal,
@@ -32,27 +49,16 @@ internal sealed class Portals : IMyDrawable, IMyUpdatable
 
 
     public static Portals FromFile(
-        ContentManager content,
-        string mapFileName)
+        XDocument map,
+        TextureAtlas gameObjectsTextures)
     {
-        string filePath = Path.Combine(content.RootDirectory, mapFileName);
-
-        using var stream = TitleContainer.OpenStream(filePath);
-        using var reader = XmlReader.Create(stream);
-        var doc = XDocument.Load(reader);
-        XElement root = doc.Root!;
+        XElement root = map.Root!;
 
         var tileSet = root.Element("Tileset")!;
         var tileWidth = int.Parse(tileSet.Attribute("tileWidth")!.Value);
         var tileHeight = int.Parse(tileSet.Attribute("tileHeight")!.Value);
 
-        string atlasName = root.Element("GameObjectsAtlas")!.Value;
-        var textures = TextureAtlas.FromFile(
-            content,
-            atlasName);
-
-        var toTileCenter = new Vector2(tileWidth * 0.5f, tileHeight * 0.5f
-        );
+        var toTileCenter = new Vector2(tileWidth * 0.5f, tileHeight * 0.5f);
 
         var portals = root.Element("Portals")!;
         var portalSpriteName = portals.Attribute("textureAlias")!.Value;
@@ -69,14 +75,14 @@ internal sealed class Portals : IMyDrawable, IMyUpdatable
                     int.Parse(split[1]) * tileHeight) + toTileCenter;
             }).ToArray();
 
-        var startingPortal = textures.CreateRotatingSprite(portalSpriteName);
+        var startingPortal = gameObjectsTextures.CreateRotatingSprite(portalSpriteName);
         startingPortal.Scale = new Vector2(0.85f);
         startingPortal.Color = Color.LawnGreen;
         startingPortal.RotationDirection = 1;
         startingPortal.RotationSpeedDegreesPerSecond = 10;
         startingPortal.CenterOrigin();
 
-        var endingPortal = textures.CreateRotatingSprite(portalSpriteName);
+        var endingPortal = gameObjectsTextures.CreateRotatingSprite(portalSpriteName);
         endingPortal.Scale = new Vector2(0.85f);
         endingPortal.Color = Color.Red;
         endingPortal.Effects = SpriteEffects.FlipHorizontally;
@@ -89,14 +95,6 @@ internal sealed class Portals : IMyDrawable, IMyUpdatable
             startingPortalPosition: portalsPositions[0],
             endingPortal,
             endingPortalPosition: portalsPositions[1]);
-    }
-
-    public void SetViewPort(IViewPort viewPort)
-    {
-        _viewPort = viewPort;
-
-        _startingPortal.ViewPort = viewPort;
-        _endingPortal.ViewPort = viewPort;
     }
 
     public void Draw(SpriteBatch spriteBatch)

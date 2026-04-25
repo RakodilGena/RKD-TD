@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -121,11 +119,7 @@ public sealed class TextureAtlas
     /// <returns>The texture atlas created by this method.</returns>
     public static TextureAtlas FromFile(ContentManager content, string fileName)
     {
-        string filePath = Path.Combine(content.RootDirectory, fileName);
-
-        using var stream = TitleContainer.OpenStream(filePath);
-        using var reader = XmlReader.Create(stream);
-        var doc = XDocument.Load(reader);
+        var doc = XmlLoader.Load(content, fileName);
         XElement root = doc.Root ??
                         throw new InvalidOperationException(
                             "No atlas root was found");

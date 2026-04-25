@@ -92,7 +92,8 @@ internal sealed class MapSelectionScene : Scene
         _mapSelectionMenu = new MapSelectionMenu(
             Content,
             _msAtlas,
-            new Vector2(150, 220));
+            new Vector2(150, 220),
+            mapsFileName: "maps/maps.xml");
 
         _mapSelectionMenu.MapClicked += OnMapClicked;
     }

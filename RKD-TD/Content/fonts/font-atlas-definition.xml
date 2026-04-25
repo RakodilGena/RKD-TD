@@ -6,5 +6,6 @@
         <Font name="map_selection_title"/>
         <Font name="regular_btn_text"/>
         <Font name="map_title"/>
+        <Font name="user_resources"/>
     </Fonts>
 </FontAtlas>

@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -164,12 +162,16 @@ public class Tilemap
     /// <returns>The tilemap created by this method.</returns>
     public static Tilemap FromFile(ContentManager content, string filename)
     {
-        string filePath = Path.Combine(content.RootDirectory, filename);
+        var doc = XmlLoader.Load(content, filename);
 
-        using Stream stream = TitleContainer.OpenStream(filePath);
-        using XmlReader reader = XmlReader.Create(stream);
-        XDocument doc = XDocument.Load(reader);
-        XElement root = doc.Root!;
+        return FromFile(content, doc);
+    }
+
+    public static Tilemap FromFile(
+        ContentManager content,
+        XDocument mapDocument)
+    {
+        XElement root = mapDocument.Root!;
 
         // The <Tileset> element contains the information about the tileset
         // used by the tilemap.

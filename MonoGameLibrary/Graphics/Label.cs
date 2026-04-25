@@ -9,7 +9,7 @@ public class Label
     public Vector2 Origin { get; set; } = Vector2.Zero;
     public string Text { get; set; }
     public Color Color { get; set; } = Color.Black;
-    public Vector2 Scale { get; set; }
+    public Vector2 Scale { get; set; } = Vector2.One;
     public SpriteFont Font { get; set; }
     public float LayerDepth { get; set; }
     public SpriteEffects Effects { get; set; } = SpriteEffects.None;
@@ -39,6 +39,14 @@ public class Label
         Color = color;
         Scale = scale;
         LayerDepth = layerDepth;
+    }
+
+    /// <summary>
+    /// Sets the origin of this sprite to the center.
+    /// </summary>
+    public void CenterOrigin()
+    {
+        Origin = Font.MeasureString(Text) / 2;
     }
 
     public void Draw(SpriteBatch spriteBatch)

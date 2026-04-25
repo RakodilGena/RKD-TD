@@ -16,4 +16,9 @@ internal static class Textures
         public const string MAP_BLANK_500_300 = "map_blank_500_300";
         public const string MAP_BLANK_500_300_PRESSED = "map_blank_500_300_pressed";
     }
+
+    // public static class Game
+    // {
+    //     coin_100  heart_100
+    // }
 }

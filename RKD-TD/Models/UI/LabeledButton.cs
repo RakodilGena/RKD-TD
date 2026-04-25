@@ -28,18 +28,17 @@ internal sealed class LabeledButton : Button
             spriteIdle.Width * 0.5f,
             spriteIdle.Height * 0.5f);
 
-        var textCenter = textFont.MeasureString(text) / 2;
-
         var textPosition = position + (-origin + buttonCenter) * scale;
 
         _btnLabel = new Label(
             textPosition,
-            origin: textCenter,
+            origin: Vector2.Zero,
             text,
             textFont,
             textColor,
             textScale,
             layerDepth);
+        _btnLabel.CenterOrigin();
     }
 
 

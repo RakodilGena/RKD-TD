@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Map>
     <Tileset region="0 0 900 360" tileWidth="180" tileHeight="180">images/game/map1-tiles-atlas</Tileset>
-    <Tiles>
+    <Tiles> <!-- 11x6 -->
         00 00 00 00 00 00 00 00 00 03 00
         00 02 02 02 02 02 00 03 03 03 00
         00 02 00 00 00 02 00 03 00 02 02
@@ -12,10 +12,24 @@
 
     <GameObjectsAtlas>images/game/game-objects-atlas-definition.xml</GameObjectsAtlas>
 
-    <Portals textureAlias="portal_200">9,3;0,3</Portals>
+    <Health textureAlias="heart_100">30</Health>
+    <Coins textureAlias="coin_100">400</Coins>
+
+    <Portals textureAlias="portal_200">10,2;0,3</Portals>
 
     <Waypoints>
-
+        <Waypoint>10;2</Waypoint>
+        <Waypoint>9;2</Waypoint>
+        <Waypoint>10;4</Waypoint>
+        <Waypoint>6;4</Waypoint>
+        <Waypoint>6;5</Waypoint>
+        <Waypoint>3;5</Waypoint>
+        <Waypoint>3;3</Waypoint>
+        <Waypoint>5;3</Waypoint>
+        <Waypoint>5;1</Waypoint>
+        <Waypoint>1;1</Waypoint>
+        <Waypoint>1;3</Waypoint>
+        <Waypoint>0;3</Waypoint>
     </Waypoints>
 
     <TowerPositions>

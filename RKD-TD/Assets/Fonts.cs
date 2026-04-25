@@ -9,4 +9,6 @@ internal static class Fonts
     public const string MAP_TITLE = "map_title";
 
     public const string REGULAR_BTN_TEXT = "regular_btn_text";
+
+    public const string USER_RESOURCES = "user_resources";
 }
