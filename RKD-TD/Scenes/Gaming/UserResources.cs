@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,9 +15,26 @@ internal sealed class UserResources : IMyDrawable
     private readonly Sprite _healthSprite, _coinsSprite;
     private readonly Label _healthLabel, _coinsLabel;
 
-    public int Health { get; }
+    public int Health
+    {
+        get;
+        private set
+        {
+            field = value <= 0 ? 0 : value;
 
-    public int Coins { get; }
+            _healthLabel.Text = field.ToString();
+        }
+    }
+
+    public int Coins
+    {
+        get;
+        private set
+        {
+            field = value;
+            _coinsLabel.Text = field.ToString();
+        }
+    }
 
     public float LayerDepth
     {
@@ -39,14 +57,14 @@ internal sealed class UserResources : IMyDrawable
         Sprite coinsSprite,
         SpriteFont font)
     {
-        Health = health;
-        Coins = coins;
-
         _healthSprite = healthSprite;
         _coinsSprite = coinsSprite;
 
-        _healthLabel = new Label(health.ToString(), font);
-        _coinsLabel = new Label(coins.ToString(), font);
+        _healthLabel = new Label(font);
+        _coinsLabel = new Label(font);
+
+        Health = health;
+        Coins = coins;
 
         PlaceElements(position);
     }
@@ -75,6 +93,37 @@ internal sealed class UserResources : IMyDrawable
         _coinsLabel.Position = _coinsSpritePosition + toLabel;
     }
 
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        _healthSprite.Draw(
+            spriteBatch,
+            _healthSpritePosition);
+
+        _healthLabel.Draw(
+            spriteBatch);
+
+
+        _coinsSprite.Draw(
+            spriteBatch,
+            _coinsSpritePosition);
+
+        _coinsLabel.Draw(
+            spriteBatch);
+    }
+
+    public void GainCoins(int amount) => Coins += amount;
+
+    public void ReceiveDamage(int damage)
+    {
+        Health -= damage;
+        if (Health <= 0)
+        {
+            CriticalDamageReceived?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public event EventHandler? CriticalDamageReceived;
+
     public static UserResources FromFile(
         XDocument map,
         TextureAtlas gameObjectsTextures,
@@ -101,23 +150,5 @@ internal sealed class UserResources : IMyDrawable
             healthSprite,
             coinsSprite,
             font);
-    }
-
-    public void Draw(SpriteBatch spriteBatch)
-    {
-        _healthSprite.Draw(
-            spriteBatch,
-            _healthSpritePosition);
-
-        _healthLabel.Draw(
-            spriteBatch);
-
-
-        _coinsSprite.Draw(
-            spriteBatch,
-            _coinsSpritePosition);
-
-        _coinsLabel.Draw(
-            spriteBatch);
     }
 }

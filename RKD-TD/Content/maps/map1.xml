@@ -12,7 +12,7 @@
 
     <GameObjectsAtlas>images/game/game-objects-atlas-definition.xml</GameObjectsAtlas>
 
-    <Health textureAlias="heart_100">30</Health>
+    <Health textureAlias="heart_100">15</Health>
     <Coins textureAlias="coin_100">400</Coins>
     <Portals textureAlias="portal_200">10,2;0,3</Portals>
 
@@ -21,7 +21,7 @@
         <Enemies> <!-- Soldier, Speedster, Tank, Swarm, BOSS??? -->
             <Enemy alias="soldier"
                    health="100"
-                   speed="90"
+                   speed="200"
                    cost="100"
                    reward="50"
                    damage="1"

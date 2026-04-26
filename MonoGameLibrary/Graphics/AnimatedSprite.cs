@@ -39,6 +39,21 @@ public class AnimatedSprite : Sprite
     }
 
     /// <summary>
+    /// Creates a new animated sprite with the specified frames and delay.
+    /// </summary>
+    /// <param name="animation">The animation for this animated sprite.</param>
+    /// <param name="currentFrame"></param>
+    public AnimatedSprite(Animation animation, int currentFrame)
+    {
+        Animation = animation;
+
+        if (currentFrame >= animation.Frames.Count)
+            currentFrame = animation.Frames.Count - 1;
+
+        _currentFrame = currentFrame;
+    }
+
+    /// <summary>
     /// Updates this animated sprite.
     /// </summary>
     /// <param name="gameTime">A snapshot of the game timing values provided by the framework.</param>

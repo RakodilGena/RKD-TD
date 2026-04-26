@@ -13,20 +13,20 @@ internal class Enemy : IMyDrawable, IMyUpdatable
     private readonly float _speed;
     private readonly int _reward;
     private readonly int _damage;
-    
+
     private readonly Sprite _sprite;
 
     private int _currentWaypointIndex = 0;
     private readonly WaypointPath _path;
     private Vector2 _position, _positionInTile;
     private bool _finished;
-    
+
     public IViewPort? ViewPort
     {
         get => _sprite.ViewPort;
         set => _sprite.ViewPort = value;
     }
-    
+
     //todo: subscribe and shit.
     public event EventHandler<int>? Destroyed;
     public event EventHandler<int>? ReachedPortal;
@@ -34,10 +34,10 @@ internal class Enemy : IMyDrawable, IMyUpdatable
     public Enemy(
         int maxHealth,
         float speed,
-        int reward, 
+        int reward,
         int damage,
         Sprite sprite,
-        WaypointPath path, 
+        WaypointPath path,
         Vector2 positionInTile)
     {
         _maxHealth = _currentHealth = maxHealth;
@@ -51,7 +51,7 @@ internal class Enemy : IMyDrawable, IMyUpdatable
         _path = path;
         _positionInTile = positionInTile;
         _damage = damage;
-        
+
         _position = path.Start;
         _currentWaypointIndex = 1; // start moving toward waypoint 1
     }
@@ -60,9 +60,9 @@ internal class Enemy : IMyDrawable, IMyUpdatable
     {
         if (_finished)
             return;
-        
+
         _sprite.Update(gameTime);
-        
+
         if (HandleReachedEnd())
             return;
 
@@ -101,12 +101,12 @@ internal class Enemy : IMyDrawable, IMyUpdatable
     {
         float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
         Vector2 target = _path.Waypoints[_currentWaypointIndex];
-        
+
         Vector2 direction = target - _position;
         float distanceToWaypoint = direction.Length();
 
         var distanceAtStep = _speed * delta;
-        
+
         if (distanceToWaypoint <= distanceAtStep)
         {
             // Snap to waypoint and advance

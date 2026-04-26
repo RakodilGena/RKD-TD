@@ -13,7 +13,7 @@
         <Region name="soldier4" x="800" y="200" width="200" height="200"/>
     </Regions>
     <Animations>
-        <Animation name="soldier-animation" delay="200">
+        <Animation name="soldier-animation" delay="80">
             <Frame region="soldier0"/>
             <Frame region="soldier1"/>
             <Frame region="soldier2"/>

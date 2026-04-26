@@ -102,6 +102,7 @@ internal sealed class GamingScene : Scene
             _gameObjectsTextures,
             new Vector2(30));
         _userResources.LayerDepth = 0.9f;
+        _userResources.CriticalDamageReceived += OnCriticalDamageReceived;
     }
 
     private void LoadEnemySpawner(XDocument mapDoc)
@@ -166,14 +167,19 @@ internal sealed class GamingScene : Scene
     private void OnEnemyReachedPortal(object? sender, int damage)
     {
         _enemies.Remove((Enemy)sender!);
-        //_userResources.//todo: damage user
-        //todo: create some bullshit so if it dies he leaves the field
+        _userResources.ReceiveDamage(damage);
     }
 
     private void OnEnemyDestroyed(object? sender, int reward)
     {
         _enemies.Remove((Enemy)sender!);
-        //todo: enrich useer with the resources granted.
+        _userResources.GainCoins(reward);
+    }
+
+    private void OnCriticalDamageReceived(object? sender, EventArgs e)
+    {
+        Console.WriteLine("Critical damage");
+        Core.ChangeScene(new MapSelectionScene());
     }
 
     private void OnAllWavesFinished(object? sender, EventArgs e)

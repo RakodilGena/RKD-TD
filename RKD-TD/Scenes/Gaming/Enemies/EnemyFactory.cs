@@ -16,7 +16,7 @@ internal sealed class EnemyFactory
 
     public EnemyFactory(
         FrozenDictionary<string, EnemyTemplate> enemyTemplates,
-        WaypointPath waypointPath, 
+        WaypointPath waypointPath,
         Vector2 tileSize)
     {
         _enemyTemplates = enemyTemplates;
@@ -27,19 +27,8 @@ internal sealed class EnemyFactory
     public Enemy CreateEnemy(string alias)
     {
         var template = _enemyTemplates[alias];
-
-        Sprite sprite = template.Texture is not null
-            ? new Sprite(template.Texture)
-            : new AnimatedSprite(template.Animation!);
-        sprite.Scale = template.TextureScale;
-
-        var xdiff = _tileSize.X - sprite.Width;
-        var ydiff = _tileSize.Y - sprite.Height;
-        
-        float x = (float)Random.Shared.NextDouble() * xdiff;
-        float y = (float)Random.Shared.NextDouble() * ydiff;
-
-        var positionInTile = new Vector2(x, y);
+        var sprite = GetSprite(template);
+        var positionInTile = GetPositionInTile(sprite);
 
         return new Enemy(
             template.Health,
@@ -49,6 +38,33 @@ internal sealed class EnemyFactory
             sprite,
             _waypointPath,
             positionInTile);
+
+        Sprite GetSprite(EnemyTemplate tmp)
+        {
+            if (tmp.Texture is not null)
+            {
+                sprite = new Sprite(tmp.Texture);
+            }
+            else
+            {
+                var randomFrame = Random.Shared.Next(tmp.Animation!.Frames.Count);
+                sprite = new AnimatedSprite(tmp.Animation!, currentFrame: randomFrame);
+            }
+
+            sprite.Scale = tmp.TextureScale;
+            return sprite;
+        }
+
+        Vector2 GetPositionInTile(Sprite s)
+        {
+            var xdiff = _tileSize.X - s.Width;
+            var ydiff = _tileSize.Y - s.Height;
+
+            float x = (float)Random.Shared.NextDouble() * xdiff;
+            float y = (float)Random.Shared.NextDouble() * ydiff;
+
+            return new Vector2(x, y);
+        }
     }
 
     public static EnemyFactory FromFile(
@@ -59,10 +75,9 @@ internal sealed class EnemyFactory
         var tileWidth = int.Parse(tileSet.Attribute("tileWidth")!.Value);
         var tileHeight = int.Parse(tileSet.Attribute("tileHeight")!.Value);
         var tileSize = new Vector2(tileWidth, tileHeight);
-        
+
         var waypointPath = WaypointPath.FromFile(mapDoc, tileSize);
-        
-        
+
 
         var enemies = mapDoc.Root!
             .Element("Spawner")!

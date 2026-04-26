@@ -7,13 +7,18 @@ public class Label
 {
     public Vector2 Position { get; set; }
     public Vector2 Origin { get; set; } = Vector2.Zero;
-    public string Text { get; set; }
+    public string Text { get; set; } = "";
     public Color Color { get; set; } = Color.Black;
     public Vector2 Scale { get; set; } = Vector2.One;
     public SpriteFont Font { get; set; }
     public float LayerDepth { get; set; }
     public SpriteEffects Effects { get; set; } = SpriteEffects.None;
     public float Rotation { get; set; } = 0.0f;
+
+    public Label(SpriteFont font)
+    {
+        Font = font;
+    }
 
     public Label(
         string text,

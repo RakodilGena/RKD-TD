@@ -116,7 +116,8 @@ public class Sprite
 
         Region.Draw(spriteBatch, finalPosition, Color, Rotation, Origin, finalScale, Effects, LayerDepth);
     }
-    
+
     public virtual void Update(GameTime gameTime)
-    {}
+    {
+    }
 }
