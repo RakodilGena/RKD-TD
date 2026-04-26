@@ -31,7 +31,7 @@ public class RotatingSprite : Sprite
     {
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
         RotationDegrees += RotationSpeedDegreesPerSecond * RotationDirection * delta;

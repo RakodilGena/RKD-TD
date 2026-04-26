@@ -25,8 +25,8 @@
                    cost="100"
                    reward="50"
                    damage="1"
-                   textureAlias="soldier"
-                   size="160;160"/>
+                   animationAlias="soldier-animation"
+                   size="140;140"/> <!--textureAlias="soldier"-->
 
         </Enemies>
 
@@ -50,7 +50,7 @@
         <Waypoints>
             <Waypoint>10;2</Waypoint>
             <Waypoint>9;2</Waypoint>
-            <Waypoint>10;4</Waypoint>
+            <Waypoint>9;4</Waypoint>
             <Waypoint>6;4</Waypoint>
             <Waypoint>6;5</Waypoint>
             <Waypoint>3;5</Waypoint>

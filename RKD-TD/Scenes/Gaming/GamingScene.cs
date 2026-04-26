@@ -125,6 +125,11 @@ internal sealed class GamingScene : Scene
         _userResources.Draw(sb);
         _enemySpawner.Draw(sb);
 
+        foreach (var enemy in _enemies)
+        {
+            enemy.Draw(sb);
+        }
+
         sb.End();
         base.Draw(gameTime);
     }
@@ -140,20 +145,18 @@ internal sealed class GamingScene : Scene
 
         _portals.Update(gameTime);
 
-        _enemySpawner.Update(gameTime);
+        foreach (var enemy in _enemies)
+        {
+            enemy.Update(gameTime);
+        }
 
+        _enemySpawner.Update(gameTime);
 
         base.Update(gameTime);
     }
 
     private void OnEnemySpawned(object? sender, Enemy enemy)
     {
-        //todo: give enemy the viewpoint;
-        //and display them
-        Console.WriteLine($"Enemy spawned! {enemy?.ToString() ?? "null"}");
-        if (enemy is null)
-            return;
-        
         enemy.ViewPort = _viewPort;
         _enemies.Add(enemy);
         enemy.ReachedPortal += OnEnemyReachedPortal;
@@ -163,7 +166,7 @@ internal sealed class GamingScene : Scene
     private void OnEnemyReachedPortal(object? sender, int damage)
     {
         _enemies.Remove((Enemy)sender!);
-        _userResources.//todo: damage user
+        //_userResources.//todo: damage user
         //todo: create some bullshit so if it dies he leaves the field
     }
 

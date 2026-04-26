@@ -42,7 +42,7 @@ public class AnimatedSprite : Sprite
     /// Updates this animated sprite.
     /// </summary>
     /// <param name="gameTime">A snapshot of the game timing values provided by the framework.</param>
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         _elapsed += gameTime.ElapsedGameTime;
 

@@ -10,28 +10,59 @@ namespace RKD_TD.Scenes.Gaming.Enemies;
 
 internal sealed class EnemyFactory
 {
-    private FrozenDictionary<string, EnemyTemplate> _enemyTemplates;
-    private WaypointPath _waypointPath;
+    private readonly FrozenDictionary<string, EnemyTemplate> _enemyTemplates;
+    private readonly WaypointPath _waypointPath;
+    private readonly Vector2 _tileSize;
 
     public EnemyFactory(
         FrozenDictionary<string, EnemyTemplate> enemyTemplates,
-        WaypointPath waypointPath)
+        WaypointPath waypointPath, 
+        Vector2 tileSize)
     {
         _enemyTemplates = enemyTemplates;
         _waypointPath = waypointPath;
+        _tileSize = tileSize;
     }
 
     public Enemy CreateEnemy(string alias)
     {
-        //todo: create actual enemies
-        return null!;
+        var template = _enemyTemplates[alias];
+
+        Sprite sprite = template.Texture is not null
+            ? new Sprite(template.Texture)
+            : new AnimatedSprite(template.Animation!);
+        sprite.Scale = template.TextureScale;
+
+        var xdiff = _tileSize.X - sprite.Width;
+        var ydiff = _tileSize.Y - sprite.Height;
+        
+        float x = (float)Random.Shared.NextDouble() * xdiff;
+        float y = (float)Random.Shared.NextDouble() * ydiff;
+
+        var positionInTile = new Vector2(x, y);
+
+        return new Enemy(
+            template.Health,
+            template.Speed,
+            template.Reward,
+            template.Damage,
+            sprite,
+            _waypointPath,
+            positionInTile);
     }
 
     public static EnemyFactory FromFile(
         XDocument mapDoc,
         TextureAtlas gameObjectsTextures)
     {
-        var waypointPath = WaypointPath.FromFile(mapDoc);
+        var tileSet = mapDoc.Root!.Element("Tileset")!;
+        var tileWidth = int.Parse(tileSet.Attribute("tileWidth")!.Value);
+        var tileHeight = int.Parse(tileSet.Attribute("tileHeight")!.Value);
+        var tileSize = new Vector2(tileWidth, tileHeight);
+        
+        var waypointPath = WaypointPath.FromFile(mapDoc, tileSize);
+        
+        
 
         var enemies = mapDoc.Root!
             .Element("Spawner")!
@@ -87,7 +118,8 @@ internal sealed class EnemyFactory
 
         return new EnemyFactory(
             templates.ToFrozenDictionary(),
-            waypointPath);
+            waypointPath,
+            tileSize);
 
         static Vector2 CalculateScale(
             float[] size,

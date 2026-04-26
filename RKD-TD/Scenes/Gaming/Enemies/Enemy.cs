@@ -18,7 +18,7 @@ internal class Enemy : IMyDrawable, IMyUpdatable
 
     private int _currentWaypointIndex = 0;
     private readonly WaypointPath _path;
-    private Vector2 _position;
+    private Vector2 _position, _positionInTile;
     private bool _finished;
     
     public IViewPort? ViewPort
@@ -37,7 +37,8 @@ internal class Enemy : IMyDrawable, IMyUpdatable
         int reward, 
         int damage,
         Sprite sprite,
-        WaypointPath path)
+        WaypointPath path, 
+        Vector2 positionInTile)
     {
         _maxHealth = _currentHealth = maxHealth;
         _speed = speed;
@@ -48,7 +49,9 @@ internal class Enemy : IMyDrawable, IMyUpdatable
         _sprite = sprite;
 
         _path = path;
+        _positionInTile = positionInTile;
         _damage = damage;
+        
         _position = path.Start;
         _currentWaypointIndex = 1; // start moving toward waypoint 1
     }
@@ -57,6 +60,8 @@ internal class Enemy : IMyDrawable, IMyUpdatable
     {
         if (_finished)
             return;
+        
+        _sprite.Update(gameTime);
         
         if (HandleReachedEnd())
             return;
@@ -117,6 +122,6 @@ internal class Enemy : IMyDrawable, IMyUpdatable
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        _sprite.Draw(spriteBatch, _position);
+        _sprite.Draw(spriteBatch, _position + _positionInTile);
     }
 }

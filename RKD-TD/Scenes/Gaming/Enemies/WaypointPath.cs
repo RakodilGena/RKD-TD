@@ -16,13 +16,12 @@ internal sealed class WaypointPath
 
     public Vector2 Start => Waypoints[0];
 
-    public static WaypointPath FromFile(XDocument mapDoc)
+    public static WaypointPath FromFile(
+        XDocument mapDoc,
+        Vector2 tileSize)
     {
         XElement root = mapDoc.Root!;
 
-        var tileSet = root.Element("Tileset")!;
-        var tileWidth = int.Parse(tileSet.Attribute("tileWidth")!.Value);
-        var tileHeight = int.Parse(tileSet.Attribute("tileHeight")!.Value);
 
         var waypointElements = root.Element("Spawner")!.Element("Waypoints")!.Elements("Waypoint");
 
@@ -34,8 +33,8 @@ internal sealed class WaypointPath
                 .Select(int.Parse).ToArray();
 
             var waypoint = new Vector2(
-                x: split[0] * tileWidth,
-                y: split[1] * tileHeight);
+                x: split[0] * tileSize.X,
+                y: split[1] * tileSize.Y);
 
             waypoints.Add(waypoint);
         }

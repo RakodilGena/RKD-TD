@@ -5,6 +5,23 @@
         <Region name="portal_200" x="0" y="0" width="200" height="200"/>
         <Region name="coin_100" x="200" y="0" width="100" height="100"/>
         <Region name="heart_100" x="200" y="100" width="100" height="100"/>
-        <Region name="soldier" x="0" y="200" width="200" height="200"/>
+
+        <Region name="soldier0" x="0" y="200" width="200" height="200"/>
+        <Region name="soldier1" x="200" y="200" width="200" height="200"/>
+        <Region name="soldier2" x="400" y="200" width="200" height="200"/>
+        <Region name="soldier3" x="600" y="200" width="200" height="200"/>
+        <Region name="soldier4" x="800" y="200" width="200" height="200"/>
     </Regions>
+    <Animations>
+        <Animation name="soldier-animation" delay="200">
+            <Frame region="soldier0"/>
+            <Frame region="soldier1"/>
+            <Frame region="soldier2"/>
+            <Frame region="soldier3"/>
+            <Frame region="soldier4"/>
+            <Frame region="soldier3"/>
+            <Frame region="soldier2"/>
+            <Frame region="soldier1"/>
+        </Animation>
+    </Animations>
 </TextureAtlas>
