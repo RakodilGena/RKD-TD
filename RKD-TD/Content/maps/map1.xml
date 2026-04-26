@@ -14,23 +14,54 @@
 
     <Health textureAlias="heart_100">30</Health>
     <Coins textureAlias="coin_100">400</Coins>
-
     <Portals textureAlias="portal_200">10,2;0,3</Portals>
 
-    <Waypoints>
-        <Waypoint>10;2</Waypoint>
-        <Waypoint>9;2</Waypoint>
-        <Waypoint>10;4</Waypoint>
-        <Waypoint>6;4</Waypoint>
-        <Waypoint>6;5</Waypoint>
-        <Waypoint>3;5</Waypoint>
-        <Waypoint>3;3</Waypoint>
-        <Waypoint>5;3</Waypoint>
-        <Waypoint>5;1</Waypoint>
-        <Waypoint>1;1</Waypoint>
-        <Waypoint>1;3</Waypoint>
-        <Waypoint>0;3</Waypoint>
-    </Waypoints>
+
+    <Spawner totalWaves="20" pauseBetweenWaves="5">
+        <Enemies> <!-- Soldier, Speedster, Tank, Swarm, BOSS??? -->
+            <Enemy alias="soldier"
+                   health="100"
+                   speed="90"
+                   cost="100"
+                   reward="50"
+                   textureAlias="soldier"
+                   size="160;160"/>
+
+        </Enemies>
+
+        <Waves>
+            <!--The waves from here are hardcoded to better introduce them to the player-->
+            <Wave spawnTime="10">
+                soldier:10
+            </Wave>
+            <Wave spawnTime="10">
+                soldier:10
+            </Wave>
+        </Waves>
+
+        <WavesGenerator
+                startSpawnTime="50"
+                spawnTimeInc="5">
+            <!--After the waves end, generator kicks in and generates waves randomly based on 
+             the values of included enemies and the total wave value.-->
+        </WavesGenerator>
+
+        <Waypoints>
+            <Waypoint>10;2</Waypoint>
+            <Waypoint>9;2</Waypoint>
+            <Waypoint>10;4</Waypoint>
+            <Waypoint>6;4</Waypoint>
+            <Waypoint>6;5</Waypoint>
+            <Waypoint>3;5</Waypoint>
+            <Waypoint>3;3</Waypoint>
+            <Waypoint>5;3</Waypoint>
+            <Waypoint>5;1</Waypoint>
+            <Waypoint>1;1</Waypoint>
+            <Waypoint>1;3</Waypoint>
+            <Waypoint>0;3</Waypoint>
+        </Waypoints>
+    </Spawner>
+
 
     <TowerPositions>
 

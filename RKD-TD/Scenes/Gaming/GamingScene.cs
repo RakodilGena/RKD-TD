@@ -1,9 +1,11 @@
+using System;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Scenes;
+using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.MapSelection;
 
 namespace RKD_TD.Scenes.Gaming;
@@ -22,6 +24,7 @@ internal sealed class GamingScene : Scene
     private Tilemap _map = null!;
     private Portals _portals = null!;
     private UserResources _userResources = null!;
+    private EnemySpawner _enemySpawner = null!;
 
 
     public GamingScene(string mapFile)
@@ -65,6 +68,8 @@ internal sealed class GamingScene : Scene
         LoadPortals(mapDoc);
 
         LoadUserResources(mapDoc);
+
+        LoadEnemySpawner(mapDoc);
     }
 
     private void LoadGameObjectsTextures(XDocument mapDoc)
@@ -85,7 +90,7 @@ internal sealed class GamingScene : Scene
     private void LoadPortals(XDocument mapDoc)
     {
         _portals = Portals.FromFile(mapDoc, _gameObjectsTextures);
-        _portals.LayerDepth = 0.5f;
+        _portals.LayerDepth = 0.1f;
     }
 
     private void LoadUserResources(XDocument mapDoc)
@@ -95,6 +100,14 @@ internal sealed class GamingScene : Scene
             _gameObjectsTextures,
             new Vector2(30));
         _userResources.LayerDepth = 0.9f;
+    }
+
+    private void LoadEnemySpawner(XDocument mapDoc)
+    {
+        _enemySpawner = EnemySpawner.FromFile(mapDoc, _gameObjectsTextures);
+        _enemySpawner.EnemySpawned += OnEnemySpawned;
+        _enemySpawner.AllWavesFinished += OnAllWavesFinished;
+        _enemySpawner.Start();
     }
 
 
@@ -108,6 +121,7 @@ internal sealed class GamingScene : Scene
         _map.Draw(sb);
         _portals.Draw(sb);
         _userResources.Draw(sb);
+        _enemySpawner.Draw(sb);
 
         sb.End();
         base.Draw(gameTime);
@@ -124,7 +138,21 @@ internal sealed class GamingScene : Scene
 
         _portals.Update(gameTime);
 
+        _enemySpawner.Update(gameTime);
+
 
         base.Update(gameTime);
+    }
+
+    private void OnEnemySpawned(object? sender, Enemy enemy)
+    {
+        //todo: give enemy the viewpoint;
+        //and display them
+        Console.WriteLine($"Enemy spawned! {enemy?.ToString() ?? "null"}");
+    }
+
+    private void OnAllWavesFinished(object? sender, EventArgs e)
+    {
+        Console.WriteLine("AllWavesFinished");
     }
 }
