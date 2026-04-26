@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -25,6 +26,7 @@ internal sealed class GamingScene : Scene
     private Portals _portals = null!;
     private UserResources _userResources = null!;
     private EnemySpawner _enemySpawner = null!;
+    private HashSet<Enemy> _enemies = [];
 
 
     public GamingScene(string mapFile)
@@ -149,6 +151,26 @@ internal sealed class GamingScene : Scene
         //todo: give enemy the viewpoint;
         //and display them
         Console.WriteLine($"Enemy spawned! {enemy?.ToString() ?? "null"}");
+        if (enemy is null)
+            return;
+        
+        enemy.ViewPort = _viewPort;
+        _enemies.Add(enemy);
+        enemy.ReachedPortal += OnEnemyReachedPortal;
+        enemy.Destroyed += OnEnemyDestroyed;
+    }
+
+    private void OnEnemyReachedPortal(object? sender, int damage)
+    {
+        _enemies.Remove((Enemy)sender!);
+        _userResources.//todo: damage user
+        //todo: create some bullshit so if it dies he leaves the field
+    }
+
+    private void OnEnemyDestroyed(object? sender, int reward)
+    {
+        _enemies.Remove((Enemy)sender!);
+        //todo: enrich useer with the resources granted.
     }
 
     private void OnAllWavesFinished(object? sender, EventArgs e)

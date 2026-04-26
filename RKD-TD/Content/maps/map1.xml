@@ -24,6 +24,7 @@
                    speed="90"
                    cost="100"
                    reward="50"
+                   damage="1"
                    textureAlias="soldier"
                    size="160;160"/>
 

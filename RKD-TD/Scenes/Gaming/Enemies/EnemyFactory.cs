@@ -47,6 +47,7 @@ internal sealed class EnemyFactory
             var speed = float.Parse(enemy.Attribute("speed")!.Value);
             var cost = int.Parse(enemy.Attribute("cost")!.Value);
             var reward = int.Parse(enemy.Attribute("reward")!.Value);
+            var damage = int.Parse(enemy.Attribute("damage")!.Value);
 
             var size = enemy.Attribute("size")!.Value
                 .Split(';')
@@ -76,6 +77,7 @@ internal sealed class EnemyFactory
                 speed,
                 cost,
                 reward,
+                damage,
                 scale,
                 texture,
                 animation);

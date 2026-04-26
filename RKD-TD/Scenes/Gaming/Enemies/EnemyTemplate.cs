@@ -9,6 +9,7 @@ internal sealed record EnemyTemplate(
     float Speed,
     int Cost,
     int Reward,
+    int Damage,
     Vector2 TextureScale,
     TextureRegion? Texture,
     Animation? Animation);
