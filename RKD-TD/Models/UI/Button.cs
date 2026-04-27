@@ -4,11 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Input;
-using RKD_TD.Models.Interfaces;
 
 namespace RKD_TD.Models.UI;
 
-internal class Button : IMyDrawable, IMyUpdatable, IMyClickable
+internal class Button
 {
     private readonly Vector2 _position;
 

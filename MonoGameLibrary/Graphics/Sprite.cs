@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Graphics.Extensions;
+using MonoGameLibrary.Cameras;
 
 namespace MonoGameLibrary.Graphics;
 
@@ -76,9 +76,9 @@ public class Sprite
     public float Height => Region.Height * Scale.Y;
 
     /// <summary>
-    /// Gets or sets ViewPort which handles camera movements;
+    /// Gets or sets Camera which handles camera movements;
     /// </summary>
-    public IViewPort? ViewPort { get; set; }
+    public ICamera? Camera { get; set; }
 
     /// <summary>
     /// Creates a new sprite.
@@ -111,7 +111,7 @@ public class Sprite
     /// <param name="position">The xy-coordinate position to render this sprite at.</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position)
     {
-        var (finalScale, finalPosition) = ViewPort.ApplyViewPortToScalePosition(
+        var (finalScale, finalPosition) = Camera.Apply(
             Scale, position);
 
         Region.Draw(spriteBatch, finalPosition, Color, Rotation, Origin, finalScale, Effects, LayerDepth);

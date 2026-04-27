@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Graphics.Extensions;
+using MonoGameLibrary.Cameras;
 
 namespace MonoGameLibrary.Graphics;
 
@@ -45,9 +45,9 @@ public class Tilemap
     public float LayerDepth { get; set; } = 1.0f;
 
     /// <summary>
-    /// Gets or sets ViewPort which handles camera movements;
+    /// Gets or sets Camera which handles camera movements;
     /// </summary>
-    public IViewPort? ViewPort { get; set; }
+    public ICamera? Camera { get; set; }
 
     /// <summary>
     /// Creates a new tilemap.
@@ -121,8 +121,8 @@ public class Tilemap
     public void Draw(SpriteBatch spriteBatch)
     {
         // (float vpScale, Vector2 vpPosition) =
-        //     ViewPort is not null
-        //         ? (ViewPort.Zoom, ViewPort.Position)
+        //     Camera is not null
+        //         ? (Camera.Zoom, Camera.Position)
         //         : (1, Vector2.Zero);
 
         for (int i = 0; i < Count; i++)
@@ -136,7 +136,7 @@ public class Tilemap
                 x * TileWidth,
                 y * TileHeight);
 
-            var (finalScale, finalPosition) = ViewPort.ApplyViewPortToScalePosition(
+            var (finalScale, finalPosition) = Camera.Apply(
                 Scale, tilePosition);
             // var position = new Vector2(
             //     x * TileWidth * vpScale,

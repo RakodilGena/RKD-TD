@@ -5,11 +5,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
 using RKD_TD.Assets;
-using RKD_TD.Models.Interfaces;
 
 namespace RKD_TD.Scenes.Gaming.Enemies;
 
-internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
+internal sealed class EnemySpawner
 {
     private readonly EnemyFactory _enemyFactory;
     private readonly Queue<EnemyWave> _waves;
@@ -26,7 +25,9 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
 
 
     public event EventHandler<Enemy>? EnemySpawned;
+    public event EventHandler<int>? WaveFinished;
     public event EventHandler? AllWavesFinished;
+
 
     public EnemySpawner(
         Queue<EnemyWave> waves,
@@ -151,12 +152,18 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
 
         //no waves, game finished.
         _done = true;
-        AllWavesFinished?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnLastEnemyOfWaveDestroyed(object? sender, int discarded)
     {
+        if (!_done)
+            WaveFinished?.Invoke(this, _currentWave.Reward);
+
+        else
+            AllWavesFinished?.Invoke(this, EventArgs.Empty);
+
         _paused = false;
+
         // var enemy = (Enemy)sender!;
         // enemy.Destroyed -= OnLastEnemyOfWaveDestroyed;
         // enemy.ReachedPortal -= OnLastEnemyOfWaveDestroyed;
@@ -177,15 +184,19 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
         var spawnerElement = root.Element("Spawner")!;
         var pauseBetweenWaves = float.Parse(spawnerElement.Attribute("pauseBetweenWaves")!.Value);
 
-        var waveElements = spawnerElement
-            .Elements("Waves")
-            .Elements("Wave");
+        var wavesElement = spawnerElement.Element("Waves")!;
+        var basicReward = int.Parse(wavesElement.Attribute("basicReward")!.Value);
+        var rewardLevelMultiplier = int.Parse(wavesElement.Attribute("rewardLevelMultiplier")!.Value);
+
+        var waveElements = wavesElement.Elements("Wave");
 
         Queue<EnemyWave> waves = [];
         List<string> enemiesToSpawn = [];
+        var reward = basicReward;
         foreach (var waveElement in waveElements)
         {
             var spawnTime = float.Parse(waveElement.Attribute("spawnTime")!.Value);
+
             var enemies = waveElement.Value.Split(";",
                 StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
@@ -201,7 +212,13 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
                 }
             }
 
-            var wave = new EnemyWave(spawnTime, enemiesToSpawn.ToArray());
+            var wave = new EnemyWave(
+                spawnTime,
+                enemiesToSpawn.ToArray(),
+                reward);
+
+            reward += rewardLevelMultiplier;
+
             waves.Enqueue(wave);
             enemiesToSpawn.Clear();
         }

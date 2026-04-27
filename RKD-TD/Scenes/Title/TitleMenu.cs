@@ -3,12 +3,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
 using RKD_TD.Assets;
-using RKD_TD.Models.Interfaces;
 using RKD_TD.Models.UI;
 
 namespace RKD_TD.Scenes.Title;
 
-public sealed class TitleMenu : IMyDrawable, IMyUpdatable
+public sealed class TitleMenu
 {
     private readonly LabeledButton[] _menuButtons;
 

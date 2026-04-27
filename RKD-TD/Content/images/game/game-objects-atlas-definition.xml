@@ -3,8 +3,8 @@
     <Texture>images/game/game-objects-atlas</Texture>
     <Regions>
         <Region name="portal_200" x="0" y="0" width="200" height="200"/>
-        <Region name="coin_100" x="200" y="0" width="100" height="100"/>
-        <Region name="heart_100" x="200" y="100" width="100" height="100"/>
+        <Region name="coin_100" x="210" y="0" width="100" height="100"/>
+        <Region name="heart_100" x="210" y="100" width="100" height="100"/>
 
         <Region name="soldier0" x="0" y="200" width="200" height="200"/>
         <Region name="soldier1" x="200" y="200" width="200" height="200"/>
@@ -13,7 +13,7 @@
         <Region name="soldier4" x="800" y="200" width="200" height="200"/>
     </Regions>
     <Animations>
-        <Animation name="soldier-animation" delay="80">
+        <Animation name="soldier-animation" delay="100">
             <Frame region="soldier0"/>
             <Frame region="soldier1"/>
             <Frame region="soldier2"/>

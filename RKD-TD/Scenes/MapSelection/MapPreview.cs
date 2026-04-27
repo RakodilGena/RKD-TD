@@ -2,12 +2,11 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
-using RKD_TD.Models.Interfaces;
 using RKD_TD.Models.UI;
 
 namespace RKD_TD.Scenes.MapSelection;
 
-internal sealed class MapPreview : IMyDrawable, IMyUpdatable, IMyClickable
+internal sealed class MapPreview
 {
     public string Name { get; }
     public string MapFileName { get; }

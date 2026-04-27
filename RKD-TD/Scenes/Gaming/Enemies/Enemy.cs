@@ -1,30 +1,31 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics;
-using RKD_TD.Models.Interfaces;
 
 namespace RKD_TD.Scenes.Gaming.Enemies;
 
-internal class Enemy : IMyDrawable, IMyUpdatable
+internal class Enemy
 {
     private readonly int _maxHealth;
     private int _currentHealth;
     private readonly float _speed;
     private readonly int _reward;
     private readonly int _damage;
+    private readonly Vector2 _positionInTile;
 
     private readonly Sprite _sprite;
 
-    private int _currentWaypointIndex = 0;
+    private int _currentWaypointIndex;
     private readonly WaypointPath _path;
-    private Vector2 _position, _positionInTile;
+    private Vector2 _position;
     private bool _finished;
 
-    public IViewPort? ViewPort
+    public ICamera? Camera
     {
-        get => _sprite.ViewPort;
-        set => _sprite.ViewPort = value;
+        get => _sprite.Camera;
+        set => _sprite.Camera = value;
     }
 
     //todo: subscribe and shit.
@@ -54,6 +55,28 @@ internal class Enemy : IMyDrawable, IMyUpdatable
 
         _position = path.Start;
         _currentWaypointIndex = 1; // start moving toward waypoint 1
+        SetFaceDirection();
+    }
+
+    private void SetFaceDirection()
+    {
+        if (_currentWaypointIndex >= _path.Waypoints.Length)
+            return;
+
+        var prev = _path.Waypoints[_currentWaypointIndex - 1];
+        var next = _path.Waypoints[_currentWaypointIndex];
+
+        var vector = next - prev;
+        switch (vector.X)
+        {
+            case < 0:
+                _sprite.Effects = SpriteEffects.FlipHorizontally;
+                break;
+
+            case > 0:
+                _sprite.Effects = SpriteEffects.None;
+                break;
+        }
     }
 
     public void Update(GameTime gameTime)
@@ -112,6 +135,7 @@ internal class Enemy : IMyDrawable, IMyUpdatable
             // Snap to waypoint and advance
             _position = target;
             _currentWaypointIndex++;
+            SetFaceDirection();
         }
         else
         {

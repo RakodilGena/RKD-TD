@@ -7,11 +7,10 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using RKD_TD.Assets;
-using RKD_TD.Models.Interfaces;
 
 namespace RKD_TD.Scenes.MapSelection;
 
-internal sealed class MapSelectionMenu : IMyDrawable, IMyUpdatable
+internal sealed class MapSelectionMenu
 {
     private readonly MapPreview[] _maps;
 

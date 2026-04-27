@@ -4,11 +4,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
 using RKD_TD.Assets;
-using RKD_TD.Models.Interfaces;
 
 namespace RKD_TD.Scenes.Gaming;
 
-internal sealed class UserResources : IMyDrawable
+internal sealed class UserResources
 {
     private Vector2 _healthSpritePosition, _coinsSpritePosition;
 

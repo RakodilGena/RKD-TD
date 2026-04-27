@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
+using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Scenes;
 using RKD_TD.Scenes.Gaming.Enemies;
@@ -19,7 +20,7 @@ internal sealed class GamingScene : Scene
     private TextureAtlas _gameObjectsTextures = null!;
 
 
-    private ViewPort _viewPort = null!;
+    private Camera _camera = null!;
 
 
     private Tilemap _map = null!;
@@ -40,12 +41,12 @@ internal sealed class GamingScene : Scene
 
         //after base.Initialize() all graphic elements must be created
 
-        InitViewPort();
+        InitCamera();
     }
 
-    private void InitViewPort()
+    private void InitCamera()
     {
-        _viewPort = new ViewPort(
+        _camera = new Camera(
             initialZoom: 1,
             maxZoom: 2,
             zoomSpeed: 1f,
@@ -53,8 +54,8 @@ internal sealed class GamingScene : Scene
             _map,
             putToCenter: true);
 
-        _map.ViewPort = _viewPort;
-        _portals.ViewPort = _viewPort;
+        _map.Camera = _camera;
+        _portals.Camera = _camera;
     }
 
     public override void LoadContent()
@@ -114,6 +115,8 @@ internal sealed class GamingScene : Scene
 
         _enemySpawner.EnemySpawned += OnEnemySpawned;
         _enemySpawner.AllWavesFinished += OnAllWavesFinished;
+        _enemySpawner.WaveFinished += OnWaveFinished;
+
         _enemySpawner.Start();
     }
 
@@ -146,7 +149,7 @@ internal sealed class GamingScene : Scene
             Core.ChangeScene(new MapSelectionScene());
         }
 
-        _viewPort.Update(gameTime);
+        _camera.Update(gameTime);
 
         _portals.Update(gameTime);
 
@@ -162,28 +165,39 @@ internal sealed class GamingScene : Scene
 
     private void OnEnemySpawned(object? sender, Enemy enemy)
     {
-        enemy.ViewPort = _viewPort;
+        enemy.Camera = _camera;
         _enemies.Add(enemy);
+
         enemy.ReachedPortal += OnEnemyReachedPortal;
         enemy.Destroyed += OnEnemyDestroyed;
     }
 
     private void OnEnemyReachedPortal(object? sender, int damage)
     {
-        _enemies.Remove((Enemy)sender!);
+        RemoveEnemy((Enemy)sender!);
         _userResources.ReceiveDamage(damage);
     }
 
     private void OnEnemyDestroyed(object? sender, int reward)
     {
-        _enemies.Remove((Enemy)sender!);
+        RemoveEnemy((Enemy)sender!);
         _userResources.GainCoins(reward);
+    }
+
+    private void RemoveEnemy(Enemy enemy)
+    {
+        _enemies.Remove(enemy);
     }
 
     private void OnCriticalDamageReceived(object? sender, EventArgs e)
     {
         Console.WriteLine("Critical damage");
         Core.ChangeScene(new MapSelectionScene());
+    }
+
+    private void OnWaveFinished(object? sender, int reward)
+    {
+        _userResources.GainCoins(reward);
     }
 
     private void OnAllWavesFinished(object? sender, EventArgs e)

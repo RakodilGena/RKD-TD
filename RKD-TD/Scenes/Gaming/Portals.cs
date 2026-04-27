@@ -3,24 +3,24 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics;
-using RKD_TD.Models.Interfaces;
 
 namespace RKD_TD.Scenes.Gaming;
 
-internal sealed class Portals : IMyDrawable, IMyUpdatable
+internal sealed class Portals
 {
     private readonly RotatingSprite _startingPortal, _endingPortal;
     private readonly Vector2 _startingPortalPosition, _endingPortalPosition;
 
-    public IViewPort? ViewPort
+    public ICamera? Camera
     {
         get;
         set
         {
             field = value;
-            _startingPortal.ViewPort = value;
-            _endingPortal.ViewPort = value;
+            _startingPortal.Camera = value;
+            _endingPortal.Camera = value;
         }
     }
 
@@ -45,6 +45,18 @@ internal sealed class Portals : IMyDrawable, IMyUpdatable
         _endingPortal = endingPortal;
         _startingPortalPosition = startingPortalPosition;
         _endingPortalPosition = endingPortalPosition;
+    }
+
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        _startingPortal.Draw(spriteBatch, _startingPortalPosition);
+        _endingPortal.Draw(spriteBatch, _endingPortalPosition);
+    }
+
+    public void Update(GameTime gameTime)
+    {
+        _startingPortal.Update(gameTime);
+        _endingPortal.Update(gameTime);
     }
 
 
@@ -95,17 +107,5 @@ internal sealed class Portals : IMyDrawable, IMyUpdatable
             startingPortalPosition: portalsPositions[0],
             endingPortal,
             endingPortalPosition: portalsPositions[1]);
-    }
-
-    public void Draw(SpriteBatch spriteBatch)
-    {
-        _startingPortal.Draw(spriteBatch, _startingPortalPosition);
-        _endingPortal.Draw(spriteBatch, _endingPortalPosition);
-    }
-
-    public void Update(GameTime gameTime)
-    {
-        _startingPortal.Update(gameTime);
-        _endingPortal.Update(gameTime);
     }
 }
