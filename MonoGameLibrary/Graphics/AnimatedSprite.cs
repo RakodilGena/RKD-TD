@@ -1,5 +1,4 @@
 using System;
-using Microsoft.Xna.Framework;
 
 namespace MonoGameLibrary.Graphics;
 
@@ -56,10 +55,9 @@ public class AnimatedSprite : Sprite
     /// <summary>
     /// Updates this animated sprite.
     /// </summary>
-    /// <param name="gameTime">A snapshot of the game timing values provided by the framework.</param>
-    public override void Update(GameTime gameTime)
+    public override void Update(float deltaSeconds)
     {
-        _elapsed += gameTime.ElapsedGameTime;
+        _elapsed += TimeSpan.FromSeconds(deltaSeconds);
 
         if (_elapsed >= _animation.Delay)
         {

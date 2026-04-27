@@ -21,6 +21,7 @@ internal sealed class GamingScene : Scene
 
 
     private Camera _camera = null!;
+    private GameClock _gameClock = null!;
 
 
     private Tilemap _map = null!;
@@ -42,6 +43,7 @@ internal sealed class GamingScene : Scene
         //after base.Initialize() all graphic elements must be created
 
         InitCamera();
+        _gameClock = new GameClock();
     }
 
     private void InitCamera()
@@ -144,23 +146,43 @@ internal sealed class GamingScene : Scene
 
     public override void Update(GameTime gameTime)
     {
-        if (Core.Input.Keyboard.WasKeyJustPressed(Keys.Escape))
-        {
-            Core.ChangeScene(new MapSelectionScene());
-        }
+        HandleInput();
+
+        var clockDelta = _gameClock.GetDelta(gameTime);
 
         _camera.Update(gameTime);
 
-        _portals.Update(gameTime);
+        _portals.Update(clockDelta);
 
         foreach (var enemy in _enemies)
         {
-            enemy.Update(gameTime);
+            enemy.Update(clockDelta);
         }
 
-        _enemySpawner.Update(gameTime);
+        _enemySpawner.Update(clockDelta);
 
         base.Update(gameTime);
+    }
+
+    private void HandleInput()
+    {
+        if (Core.Input.Keyboard.WasKeyJustPressed(Keys.Escape))
+        {
+            Core.ChangeScene(new MapSelectionScene());
+            return;
+        }
+
+        if (Core.Input.Keyboard.WasKeyJustPressed(Keys.Space))
+        {
+            if (_gameClock.IsPaused)
+            {
+                _gameClock.Resume();
+            }
+            else
+            {
+                _gameClock.Pause();
+            }
+        }
     }
 
     private void OnEnemySpawned(object? sender, Enemy enemy)

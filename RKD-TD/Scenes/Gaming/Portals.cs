@@ -53,10 +53,10 @@ internal sealed class Portals
         _endingPortal.Draw(spriteBatch, _endingPortalPosition);
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(float deltaSeconds)
     {
-        _startingPortal.Update(gameTime);
-        _endingPortal.Update(gameTime);
+        _startingPortal.Update(deltaSeconds);
+        _endingPortal.Update(deltaSeconds);
     }
 
 

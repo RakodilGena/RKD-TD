@@ -53,16 +53,14 @@ internal sealed class EnemySpawner
         _waveCounterLabel.Draw(spriteBatch);
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(float deltaSeconds)
     {
         if (_paused || _done)
             return;
 
-        var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
         if (_wavesIntervalCounter > 0)
         {
-            bool setNextWave = HandleWavesInterval(deltaTime);
+            bool setNextWave = HandleWavesInterval(deltaSeconds);
             if (setNextWave)
             {
                 SetNextWave();
@@ -72,7 +70,7 @@ internal sealed class EnemySpawner
         }
 
 
-        var spawnEnemy = HandleSpawnInterval(deltaTime);
+        var spawnEnemy = HandleSpawnInterval(deltaSeconds);
         if (!spawnEnemy)
             return;
 

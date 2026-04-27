@@ -79,12 +79,12 @@ internal class Enemy
         }
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(float deltaSeconds)
     {
         if (_finished)
             return;
 
-        _sprite.Update(gameTime);
+        _sprite.Update(deltaSeconds);
 
         if (HandleReachedEnd())
             return;
@@ -92,7 +92,7 @@ internal class Enemy
         if (HandleDestroyed())
             return;
 
-        MoveTowardsPath(gameTime);
+        MoveTowardsPath(deltaSeconds);
     }
 
     private bool HandleReachedEnd()
@@ -120,15 +120,14 @@ internal class Enemy
         return true;
     }
 
-    private void MoveTowardsPath(GameTime gameTime)
+    private void MoveTowardsPath(float deltaSeconds)
     {
-        float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
         Vector2 target = _path.Waypoints[_currentWaypointIndex];
 
         Vector2 direction = target - _position;
         float distanceToWaypoint = direction.Length();
 
-        var distanceAtStep = _speed * delta;
+        var distanceAtStep = _speed * deltaSeconds;
 
         if (distanceToWaypoint <= distanceAtStep)
         {
