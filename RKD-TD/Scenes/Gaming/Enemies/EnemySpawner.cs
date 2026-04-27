@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
+using RKD_TD.Assets;
 using RKD_TD.Models.Interfaces;
 
 namespace RKD_TD.Scenes.Gaming.Enemies;
@@ -13,14 +14,15 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
     private readonly EnemyFactory _enemyFactory;
     private readonly Queue<EnemyWave> _waves;
     private readonly float _wavesInterval;
+    private readonly int _maxWaves;
 
-    private EnemyWave _currentWave;
+    private EnemyWave _currentWave = null!;
     private int _currentWaveIndex, _currentEnemyIndex;
     private float _spawnIntervalCounter, _wavesIntervalCounter;
-    private bool _started;
+    private bool _paused, _done;
 
 
-    //todo: draw wave counter;
+    private readonly Label _waveCounterLabel;
 
 
     public event EventHandler<Enemy>? EnemySpawned;
@@ -29,22 +31,30 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
     public EnemySpawner(
         Queue<EnemyWave> waves,
         float wavesInterval,
-        EnemyFactory enemyFactory)
+        EnemyFactory enemyFactory,
+        Label waveCounterLabel)
     {
         _waves = waves;
-        _currentWave = _waves.Dequeue();
+        _maxWaves = waves.Count;
 
         _wavesInterval = wavesInterval;
         _enemyFactory = enemyFactory;
+
+        _waveCounterLabel = waveCounterLabel;
+
+        SetNextWave();
+
+        _paused = true;
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
+        _waveCounterLabel.Draw(spriteBatch);
     }
 
     public void Update(GameTime gameTime)
     {
-        if (!_started)
+        if (_paused || _done)
             return;
 
         var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -55,7 +65,6 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
             if (setNextWave)
             {
                 SetNextWave();
-                //Console.WriteLine($"[{gameTime.TotalGameTime.TotalSeconds}] Set next wave!");
             }
 
             return;
@@ -66,12 +75,8 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
         if (!spawnEnemy)
             return;
 
-        //Console.WriteLine($"[{gameTime.TotalGameTime.TotalSeconds}] Spawn enemy!");
         SpawnEnemy();
-        PostSpawnSwitchToNextAction();
     }
-    //какие кейсы.
-    //если нет волны - ставим волну.
 
     private bool HandleWavesInterval(float deltaTime)
     {
@@ -90,7 +95,11 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
         _currentWaveIndex++;
         _spawnIntervalCounter = _currentWave.SpawnInterval;
         _currentEnemyIndex = 0;
+
+        string labelText = $"Wave {_currentWaveIndex} of {_maxWaves}";
+        _waveCounterLabel.Text = labelText;
     }
+
 
     private bool HandleSpawnInterval(float deltaTime)
     {
@@ -112,15 +121,20 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
 
         Enemy enemy = _enemyFactory.CreateEnemy(enemyAlias);
 
-        EnemySpawned?.Invoke(this, enemy);
-    }
-
-    private void PostSpawnSwitchToNextAction()
-    {
         _currentEnemyIndex++;
 
+        var waveHasMoreEnemies = _currentEnemyIndex < _currentWave.EnemiesToSpawn.Length;
+        if (!waveHasMoreEnemies)
+        {
+            //if enemy is the last, stop spawn and wait for it to die/reach destination.
+            enemy.Destroyed += OnLastEnemyOfWaveDestroyed;
+            enemy.ReachedPortal += OnLastEnemyOfWaveDestroyed;
+        }
+
+        EnemySpawned?.Invoke(this, enemy);
+
         //more enemies to spawn.
-        if (_currentEnemyIndex < _currentWave.EnemiesToSpawn.Length)
+        if (waveHasMoreEnemies)
         {
             _spawnIntervalCounter = _currentWave.SpawnInterval;
             return;
@@ -131,19 +145,29 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
         if (nextWaveExists)
         {
             _wavesIntervalCounter = _wavesInterval;
+            _paused = true;
             return;
         }
 
         //no waves, game finished.
-        _started = false;
+        _done = true;
         AllWavesFinished?.Invoke(this, EventArgs.Empty);
     }
 
-    public void Start() => _started = true;
+    private void OnLastEnemyOfWaveDestroyed(object? sender, int discarded)
+    {
+        _paused = false;
+        // var enemy = (Enemy)sender!;
+        // enemy.Destroyed -= OnLastEnemyOfWaveDestroyed;
+        // enemy.ReachedPortal -= OnLastEnemyOfWaveDestroyed;
+    }
+
+    public void Start() => _paused = false;
 
     public static EnemySpawner FromFile(
         XDocument mapDoc,
-        TextureAtlas gameObjectsTextures)
+        TextureAtlas gameObjectsTextures,
+        Vector2 labelPosition)
     {
         var factory = EnemyFactory.FromFile(
             mapDoc,
@@ -185,9 +209,17 @@ internal sealed class EnemySpawner : IMyDrawable, IMyUpdatable
         //todo: later use it for generator!
         //var totalWaves = int.Parse(spawnerElement.Attribute("totalWaves")!.Value);
 
+
+        var font = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES);
+        var label = new Label(font)
+        {
+            Position = labelPosition
+        };
+
         return new EnemySpawner(
             waves,
             pauseBetweenWaves,
-            factory);
+            factory,
+            label);
     }
 }

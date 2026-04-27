@@ -21,7 +21,7 @@
         <Enemies> <!-- Soldier, Speedster, Tank, Swarm, BOSS??? -->
             <Enemy alias="soldier"
                    health="100"
-                   speed="200"
+                   speed="300"
                    cost="100"
                    reward="50"
                    damage="1"
@@ -32,11 +32,11 @@
 
         <Waves>
             <!--The waves from here are hardcoded to better introduce them to the player-->
-            <Wave spawnTime="10">
-                soldier:10
+            <Wave spawnTime="5">
+                soldier:5
             </Wave>
-            <Wave spawnTime="10">
-                soldier:10
+            <Wave spawnTime="5">
+                soldier:5
             </Wave>
         </Waves>
 

@@ -107,7 +107,11 @@ internal sealed class GamingScene : Scene
 
     private void LoadEnemySpawner(XDocument mapDoc)
     {
-        _enemySpawner = EnemySpawner.FromFile(mapDoc, _gameObjectsTextures);
+        _enemySpawner = EnemySpawner.FromFile(
+            mapDoc,
+            _gameObjectsTextures,
+            new Vector2(600, 30));
+
         _enemySpawner.EnemySpawned += OnEnemySpawned;
         _enemySpawner.AllWavesFinished += OnAllWavesFinished;
         _enemySpawner.Start();
