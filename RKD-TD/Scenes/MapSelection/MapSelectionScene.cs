@@ -15,7 +15,7 @@ internal sealed class MapSelectionScene : Scene
 {
     private Label _selectMapLabel = null!;
     private MapSelectionMenu _mapSelectionMenu = null!;
-    private LabeledButton _backButton = null!;
+    private ButtonLabeled _backButton = null!;
 
     private TextureAtlas _msAtlas = null!;
 
@@ -71,7 +71,7 @@ internal sealed class MapSelectionScene : Scene
             Textures.MapSelection.BUTTON_300_100_PRESSED);
         spritePressed.Color = Color.Gray;
 
-        _backButton = new LabeledButton(
+        _backButton = new ButtonLabeled(
             position: new Vector2(1570, 930),
             origin: Vector2.Zero,
             spriteIdle,

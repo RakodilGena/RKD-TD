@@ -9,7 +9,7 @@ namespace RKD_TD.Scenes.Title;
 
 public sealed class TitleMenu
 {
-    private readonly LabeledButton[] _menuButtons;
+    private readonly ButtonLabeled[] _menuButtons;
 
     public event EventHandler?
         StartClicked,
@@ -95,7 +95,7 @@ public sealed class TitleMenu
         ];
     }
 
-    private static LabeledButton CreateLabeledButton(
+    private static ButtonLabeled CreateLabeledButton(
         Vector2 position,
         string label,
         SpriteFont font,
@@ -103,7 +103,7 @@ public sealed class TitleMenu
         Sprite hovered,
         Sprite pressed)
     {
-        return new LabeledButton(
+        return new ButtonLabeled(
             position: position,
             origin: Vector2.Zero,
             idle,

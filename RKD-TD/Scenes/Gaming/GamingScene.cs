@@ -21,7 +21,7 @@ internal sealed class GamingScene : Scene
 
 
     private Camera _camera = null!;
-    private GameClock _gameClock = null!;
+    private GameClockWidget _gameClockWidget = null!;
     private FpsMeter _fpsMeter = null!;
 
 
@@ -44,8 +44,8 @@ internal sealed class GamingScene : Scene
         //after base.Initialize() all graphic elements must be created
 
         InitCamera();
-        _gameClock = new GameClock();
         _fpsMeter = new FpsMeter(new Vector2(1600, 30));
+        InitGameClockWidget();
     }
 
     private void InitCamera()
@@ -57,10 +57,20 @@ internal sealed class GamingScene : Scene
             cameraMoveSpeed: 400,
             _map,
             putToCenter: true,
-            mapBordersMargin: 60);
+            mapBordersMargin: 150);
 
         _map.Camera = _camera;
         _portals.Camera = _camera;
+    }
+
+    private void InitGameClockWidget()
+    {
+        _gameClockWidget = new GameClockWidget(
+            new Vector2(1840, 40),
+            _gameObjectsTextures)
+        {
+            LayerDepth = 0.9f
+        };
     }
 
     public override void LoadContent()
@@ -128,7 +138,7 @@ internal sealed class GamingScene : Scene
 
     public override void Draw(GameTime gameTime)
     {
-        Core.GraphicsDevice.Clear(Color.LightGray);
+        Core.GraphicsDevice.Clear(Color.PeachPuff);
 
         var sb = Core.SpriteBatch;
         sb.Begin();
@@ -138,6 +148,7 @@ internal sealed class GamingScene : Scene
         _userResources.Draw(sb);
         _enemySpawner.Draw(sb);
         _fpsMeter.Draw(sb);
+        _gameClockWidget.Draw(sb);
 
         foreach (var enemy in _enemies)
         {
@@ -152,11 +163,12 @@ internal sealed class GamingScene : Scene
     {
         HandleInput();
 
-        var clockDelta = _gameClock.GetDelta(gameTime);
+        var clockDelta = _gameClockWidget.GetDelta(gameTime);
         var uiDelta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-        
-        _fpsMeter.Update(uiDelta);
+
         _camera.Update(uiDelta);
+        _fpsMeter.Update(uiDelta);
+        _gameClockWidget.Update();
 
         _portals.Update(clockDelta);
 
@@ -172,22 +184,28 @@ internal sealed class GamingScene : Scene
 
     private void HandleInput()
     {
-        if (Core.Input.Keyboard.WasKeyJustPressed(Keys.Escape))
+        var kb = Core.Input.Keyboard;
+        if (kb.WasKeyJustPressed(Keys.Escape))
         {
             Core.ChangeScene(new MapSelectionScene());
             return;
         }
 
-        if (Core.Input.Keyboard.WasKeyJustPressed(Keys.Space))
+        if (kb.WasKeyJustPressed(Keys.Space))
         {
-            if (_gameClock.IsPaused)
-            {
-                _gameClock.Resume();
-            }
-            else
-            {
-                _gameClock.Pause();
-            }
+            _gameClockWidget.SwitchPaused();
+        }
+        else if (kb.WasKeyJustPressed(Keys.D1))
+        {
+            _gameClockWidget.SetSpeed(speedIndex: 1);
+        }
+        else if (kb.WasKeyJustPressed(Keys.D2))
+        {
+            _gameClockWidget.SetSpeed(speedIndex: 2);
+        }
+        else if (kb.WasKeyJustPressed(Keys.D3))
+        {
+            _gameClockWidget.SetSpeed(speedIndex: 3);
         }
     }
 

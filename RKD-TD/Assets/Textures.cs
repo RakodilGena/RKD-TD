@@ -17,8 +17,11 @@ internal static class Textures
         public const string MAP_BLANK_500_300_PRESSED = "map_blank_500_300_pressed";
     }
 
-    // public static class Game
-    // {
-    //     coin_100  heart_100
-    // }
+    public static class Game
+    {
+        public const string PAUSE_150_200 = "pause_150_200";
+        public const string SPEED1_150_200 = "speed1_150_200";
+        public const string SPEED2_150_200 = "speed2_150_200";
+        public const string SPEED3_150_200 = "speed3_150_200";
+    }
 }

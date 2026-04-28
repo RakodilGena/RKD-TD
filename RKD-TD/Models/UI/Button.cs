@@ -19,7 +19,7 @@ internal class Button
     private Sprite _current;
 
     private bool _wasPressed, _hovered;
-    private Rectangle _body;
+    private Rectangle _bounds;
 
     public event EventHandler? Clicked;
 
@@ -51,7 +51,7 @@ internal class Button
         _spritePressed.LayerDepth = layerDepth;
 
 
-        _body = new Rectangle(
+        _bounds = new Rectangle(
             (int)(position.X - origin.X * scale.X),
             (int)(position.Y - origin.Y * scale.Y),
             (int)_spriteIdle.Width,
@@ -61,7 +61,7 @@ internal class Button
     public void Update(GameTime gameTime)
     {
         var mouseInfo = Core.Input.Mouse;
-        if (_body.Contains(mouseInfo.Position))
+        if (_bounds.Contains(mouseInfo.Position))
         {
             _hovered = true;
 

@@ -51,7 +51,7 @@ public sealed class Camera : ICamera
 
 
     public Vector2 Position => new(
-        _positionX - _mapBordersMargin, 
+        _positionX - _mapBordersMargin,
         _positionY - _mapBordersMargin);
 
     public float Zoom
@@ -79,7 +79,7 @@ public sealed class Camera : ICamera
         float zoomSpeed,
         float cameraMoveSpeed,
         Tilemap tilemap,
-        bool putToCenter, 
+        bool putToCenter,
         float mapBordersMargin)
     {
         if (mapBordersMargin < 0)

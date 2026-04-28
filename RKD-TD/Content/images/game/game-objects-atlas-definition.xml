@@ -6,6 +6,11 @@
         <Region name="coin_100" x="210" y="0" width="100" height="100"/>
         <Region name="heart_100" x="210" y="100" width="100" height="100"/>
 
+        <Region name="pause_150_200" x="330" y="0" width="150" height="200"/>
+        <Region name="speed1_150_200" x="480" y="0" width="150" height="200"/>
+        <Region name="speed2_150_200" x="630" y="0" width="150" height="200"/>
+        <Region name="speed3_150_200" x="780" y="0" width="150" height="200"/>
+
         <Region name="soldier0" x="0" y="200" width="200" height="200"/>
         <Region name="soldier1" x="200" y="200" width="200" height="200"/>
         <Region name="soldier2" x="400" y="200" width="200" height="200"/>

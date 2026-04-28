@@ -10,7 +10,7 @@ internal sealed class MapPreview
 {
     public string Name { get; }
     public string MapFileName { get; }
-    private readonly LabeledButton _mapDisplay;
+    private readonly ButtonLabeled _mapDisplay;
 
     public MapPreview(
         string mapName,
@@ -29,7 +29,7 @@ internal sealed class MapPreview
         Name = mapName;
         MapFileName = mapFileName;
 
-        _mapDisplay = new LabeledButton(
+        _mapDisplay = new ButtonLabeled(
             position,
             origin,
             spriteIdle,
