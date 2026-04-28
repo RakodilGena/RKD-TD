@@ -22,6 +22,7 @@ internal sealed class GamingScene : Scene
 
     private Camera _camera = null!;
     private GameClock _gameClock = null!;
+    private FpsMeter _fpsMeter = null!;
 
 
     private Tilemap _map = null!;
@@ -44,6 +45,7 @@ internal sealed class GamingScene : Scene
 
         InitCamera();
         _gameClock = new GameClock();
+        _fpsMeter = new FpsMeter(new Vector2(1600, 30));
     }
 
     private void InitCamera()
@@ -54,7 +56,8 @@ internal sealed class GamingScene : Scene
             zoomSpeed: 1f,
             cameraMoveSpeed: 400,
             _map,
-            putToCenter: true);
+            putToCenter: true,
+            mapBordersMargin: 60);
 
         _map.Camera = _camera;
         _portals.Camera = _camera;
@@ -134,6 +137,7 @@ internal sealed class GamingScene : Scene
         _portals.Draw(sb);
         _userResources.Draw(sb);
         _enemySpawner.Draw(sb);
+        _fpsMeter.Draw(sb);
 
         foreach (var enemy in _enemies)
         {
@@ -149,8 +153,10 @@ internal sealed class GamingScene : Scene
         HandleInput();
 
         var clockDelta = _gameClock.GetDelta(gameTime);
-
-        _camera.Update(gameTime);
+        var uiDelta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+        
+        _fpsMeter.Update(uiDelta);
+        _camera.Update(uiDelta);
 
         _portals.Update(clockDelta);
 

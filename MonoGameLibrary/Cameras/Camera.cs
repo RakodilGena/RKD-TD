@@ -8,7 +8,7 @@ namespace MonoGameLibrary.Cameras;
 public sealed class Camera : ICamera
 {
     private readonly int _screenWidth, _screenHeight;
-    private readonly float _mapWidth, _mapHeight;
+    private readonly float _mapWidth, _mapHeight, _mapBordersMargin;
 
     private readonly float _maxZoom, _minZoom, _zoomSpeed, _cameraMoveSpeed;
 
@@ -50,7 +50,9 @@ public sealed class Camera : ICamera
     }
 
 
-    public Vector2 Position => new(_positionX, _positionY);
+    public Vector2 Position => new(
+        _positionX - _mapBordersMargin, 
+        _positionY - _mapBordersMargin);
 
     public float Zoom
     {
@@ -77,14 +79,15 @@ public sealed class Camera : ICamera
         float zoomSpeed,
         float cameraMoveSpeed,
         Tilemap tilemap,
-        bool putToCenter)
+        bool putToCenter, 
+        float mapBordersMargin)
     {
-        // if (sideMarginInPx < 0)
-        //     sideMarginInPx = 0;
+        if (mapBordersMargin < 0)
+            mapBordersMargin = 0;
         // _sideMarginInPx = sideMarginInPx;
 
-        _mapWidth = tilemap.TileWidth * tilemap.Columns;
-        _mapHeight = tilemap.TileHeight * tilemap.Rows;
+        _mapWidth = tilemap.TileWidth * tilemap.Columns + mapBordersMargin * 2;
+        _mapHeight = tilemap.TileHeight * tilemap.Rows + mapBordersMargin * 2;
 
         _screenWidth = Core.GraphicsDevice.Viewport.Width;
         _screenHeight = Core.GraphicsDevice.Viewport.Height;
@@ -98,6 +101,7 @@ public sealed class Camera : ICamera
         _maxZoom = maxZoom;
         _zoomSpeed = zoomSpeed;
         _cameraMoveSpeed = cameraMoveSpeed;
+        _mapBordersMargin = mapBordersMargin;
 
         Zoom = initialZoom;
 
@@ -161,20 +165,18 @@ public sealed class Camera : ICamera
         }
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(float deltaSeconds)
     {
-        var gtDelta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
         var scrollWheelDelta = Core.Input.Mouse.ScrollWheelDelta;
 
         if (scrollWheelDelta != 0)
         {
             HandleScrolled(
                 scrollWheelDelta,
-                gtDelta);
+                deltaSeconds);
         }
 
-        HandleMotion(gtDelta);
+        HandleMotion(deltaSeconds);
     }
 
     private void HandleScrolled(
