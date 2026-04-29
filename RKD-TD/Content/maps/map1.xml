@@ -21,22 +21,32 @@
         <Enemies> <!-- Soldier, Speedster, Tank, Swarm, BOSS??? -->
             <Enemy alias="soldier"
                    health="100"
-                   speed="300"
+                   speed="120"
                    cost="100"
                    reward="50"
                    damage="1"
                    animationAlias="soldier-animation"
                    size="140;140"/> <!--textureAlias="soldier"-->
-
+            
+            <Enemy alias="tank"
+                   health="1000"
+                   speed="80"
+                   cost="500"
+                   reward="200"
+                   damage="3"
+                   animationAlias="tank-animation"
+                   size="160;160"/> <!--textureAlias="soldier"-->
         </Enemies>
 
         <Waves basicReward="200" rewardLevelMultiplier="50">
             <!--The waves from here are hardcoded to better introduce them to the player-->
-            <Wave spawnTime="5">
-                soldier:5
+            <Wave spawnTime="8">
+                soldier:5;
+                tank:1
             </Wave>
             <Wave spawnTime="5">
-                soldier:5
+                soldier:5;
+                tank:1
             </Wave>
         </Waves>
 

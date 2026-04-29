@@ -16,6 +16,15 @@
         <Region name="soldier2" x="400" y="200" width="200" height="200"/>
         <Region name="soldier3" x="600" y="200" width="200" height="200"/>
         <Region name="soldier4" x="800" y="200" width="200" height="200"/>
+        
+        <Region name="tank0" x="0" y="400" width="200" height="200"/>
+        <Region name="tank1" x="204" y="400" width="200" height="200"/>
+        <Region name="tank2" x="408" y="400" width="200" height="200"/>
+        <Region name="tank3" x="612" y="400" width="200" height="200"/>
+        <Region name="tank4" x="816" y="400" width="200" height="200"/>
+        <Region name="tank5" x="0" y="600" width="200" height="200"/>
+        <Region name="tank6" x="204" y="600" width="200" height="200"/>
+        <Region name="tank7" x="408" y="600" width="200" height="200"/>
     </Regions>
     <Animations>
         <Animation name="soldier-animation" delay="100">
@@ -27,6 +36,16 @@
             <Frame region="soldier3"/>
             <Frame region="soldier2"/>
             <Frame region="soldier1"/>
+        </Animation>
+        <Animation name="tank-animation" delay="70">
+            <Frame region="tank0"/>
+            <Frame region="tank1"/>
+            <Frame region="tank2"/>
+            <Frame region="tank3"/>
+            <Frame region="tank4"/>
+            <Frame region="tank5"/>
+            <Frame region="tank6"/>
+            <Frame region="tank7"/>
         </Animation>
     </Animations>
 </TextureAtlas>
