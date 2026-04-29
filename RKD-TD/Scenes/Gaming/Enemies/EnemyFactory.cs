@@ -12,7 +12,9 @@ internal sealed class EnemyFactory
 {
     private readonly FrozenDictionary<string, EnemyTemplate> _enemyTemplates;
     private readonly WaypointPath _waypointPath;
+
     private readonly Vector2 _tileSize;
+    private readonly Vector2[] _swarmPositions;
 
     public EnemyFactory(
         FrozenDictionary<string, EnemyTemplate> enemyTemplates,
@@ -22,49 +24,111 @@ internal sealed class EnemyFactory
         _enemyTemplates = enemyTemplates;
         _waypointPath = waypointPath;
         _tileSize = tileSize;
+
+        _swarmPositions =
+        [
+            new Vector2(0, 0),
+            new Vector2(0, _tileSize.Y * 0.5f),
+            new Vector2(_tileSize.X * 0.5f, 0),
+            new Vector2(_tileSize.X * 0.5f, _tileSize.Y * 0.5f),
+            new Vector2(_tileSize.X * 0.25f, _tileSize.Y * 0.25f),
+        ];
     }
 
-    public Enemy CreateEnemy(string alias)
+    public Enemy[] CreateEnemy(string alias)
     {
         var template = _enemyTemplates[alias];
-        var sprite = GetSprite(template);
-        var positionInTile = GetPositionInTile(sprite);
-
-        return new Enemy(
-            template.Health,
-            template.Speed,
-            template.Reward,
-            template.Damage,
-            sprite,
-            _waypointPath,
-            positionInTile);
-
-        Sprite GetSprite(EnemyTemplate tmp)
+        if (template.Type is EnemyType.Regular)
         {
-            if (tmp.Texture is not null)
-            {
-                sprite = new Sprite(tmp.Texture);
-            }
-            else
-            {
-                var randomFrame = Random.Shared.Next(tmp.Animation!.Frames.Count);
-                sprite = new AnimatedSprite(tmp.Animation!, currentFrame: randomFrame);
-            }
+            var sprite = GetSprite(template);
 
-            sprite.Scale = tmp.TextureScale;
-            return sprite;
+            var positionInTile = GetPositionInTile(
+                _tileSize,
+                alias,
+                sprite);
+
+            var enemy = new Enemy(
+                template.Health,
+                template.Speed,
+                template.Reward,
+                template.Damage,
+                sprite,
+                _waypointPath,
+                positionInTile);
+
+            return [enemy];
         }
 
-        Vector2 GetPositionInTile(Sprite s)
+        if (template.Type is EnemyType.Swarm)
         {
-            var xdiff = _tileSize.X - s.Width;
-            var ydiff = _tileSize.Y - s.Height;
+            var enemies = new Enemy[5];
+            for (int i = 0; i < 5; i++)
+            {
+                var sprite = GetSprite(template);
 
-            float x = (float)Random.Shared.NextDouble() * xdiff;
-            float y = (float)Random.Shared.NextDouble() * ydiff;
+                var positionInTile =
+                    _swarmPositions[i] +
+                    GetPositionInTile(
+                        freeSpaceForEnemy: _tileSize * 0.5f,
+                        alias,
+                        sprite);
 
-            return new Vector2(x, y);
+                var enemy = new Enemy(
+                    template.Health,
+                    template.Speed,
+                    template.Reward,
+                    template.Damage,
+                    sprite,
+                    _waypointPath,
+                    positionInTile);
+
+                enemies[i] = enemy;
+            }
+
+            return enemies;
         }
+
+        throw new ArgumentOutOfRangeException(nameof(template.Type));
+    }
+
+    Sprite GetSprite(EnemyTemplate tmp)
+    {
+        Sprite sprite;
+
+        if (tmp.Texture is not null)
+        {
+            sprite = new Sprite(tmp.Texture);
+        }
+        else
+        {
+            var randomFrame = Random.Shared.Next(tmp.Animation!.Frames.Count);
+            sprite = new AnimatedSprite(tmp.Animation!, currentFrame: randomFrame);
+        }
+
+        sprite.Scale = tmp.TextureScale;
+        return sprite;
+    }
+
+    private static Vector2 GetPositionInTile(
+        Vector2 freeSpaceForEnemy,
+        string alias,
+        Sprite s)
+    {
+        var xdiff = freeSpaceForEnemy.X - s.Width;
+        var ydiff = freeSpaceForEnemy.Y - s.Height;
+
+        if (xdiff < 0)
+            throw new InvalidOperationException(
+                $"Wrong [{alias}] enemy setup: sprite width exceeds tile width");
+
+        if (ydiff < 0)
+            throw new InvalidOperationException(
+                $"Wrong [{alias}] enemy setup: sprite height exceeds tile height");
+
+        float x = (float)Random.Shared.NextDouble() * xdiff;
+        float y = (float)Random.Shared.NextDouble() * ydiff;
+
+        return new Vector2(x, y);
     }
 
     public static EnemyFactory FromFile(
@@ -95,6 +159,14 @@ internal sealed class EnemyFactory
             var reward = int.Parse(enemy.Attribute("reward")!.Value);
             var damage = int.Parse(enemy.Attribute("damage")!.Value);
 
+            var customTypeStr = enemy.Attribute("customType")?.Value;
+            EnemyType type = customTypeStr switch
+            {
+                "swarm" => EnemyType.Swarm,
+                _ => EnemyType.Regular
+            };
+            //customType="swarm"
+
             var size = enemy.Attribute("size")!.Value
                 .Split(';')
                 .Select(float.Parse)
@@ -124,6 +196,7 @@ internal sealed class EnemyFactory
                 cost,
                 reward,
                 damage,
+                type,
                 scale,
                 texture,
                 animation);

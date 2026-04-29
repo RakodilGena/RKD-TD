@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -31,6 +32,8 @@ internal sealed class GamingScene : Scene
     private EnemySpawner _enemySpawner = null!;
     private HashSet<Enemy> _enemies = [];
 
+    private int _pendingWaveReward;
+    private bool _allWavesSpawned;
 
     public GamingScene(string mapFile)
     {
@@ -132,7 +135,7 @@ internal sealed class GamingScene : Scene
         _enemySpawner.AllWavesFinished += OnAllWavesFinished;
         _enemySpawner.WaveFinished += OnWaveFinished;
 
-        _enemySpawner.Start();
+        _enemySpawner.Resume();
     }
 
 
@@ -209,30 +212,51 @@ internal sealed class GamingScene : Scene
         }
     }
 
-    private void OnEnemySpawned(object? sender, Enemy enemy)
+    private void OnEnemySpawned(object? sender, Enemy[] enemies)
     {
-        enemy.Camera = _camera;
-        _enemies.Add(enemy);
+        foreach (var enemy in enemies)
+        {
+            enemy.Camera = _camera;
+            _enemies.Add(enemy);
 
-        enemy.ReachedPortal += OnEnemyReachedPortal;
-        enemy.Destroyed += OnEnemyDestroyed;
+            enemy.ReachedPortal += OnEnemyReachedPortal;
+            enemy.Destroyed += OnEnemyDestroyed;
+        }
     }
 
     private void OnEnemyReachedPortal(object? sender, int damage)
     {
-        RemoveEnemy((Enemy)sender!);
         _userResources.ReceiveDamage(damage);
+        RemoveEnemy((Enemy)sender!);
     }
 
     private void OnEnemyDestroyed(object? sender, int reward)
     {
-        RemoveEnemy((Enemy)sender!);
         _userResources.GainCoins(reward);
+        RemoveEnemy((Enemy)sender!);
     }
 
     private void RemoveEnemy(Enemy enemy)
     {
         _enemies.Remove(enemy);
+
+        if (_enemies.Count is 0)
+        {
+            if (_pendingWaveReward > 0)
+            {
+                //all enemies are killed, gain wave reward, resume spawner
+                _userResources.GainCoins(_pendingWaveReward);
+                _pendingWaveReward = 0;
+                _enemySpawner.Resume();
+                return;
+            }
+
+            if (_allWavesSpawned && _userResources.Health > 0)
+            {
+                Console.WriteLine("All enemies are successfully destroyed, GAME WON");
+                Core.ChangeScene(new MapSelectionScene());
+            }
+        }
     }
 
     private void OnCriticalDamageReceived(object? sender, EventArgs e)
@@ -243,11 +267,11 @@ internal sealed class GamingScene : Scene
 
     private void OnWaveFinished(object? sender, int reward)
     {
-        _userResources.GainCoins(reward);
+        _pendingWaveReward = reward;
     }
 
     private void OnAllWavesFinished(object? sender, EventArgs e)
     {
-        Console.WriteLine("AllWavesFinished");
+        _allWavesSpawned = true;
     }
 }

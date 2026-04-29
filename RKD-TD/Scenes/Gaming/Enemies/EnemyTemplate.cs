@@ -10,6 +10,13 @@ internal sealed record EnemyTemplate(
     int Cost,
     int Reward,
     int Damage,
+    EnemyType Type,
     Vector2 TextureScale,
     TextureRegion? Texture,
     Animation? Animation);
+
+public enum EnemyType
+{
+    Regular = 0,
+    Swarm = 1
+}

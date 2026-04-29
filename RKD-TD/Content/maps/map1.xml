@@ -27,7 +27,7 @@
                    damage="1"
                    animationAlias="soldier-animation"
                    size="140;140"/> <!--textureAlias="soldier"-->
-            
+
             <Enemy alias="tank"
                    health="1000"
                    speed="80"
@@ -35,18 +35,26 @@
                    reward="200"
                    damage="3"
                    animationAlias="tank-animation"
-                   size="160;160"/> <!--textureAlias="soldier"-->
+                   size="160;160"/>
+
+            <!-- final swarmer created a swarmer-pack.-->
+            <Enemy alias="swarmer"
+                   health="30"
+                   speed="100"
+                   cost="100"
+                   reward="20"
+                   damage="1"
+                   animationAlias="soldier-animation"
+                   size="80;80"
+                   customType="swarm"/>
         </Enemies>
 
         <Waves basicReward="200" rewardLevelMultiplier="50">
             <!--The waves from here are hardcoded to better introduce them to the player-->
-            <Wave spawnTime="8">
+            <Wave spawnTime="10">
                 soldier:5;
-                tank:1
-            </Wave>
-            <Wave spawnTime="5">
-                soldier:5;
-                tank:1
+                tank:1;
+                swarmer:1
             </Wave>
         </Waves>
 

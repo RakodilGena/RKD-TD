@@ -24,7 +24,7 @@ internal sealed class EnemySpawner
     private readonly Label _waveCounterLabel;
 
 
-    public event EventHandler<Enemy>? EnemySpawned;
+    public event EventHandler<Enemy[]>? EnemySpawned;
     public event EventHandler<int>? WaveFinished;
     public event EventHandler? AllWavesFinished;
 
@@ -118,21 +118,14 @@ internal sealed class EnemySpawner
     {
         var enemyAlias = _currentWave.EnemiesToSpawn[_currentEnemyIndex];
 
-        Enemy enemy = _enemyFactory.CreateEnemy(enemyAlias);
+        Enemy[] enemies = _enemyFactory.CreateEnemy(enemyAlias);
 
         _currentEnemyIndex++;
 
-        var waveHasMoreEnemies = _currentEnemyIndex < _currentWave.EnemiesToSpawn.Length;
-        if (!waveHasMoreEnemies)
-        {
-            //if enemy is the last, stop spawn and wait for it to die/reach destination.
-            enemy.Destroyed += OnLastEnemyOfWaveDestroyed;
-            enemy.ReachedPortal += OnLastEnemyOfWaveDestroyed;
-        }
-
-        EnemySpawned?.Invoke(this, enemy);
+        EnemySpawned?.Invoke(this, enemies);
 
         //more enemies to spawn.
+        var waveHasMoreEnemies = _currentEnemyIndex < _currentWave.EnemiesToSpawn.Length;
         if (waveHasMoreEnemies)
         {
             _spawnIntervalCounter = _currentWave.SpawnInterval;
@@ -145,29 +138,16 @@ internal sealed class EnemySpawner
         {
             _wavesIntervalCounter = _wavesInterval;
             _paused = true;
+            WaveFinished?.Invoke(this, _currentWave.Reward);
             return;
         }
 
         //no waves, game finished.
         _done = true;
+        AllWavesFinished?.Invoke(this, EventArgs.Empty);
     }
 
-    private void OnLastEnemyOfWaveDestroyed(object? sender, int discarded)
-    {
-        if (!_done)
-            WaveFinished?.Invoke(this, _currentWave.Reward);
-
-        else
-            AllWavesFinished?.Invoke(this, EventArgs.Empty);
-
-        _paused = false;
-
-        // var enemy = (Enemy)sender!;
-        // enemy.Destroyed -= OnLastEnemyOfWaveDestroyed;
-        // enemy.ReachedPortal -= OnLastEnemyOfWaveDestroyed;
-    }
-
-    public void Start() => _paused = false;
+    public void Resume() => _paused = false;
 
     public static EnemySpawner FromFile(
         XDocument mapDoc,
