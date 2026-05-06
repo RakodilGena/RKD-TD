@@ -194,9 +194,7 @@ internal sealed class EnemyFactory
                 ? null
                 : gameObjectsTextures.GetAnimation(animationAlias);
 
-            var scale = CalculateScale(size, texture, animation);
-
-            var origin = new Vector2(size[0] * 0.5f, size[1] * 0.5f);
+            var (scale, origin) = CalculateScaleAndOrigin(size, texture, animation);
 
             var template = new EnemyTemplate(
                 alias,
@@ -220,21 +218,34 @@ internal sealed class EnemyFactory
             waypointPath,
             tileSize);
 
-        static Vector2 CalculateScale(
+        static (Vector2 scale, Vector2 origin) CalculateScaleAndOrigin(
             float[] size,
             TextureRegion? textureRegion,
             Animation? animation)
         {
+            Vector2 scale, origin;
             if (textureRegion is not null)
             {
-                return new Vector2(
+                scale = new Vector2(
                     size[0] / textureRegion.Width,
                     size[1] / textureRegion.Height);
+
+                origin = new Vector2(
+                    textureRegion.Width * 0.5f,
+                    textureRegion.Height * 0.5f);
+            }
+            else
+            {
+                scale = new Vector2(
+                    size[0] / animation!.Frames[0].Width,
+                    size[1] / animation.Frames[0].Height);
+
+                origin = new Vector2(
+                    animation.Frames[0].Width * 0.5f,
+                    animation.Frames[0].Height * 0.5f);
             }
 
-            return new Vector2(
-                size[0] / animation!.Frames[0].Width,
-                size[1] / animation.Frames[0].Height);
+            return (scale, origin);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
@@ -19,20 +20,24 @@ internal class Enemy
 
     private int _currentWaypointIndex;
     private readonly WaypointPath _path;
-    private Vector2 _position;
     private readonly Vector2 _origin;
+
+
+    private Vector2 _positionForMovement, _positionOnScreen;
 
     private readonly float _appearDistance;
     private float _pathTraveled;
 
-    private bool
-        _appeared,
-        _finished;
+    public EnemyState State { get; private set; }
 
     public ICamera? Camera
     {
         get => _sprite.Camera;
-        set => _sprite.Camera = value;
+        set
+        {
+            _sprite.Camera = value;
+            CalculatePositionOnScreen();
+        }
     }
 
     //todo: subscribe and shit.
@@ -66,7 +71,7 @@ internal class Enemy
         _appearDistance = appearDistance;
         _damage = damage;
 
-        _position = path.Start;
+        _positionForMovement = path.Start;
         _currentWaypointIndex = 1; // start moving toward waypoint 1
         SetFaceDirection();
     }
@@ -94,7 +99,7 @@ internal class Enemy
 
     public void Update(float deltaSeconds)
     {
-        if (_finished)
+        if (State is EnemyState.Finished)
             return;
 
         _sprite.Update(deltaSeconds);
@@ -107,9 +112,9 @@ internal class Enemy
 
         MoveTowardsPath(deltaSeconds);
 
-        HandleAppear();
+        HandleState();
 
-        HandleDisappear();
+        CalculatePositionOnScreen();
     }
 
     private bool HandleReachedEnd()
@@ -118,7 +123,7 @@ internal class Enemy
             return false;
 
         ReachedPortal?.Invoke(this, _damage);
-        _finished = true;
+        State = EnemyState.Finished;
         return true;
     }
 
@@ -133,7 +138,7 @@ internal class Enemy
             return false;
 
         Destroyed?.Invoke(this, _reward);
-        _finished = true;
+        State = EnemyState.Finished;
         return true;
     }
 
@@ -141,7 +146,7 @@ internal class Enemy
     {
         Vector2 target = _path.Waypoints[_currentWaypointIndex];
 
-        Vector2 direction = target - _position;
+        Vector2 direction = target - _positionForMovement;
         float distanceToWaypoint = direction.Length();
 
         var distanceAtStep = _speed * deltaSeconds;
@@ -149,7 +154,7 @@ internal class Enemy
         if (distanceToWaypoint <= distanceAtStep)
         {
             // Snap to waypoint and advance
-            _position = target;
+            _positionForMovement = target;
             _currentWaypointIndex++;
             SetFaceDirection();
 
@@ -158,20 +163,30 @@ internal class Enemy
         else
         {
             direction.Normalize();
-            _position += direction * distanceAtStep;
+            _positionForMovement += direction * distanceAtStep;
 
             _pathTraveled += distanceAtStep;
         }
     }
 
+    private void HandleState()
+    {
+        //reverse order so each frame only one state is handled or switched.
+        HandleDisappear();
+
+        HandleVulnerable();
+
+        HandleAppear();
+    }
+
     private void HandleAppear()
     {
-        if (_appeared || _appearDistance is 0)
+        if (State is not EnemyState.Appearing || _appearDistance is 0)
             return;
 
         if (_pathTraveled >= _appearDistance)
         {
-            _appeared = true;
+            State = EnemyState.Vulnerable;
             _sprite.Scale = _initialScale;
             return;
         }
@@ -180,12 +195,50 @@ internal class Enemy
         _sprite.Scale = _initialScale * scale;
     }
 
+    private void HandleVulnerable()
+    {
+        if (State is not EnemyState.Vulnerable)
+            return;
+
+        var distanceToFinish = _path.TotalDistance - _pathTraveled;
+        if (distanceToFinish > _appearDistance)
+            return;
+
+        State = EnemyState.Disappearing;
+    }
+
     private void HandleDisappear()
     {
+        if (State is not EnemyState.Disappearing || _appearDistance is 0)
+            return;
+
+        var distanceToFinish = _path.TotalDistance - _pathTraveled;
+        if (distanceToFinish < 0)
+            return;
+
+        Debug.Assert(distanceToFinish < _appearDistance);
+
+        var scale = distanceToFinish / _appearDistance;
+        _sprite.Scale = _initialScale * scale;
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        _sprite.Draw(spriteBatch, _position + _positionInTile + _origin);
+        _sprite.Draw(spriteBatch, _positionOnScreen);
+    }
+
+    private void CalculatePositionOnScreen()
+    {
+        var (originScale, _) = Camera.Apply(_initialScale, _origin);
+
+        _positionOnScreen = _positionForMovement + _positionInTile + _origin * originScale;
+    }
+
+    public enum EnemyState
+    {
+        Appearing,
+        Vulnerable,
+        Disappearing,
+        Finished
     }
 }
