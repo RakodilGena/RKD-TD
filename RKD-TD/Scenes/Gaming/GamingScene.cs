@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Cameras;
@@ -25,7 +26,7 @@ internal sealed class GamingScene : Scene
     private Camera _camera = null!;
     private GameClockWidget _gameClockWidget = null!;
     private FpsMeter _fpsMeter = null!;
-    
+
     private Tilemap _map = null!;
     private Portals _portals = null!;
     private UserResources _userResources = null!;
@@ -47,8 +48,8 @@ internal sealed class GamingScene : Scene
 
         //after base.Initialize() all graphic elements must be created
 
-        InitCamera();
         _fpsMeter = new FpsMeter(new Vector2(1600, 30));
+        InitCamera();
         InitGameClockWidget();
         InitTurretPurchasePanel();
     }
@@ -155,21 +156,25 @@ internal sealed class GamingScene : Scene
     {
         Core.GraphicsDevice.Clear(Color.PeachPuff);
 
+        //order of calling draw is important here because apparently by default layerDepth is ignored
+        //thus the later draw is called, the higher it is drawn.
+        //decided to keep it as is for the time being.
         var sb = Core.SpriteBatch;
         sb.Begin();
 
         _map.Draw(sb);
         _portals.Draw(sb);
-        _userResources.Draw(sb);
-        _enemySpawner.Draw(sb);
-        _fpsMeter.Draw(sb);
-        _gameClockWidget.Draw(sb);
-        _turretPurchasePanel.Draw(sb);
 
         foreach (var enemy in _enemies)
         {
             enemy.Draw(sb);
         }
+
+        _userResources.Draw(sb);
+        _enemySpawner.Draw(sb);
+        _fpsMeter.Draw(sb);
+        _gameClockWidget.Draw(sb);
+        _turretPurchasePanel.Draw(sb);
 
         sb.End();
         base.Draw(gameTime);
@@ -192,7 +197,7 @@ internal sealed class GamingScene : Scene
         {
             enemy.Update(clockDelta);
         }
-        
+
         _enemySpawner.Update(clockDelta);
 
         _turretPurchasePanel.Update();
@@ -232,10 +237,11 @@ internal sealed class GamingScene : Scene
         foreach (var enemy in enemies)
         {
             enemy.Camera = _camera;
-            _enemies.Add(enemy);
 
             enemy.ReachedPortal += OnEnemyReachedPortal;
             enemy.Destroyed += OnEnemyDestroyed;
+
+            _enemies.Add(enemy);
         }
     }
 

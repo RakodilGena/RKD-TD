@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
@@ -16,8 +15,8 @@ public sealed class TurretPurchasePanel
     private readonly Button _showButton;
     private readonly Button _hideButton;
     private bool _hidden;
-    //private readonly TurretPurchaseButton[] _turretPurchaseButtons;
-    
+    private readonly TurretPurchaseButton[] _turretPurchaseButtons;
+
     public TurretPurchasePanel(
         Vector2 position,
         TextureAtlas gameObjects,
@@ -27,9 +26,9 @@ public sealed class TurretPurchasePanel
     {
         var showHideButtonTexture = gameObjects.GetRegion(Textures.Game.TURRET_PANEL_HIDE_BTN_125_250);
 
-        var showHideBtnPosition = position + new Vector2(0,10) * scale;
-        var showHideBtnScale = new Vector2(scale,  0.92f * scale);
-        
+        var showHideBtnPosition = position + new Vector2(0, 10) * scale;
+        var showHideBtnScale = new Vector2(scale, 0.92f * scale);
+
         _hideButton = CreateHideButton(
             showHideBtnPosition,
             showHideButtonTexture,
@@ -43,11 +42,20 @@ public sealed class TurretPurchasePanel
             showHideBtnScale,
             panelLayerDepth);
         _showButton.Clicked += OnShowButtonClicked;
-        
+
         _panelPosition = position + new Vector2(130, 0) * scale;
-        _panelSprite = gameObjects.CreateSprite(Textures.Game.TURRET_PANEL_1000_250);
-        _panelSprite.LayerDepth = panelLayerDepth;
-        _panelSprite.Scale = new Vector2(scale);
+        _panelSprite = CreatePanelSprite(
+            gameObjects,
+            scale,
+            panelLayerDepth);
+
+        var turretPurchaseButtonScale = 0.90f;
+        _turretPurchaseButtons = CreateTurretPurchaseButtons(
+            _panelPosition,
+            gameObjects,
+            absoluteMargin: new Vector2(30, 18),
+            scale * turretPurchaseButtonScale,
+            buttonLayerDepth);
     }
 
     private void OnHideButtonClicked(object? sender, EventArgs args)
@@ -69,7 +77,10 @@ public sealed class TurretPurchasePanel
         else
         {
             _hideButton.Update();
-            //todo: update buttons
+            foreach (var turretPurchaseButton in _turretPurchaseButtons)
+            {
+                turretPurchaseButton.Update();
+            }
         }
     }
 
@@ -83,7 +94,10 @@ public sealed class TurretPurchasePanel
         {
             _hideButton.Draw(spriteBatch);
             _panelSprite.Draw(spriteBatch, _panelPosition);
-            //todo: draw buttons
+            foreach (var turretPurchaseButton in _turretPurchaseButtons)
+            {
+                turretPurchaseButton.Draw(spriteBatch);
+            }
         }
     }
 
@@ -94,7 +108,7 @@ public sealed class TurretPurchasePanel
         float panelLayerDepth)
     {
         var hideButtonIdle = new Sprite(textureRegion);
-        
+
         var hideButtonHovered = new Sprite(textureRegion)
         {
             Color = Color.DarkGray
@@ -120,7 +134,7 @@ public sealed class TurretPurchasePanel
         {
             Effects = SpriteEffects.FlipHorizontally
         };
-        
+
         var showButtonHovered = new Sprite(textureRegion)
         {
             Color = Color.DarkGray,
@@ -135,5 +149,93 @@ public sealed class TurretPurchasePanel
             spritePressed: showButtonHovered,
             scale,
             layerDepth: panelLayerDepth);
+    }
+
+    private static Sprite CreatePanelSprite(
+        TextureAtlas gameObjects,
+        float scale,
+        float panelLayerDepth)
+    {
+        var panelSprite = gameObjects.CreateSprite(Textures.Game.TURRET_PANEL_1000_250);
+        panelSprite.LayerDepth = panelLayerDepth;
+        panelSprite.Scale = new Vector2(scale);
+
+        return panelSprite;
+    }
+
+
+    private static TurretPurchaseButton[] CreateTurretPurchaseButtons(
+        Vector2 position,
+        TextureAtlas gameObjects,
+        Vector2 absoluteMargin,
+        float scale,
+        float buttonLayerDepth)
+    {
+        //var margin = new Vector2(260, 0) * scale;
+
+        var buttonSize = new Vector2(240, 0) * scale;
+        var horizontalMargin = new Vector2(absoluteMargin.X, 0) * scale;
+        var verticalMargin = new Vector2(0, absoluteMargin.Y) * scale;
+
+        var index = 0;
+
+        var mgButton = CreateTurretPurchaseButton(
+            textureAlias: Textures.Game.TURRET_ICON_MG_240,
+            position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
+            gameObjects,
+            scale,
+            buttonLayerDepth);
+
+        var cannonButton = CreateTurretPurchaseButton(
+            textureAlias: Textures.Game.TURRET_ICON_CANNON_240,
+            position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
+            gameObjects,
+            scale,
+            buttonLayerDepth);
+
+        var shotgunButton = CreateTurretPurchaseButton(
+            textureAlias: Textures.Game.TURRET_ICON_SHOTGUN_240,
+            position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
+            gameObjects,
+            scale,
+            buttonLayerDepth);
+
+        var rocketButton = CreateTurretPurchaseButton(
+            textureAlias: Textures.Game.TURRET_ICON_ROCKET_240,
+            position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
+            gameObjects,
+            scale,
+            buttonLayerDepth);
+
+
+        return
+        [
+            mgButton,
+            cannonButton,
+            shotgunButton,
+            rocketButton
+        ];
+    }
+
+    private static TurretPurchaseButton CreateTurretPurchaseButton(
+        string textureAlias,
+        Vector2 position,
+        TextureAtlas gameObjects,
+        float scale,
+        float buttonLayerDepth)
+    {
+        var idle = gameObjects.CreateSprite(textureAlias);
+
+        var hovered = gameObjects.CreateSprite(textureAlias);
+        hovered.Color = Color.DarkGray;
+
+        return new TurretPurchaseButton(
+            position,
+            origin: Vector2.Zero,
+            spriteIdle: idle,
+            spriteHovered: hovered,
+            spritePressed: hovered,
+            scale: new Vector2(scale),
+            buttonLayerDepth);
     }
 }
