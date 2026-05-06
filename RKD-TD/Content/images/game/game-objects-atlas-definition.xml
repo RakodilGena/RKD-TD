@@ -5,6 +5,13 @@
         <Region name="portal_200" x="0" y="0" width="200" height="200"/>
         <Region name="coin_100" x="210" y="0" width="100" height="100"/>
         <Region name="heart_100" x="210" y="100" width="100" height="100"/>
+        
+        <Region name="turret_panel_1000_250" x="1030" y="0" width="1000" height="250"/>
+        <Region name="turret_icon_mg_240" x="1030" y="255" width="240" height="240"/>
+        <Region name="turret_icon_cannon_240" x="1280" y="255" width="240" height="240"/>
+        <Region name="turret_icon_shotgun_240" x="1530" y="255" width="240" height="240"/>
+        <Region name="turret_icon_rocket_240" x="1780" y="255" width="240" height="240"/>
+        <Region name="turret_panel_hide_btn_125_250" x="1890" y="500" width="125" height="250"/>
 
         <Region name="pause_150_200" x="330" y="0" width="150" height="200"/>
         <Region name="speed1_150_200" x="480" y="0" width="150" height="200"/>

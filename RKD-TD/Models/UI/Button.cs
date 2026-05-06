@@ -7,7 +7,7 @@ using MonoGameLibrary.Input;
 
 namespace RKD_TD.Models.UI;
 
-internal class Button
+public class Button
 {
     private readonly Vector2 _position;
 
@@ -58,7 +58,7 @@ internal class Button
             (int)_spriteIdle.Height);
     }
 
-    public void Update(GameTime gameTime)
+    public void Update()
     {
         var mouseInfo = Core.Input.Mouse;
         if (_bounds.Contains(mouseInfo.Position))

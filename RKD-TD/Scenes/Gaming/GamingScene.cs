@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -9,6 +8,8 @@ using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Scenes;
 using RKD_TD.Scenes.Gaming.Enemies;
+using RKD_TD.Scenes.Gaming.Misc;
+using RKD_TD.Scenes.Gaming.PurchaseTurrets;
 using RKD_TD.Scenes.MapSelection;
 
 namespace RKD_TD.Scenes.Gaming;
@@ -24,13 +25,13 @@ internal sealed class GamingScene : Scene
     private Camera _camera = null!;
     private GameClockWidget _gameClockWidget = null!;
     private FpsMeter _fpsMeter = null!;
-
-
+    
     private Tilemap _map = null!;
     private Portals _portals = null!;
     private UserResources _userResources = null!;
     private EnemySpawner _enemySpawner = null!;
-    private HashSet<Enemy> _enemies = [];
+    private TurretPurchasePanel _turretPurchasePanel = null!;
+    private readonly HashSet<Enemy> _enemies = [];
 
     private int _pendingWaveReward;
     private bool _allWavesSpawned;
@@ -49,6 +50,7 @@ internal sealed class GamingScene : Scene
         InitCamera();
         _fpsMeter = new FpsMeter(new Vector2(1600, 30));
         InitGameClockWidget();
+        InitTurretPurchasePanel();
     }
 
     private void InitCamera()
@@ -74,6 +76,16 @@ internal sealed class GamingScene : Scene
         {
             LayerDepth = 0.9f
         };
+    }
+
+    private void InitTurretPurchasePanel()
+    {
+        _turretPurchasePanel = new TurretPurchasePanel(
+            position: new Vector2(10, 915),
+            _gameObjectsTextures,
+            scale: 0.6f,
+            panelLayerDepth: 0.9f,
+            buttonLayerDepth: 0.91f);
     }
 
     public override void LoadContent()
@@ -152,6 +164,7 @@ internal sealed class GamingScene : Scene
         _enemySpawner.Draw(sb);
         _fpsMeter.Draw(sb);
         _gameClockWidget.Draw(sb);
+        _turretPurchasePanel.Draw(sb);
 
         foreach (var enemy in _enemies)
         {
@@ -179,8 +192,10 @@ internal sealed class GamingScene : Scene
         {
             enemy.Update(clockDelta);
         }
-
+        
         _enemySpawner.Update(clockDelta);
+
+        _turretPurchasePanel.Update();
 
         base.Update(gameTime);
     }

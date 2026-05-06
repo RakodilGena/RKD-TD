@@ -107,11 +107,11 @@ internal sealed class MapSelectionMenu
         }
     }
 
-    public void Update(GameTime gameTime)
+    public void Update()
     {
         foreach (var map in _maps)
         {
-            map.Update(gameTime);
+            map.Update();
         }
     }
 

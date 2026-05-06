@@ -15,8 +15,7 @@
     <Health textureAlias="heart_100">15</Health>
     <Coins textureAlias="coin_100">400</Coins>
     <Portals textureAlias="portal_200">10,2;0,3</Portals>
-
-
+    
     <Spawner totalWaves="20" pauseBetweenWaves="5">
         <Enemies> <!-- Soldier, Speedster, Tank, Swarm, BOSS??? -->
             <Enemy alias="soldier"

@@ -51,9 +51,9 @@ internal sealed class MapPreview
         _mapDisplay.Draw(spriteBatch);
     }
 
-    public void Update(GameTime gameTime)
+    public void Update()
     {
-        _mapDisplay.Update(gameTime);
+        _mapDisplay.Update();
     }
 
     public event EventHandler? Clicked;

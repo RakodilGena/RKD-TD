@@ -125,8 +125,8 @@ internal sealed class MapSelectionScene : Scene
 
     public override void Update(GameTime gameTime)
     {
-        _backButton.Update(gameTime);
-        _mapSelectionMenu.Update(gameTime);
+        _backButton.Update();
+        _mapSelectionMenu.Update();
 
         HandleEscape();
 

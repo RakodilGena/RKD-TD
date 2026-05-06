@@ -91,7 +91,7 @@ internal sealed class TitleScene : Scene
 
     public override void Update(GameTime gameTime)
     {
-        _titleMenu.Update(gameTime);
+        _titleMenu.Update();
 
         base.Update(gameTime);
     }

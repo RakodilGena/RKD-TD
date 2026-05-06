@@ -117,11 +117,11 @@ public sealed class TitleMenu
             layerDepth: 0.5f);
     }
 
-    public void Update(GameTime gameTime)
+    public void Update()
     {
         foreach (var menuButton in _menuButtons)
         {
-            menuButton.Update(gameTime);
+            menuButton.Update();
         }
     }
 
