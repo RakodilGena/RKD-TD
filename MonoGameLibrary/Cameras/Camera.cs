@@ -17,42 +17,35 @@ public sealed class Camera : ICamera
         _maxX,
         _maxY;
 
-    private float _positionX, _positionY;
-
-    public float PositionX
+    private Vector2 AbsolutePosition
     {
-        get => _positionX;
+        get;
         set
         {
-            if (value < _minX)
-                _positionX = _minX;
-            else if (value > _maxX)
-                _positionX = _maxX;
-            else
-                _positionX = value;
+            var currentX = KeepInBorders(value.X, _minX, _maxX);
+            var currentY = KeepInBorders(value.Y, _minY, _maxY);
 
-            //SignalPositionChanged();
+            field = new Vector2(
+                currentX,
+                currentY);
+
+            var offset = new Vector2(_mapBordersMargin * Zoom);
+            var relativePosition = AbsolutePosition - offset;
+
+            Position = relativePosition;
         }
     }
 
-    public float PositionY
+    private static float KeepInBorders(float value, float min, float max)
     {
-        get => _positionY;
-        set
-        {
-            if (value < _minY)
-                _positionY = _minY;
-            else if (value > _maxY)
-                _positionY = _maxY;
-            else
-                _positionY = value;
-        }
+        if (value < min)
+            return min;
+        if (value > max)
+            return max;
+        return value;
     }
 
-
-    public Vector2 Position => new(
-        _positionX - _mapBordersMargin,
-        _positionY - _mapBordersMargin);
+    public Vector2 Position { get; private set; }
 
     public float Zoom
     {
@@ -105,20 +98,18 @@ public sealed class Camera : ICamera
 
         Zoom = initialZoom;
 
+
         if (putToCenter)
         {
             var screen = new Vector2(_screenWidth, _screenHeight);
             var map = new Vector2(_mapWidth, _mapHeight) * Zoom;
             var vpPos = (map - screen) / 2;
 
-            //no check, recalculated after rescale.
-            _positionX = vpPos.X;
-            _positionY = vpPos.Y;
+            AbsolutePosition = vpPos;
         }
         else
         {
-            _positionX = _minX;
-            _positionY = _minY;
+            AbsolutePosition = new Vector2(_minX, _minY);
         }
     }
 
@@ -132,14 +123,13 @@ public sealed class Camera : ICamera
     {
         var screenCenter = new Vector2(_screenWidth, _screenHeight) / 2;
 
-        var oldCenterPosition = (Position + screenCenter) / oldZoom;
+        var oldCenterPosition = (AbsolutePosition + screenCenter) / oldZoom;
 
-        var newCenterPosition = (Position + screenCenter) / Zoom;
+        var newCenterPosition = (AbsolutePosition + screenCenter) / Zoom;
 
         var centeringDelta = (oldCenterPosition - newCenterPosition) * Zoom;
 
-        PositionX += centeringDelta.X;
-        PositionY += centeringDelta.Y;
+        AbsolutePosition += centeringDelta;
     }
 
     private void SetMinMax(
@@ -221,7 +211,6 @@ public sealed class Camera : ICamera
 
         var moveMultiplier = gtDelta * _cameraMoveSpeed * Zoom;
 
-        PositionX += moveVector.X * moveMultiplier;
-        PositionY += moveVector.Y * moveMultiplier;
+        AbsolutePosition += moveVector * moveMultiplier;
     }
 }
