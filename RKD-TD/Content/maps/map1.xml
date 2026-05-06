@@ -26,7 +26,8 @@
                    reward="50"
                    damage="1"
                    animationAlias="soldier-animation"
-                   size="140;140"/> <!--textureAlias="soldier"-->
+                   size="140;140"
+                   appearDistance="120"/> <!--textureAlias="soldier"-->
 
             <Enemy alias="tank"
                    health="1000"
@@ -35,7 +36,8 @@
                    reward="200"
                    damage="3"
                    animationAlias="tank-animation"
-                   size="160;160"/>
+                   size="160;160"
+                   appearDistance="80"/>
 
             <!-- final swarmer created a swarmer-pack.-->
             <Enemy alias="swarmer"
@@ -46,7 +48,8 @@
                    damage="1"
                    animationAlias="soldier-animation"
                    size="80;80"
-                   customType="swarm"/>
+                   customType="swarm"
+                   appearDistance="100"/>
         </Enemies>
 
         <Waves basicReward="200" rewardLevelMultiplier="50">

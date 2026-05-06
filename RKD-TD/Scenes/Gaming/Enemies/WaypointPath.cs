@@ -7,11 +7,21 @@ namespace RKD_TD.Scenes.Gaming.Enemies;
 
 internal sealed class WaypointPath
 {
-    public Vector2[] Waypoints { get; private set; }
+    public Vector2[] Waypoints { get; }
+
+    public float TotalDistance { get; }
 
     public WaypointPath(Vector2[] waypoints)
     {
         Waypoints = waypoints;
+
+        for (int i = 0; i < waypoints.Length - 1; i++)
+        {
+            var prev = waypoints[i];
+            var next = waypoints[i + 1];
+            var distance = Vector2.Distance(prev, next);
+            TotalDistance += distance;
+        }
     }
 
     public Vector2 Start => Waypoints[0];

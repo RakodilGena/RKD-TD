@@ -10,10 +10,12 @@ internal sealed record EnemyTemplate(
     int Cost,
     int Reward,
     int Damage,
+    float AppearDistance,
     EnemyType Type,
     Vector2 TextureScale,
     TextureRegion? Texture,
-    Animation? Animation);
+    Animation? Animation,
+    Vector2 Origin);
 
 public enum EnemyType
 {

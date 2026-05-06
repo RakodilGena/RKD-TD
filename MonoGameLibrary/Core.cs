@@ -86,6 +86,7 @@ public class Core : Game
         Graphics.PreferredBackBufferWidth = width;
         Graphics.PreferredBackBufferHeight = height;
         Graphics.IsFullScreen = fullScreen;
+        Window.IsBorderless = fullScreen;
 
         // Apply the graphic presentation changes.
         Graphics.ApplyChanges();

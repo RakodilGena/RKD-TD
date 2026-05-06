@@ -13,14 +13,21 @@ internal class Enemy
     private readonly float _speed;
     private readonly int _reward;
     private readonly int _damage;
-    private readonly Vector2 _positionInTile;
+    private readonly Vector2 _positionInTile, _initialScale;
 
     private readonly Sprite _sprite;
 
     private int _currentWaypointIndex;
     private readonly WaypointPath _path;
     private Vector2 _position;
-    private bool _finished;
+    private readonly Vector2 _origin;
+
+    private readonly float _appearDistance;
+    private float _pathTraveled;
+
+    private bool
+        _appeared,
+        _finished;
 
     public ICamera? Camera
     {
@@ -39,7 +46,9 @@ internal class Enemy
         int damage,
         Sprite sprite,
         WaypointPath path,
-        Vector2 positionInTile)
+        Vector2 positionInTile,
+        Vector2 origin,
+        float appearDistance)
     {
         _maxHealth = _currentHealth = maxHealth;
         _speed = speed;
@@ -48,9 +57,13 @@ internal class Enemy
         // _texture = texture;
         // _animation = animation;
         _sprite = sprite;
+        _initialScale = sprite.Scale;
+        sprite.Scale = Vector2.Zero; //to correctly show enemy appearing from portal
 
         _path = path;
         _positionInTile = positionInTile;
+        _origin = origin;
+        _appearDistance = appearDistance;
         _damage = damage;
 
         _position = path.Start;
@@ -93,6 +106,10 @@ internal class Enemy
             return;
 
         MoveTowardsPath(deltaSeconds);
+
+        HandleAppear();
+
+        HandleDisappear();
     }
 
     private bool HandleReachedEnd()
@@ -135,16 +152,40 @@ internal class Enemy
             _position = target;
             _currentWaypointIndex++;
             SetFaceDirection();
+
+            _pathTraveled += distanceToWaypoint;
         }
         else
         {
             direction.Normalize();
             _position += direction * distanceAtStep;
+
+            _pathTraveled += distanceAtStep;
         }
+    }
+
+    private void HandleAppear()
+    {
+        if (_appeared || _appearDistance is 0)
+            return;
+
+        if (_pathTraveled >= _appearDistance)
+        {
+            _appeared = true;
+            _sprite.Scale = _initialScale;
+            return;
+        }
+
+        var scale = _pathTraveled / _appearDistance;
+        _sprite.Scale = _initialScale * scale;
+    }
+
+    private void HandleDisappear()
+    {
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        _sprite.Draw(spriteBatch, _position + _positionInTile);
+        _sprite.Draw(spriteBatch, _position + _positionInTile + _origin);
     }
 }

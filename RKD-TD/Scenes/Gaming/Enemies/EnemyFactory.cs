@@ -54,7 +54,9 @@ internal sealed class EnemyFactory
                 template.Damage,
                 sprite,
                 _waypointPath,
-                positionInTile);
+                positionInTile,
+                template.Origin,
+                template.AppearDistance);
 
             return [enemy];
         }
@@ -80,7 +82,9 @@ internal sealed class EnemyFactory
                     template.Damage,
                     sprite,
                     _waypointPath,
-                    positionInTile);
+                    positionInTile,
+                    template.Origin,
+                    template.AppearDistance);
 
                 enemies[i] = enemy;
             }
@@ -106,6 +110,8 @@ internal sealed class EnemyFactory
         }
 
         sprite.Scale = tmp.TextureScale;
+        sprite.Origin = tmp.Origin;
+
         return sprite;
     }
 
@@ -158,6 +164,7 @@ internal sealed class EnemyFactory
             var cost = int.Parse(enemy.Attribute("cost")!.Value);
             var reward = int.Parse(enemy.Attribute("reward")!.Value);
             var damage = int.Parse(enemy.Attribute("damage")!.Value);
+            var appearDistance = float.Parse(enemy.Attribute("appearDistance")!.Value);
 
             var customTypeStr = enemy.Attribute("customType")?.Value;
             EnemyType type = customTypeStr switch
@@ -189,6 +196,8 @@ internal sealed class EnemyFactory
 
             var scale = CalculateScale(size, texture, animation);
 
+            var origin = new Vector2(size[0] * 0.5f, size[1] * 0.5f);
+
             var template = new EnemyTemplate(
                 alias,
                 health,
@@ -196,10 +205,12 @@ internal sealed class EnemyFactory
                 cost,
                 reward,
                 damage,
+                appearDistance,
                 type,
                 scale,
                 texture,
-                animation);
+                animation,
+                origin);
 
             templates[alias] = template;
         }
