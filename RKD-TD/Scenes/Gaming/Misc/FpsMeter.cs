@@ -12,9 +12,12 @@ internal sealed class FpsMeter
     public FpsMeter(Vector2 position)
     {
         var font = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES);
-        _label = new Label(font)
+        _label = new BorderedLabel(font)
         {
-            Position = position
+            Position = position,
+            Color = Color.White,
+            BorderColor = Color.Black,
+            BorderWidth = new Vector2(2f)
         };
     }
 

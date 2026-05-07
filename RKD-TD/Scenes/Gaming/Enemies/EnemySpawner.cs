@@ -207,9 +207,12 @@ internal sealed class EnemySpawner
 
 
         var font = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES);
-        var label = new Label(font)
+        var label = new BorderedLabel(font)
         {
-            Position = labelPosition
+            Position = labelPosition,
+            Color = Color.White,
+            BorderColor = Color.Black,
+            BorderWidth = new Vector2(2f)
         };
 
         return new EnemySpawner(

@@ -93,10 +93,10 @@ public class Core : Game
         Graphics.PreferredBackBufferHeight = height;
         Graphics.IsFullScreen = fullScreen;
         Graphics.HardwareModeSwitch = !fullScreen;
-        
+
         // Apply the graphic presentation changes.
         Graphics.ApplyChanges();
-        
+
         Window.IsBorderless = fullScreen;
 
         // Set the window title.

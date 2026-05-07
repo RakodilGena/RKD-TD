@@ -61,8 +61,18 @@ internal sealed class UserResources
         _healthSprite = healthSprite;
         _coinsSprite = coinsSprite;
 
-        _healthLabel = new Label(font);
-        _coinsLabel = new Label(font);
+        _healthLabel = new BorderedLabel(font)
+        {
+            Color = Color.White,
+            BorderColor = Color.Black,
+            BorderWidth = new Vector2(2f)
+        };
+        _coinsLabel = new BorderedLabel(font)
+        {
+            Color = Color.White,
+            BorderColor = Color.Black,
+            BorderWidth = new Vector2(2f)
+        };
 
         Health = health;
         Coins = coins;

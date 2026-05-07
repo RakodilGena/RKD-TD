@@ -54,7 +54,7 @@ public class Label
         Origin = Font.MeasureString(Text) / 2;
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public virtual void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.DrawString(
             Font,
