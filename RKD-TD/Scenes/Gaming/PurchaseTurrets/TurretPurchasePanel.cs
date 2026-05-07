@@ -5,6 +5,7 @@ using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Assets;
 using RKD_TD.Models.UI;
+using RKD_TD.Scenes.Gaming.ActiveTurrets;
 
 namespace RKD_TD.Scenes.Gaming.PurchaseTurrets;
 
@@ -18,7 +19,7 @@ internal sealed class TurretPurchasePanel
     private bool _hidden;
     private readonly TurretPurchaseButton[] _turretPurchaseButtons;
 
-    public event EventHandler<PendingTurretType>? TurretPicked;
+    public event EventHandler<TurretType>? TurretPicked;
 
     public TurretPurchasePanel(
         Vector2 position,
@@ -188,7 +189,7 @@ internal sealed class TurretPurchasePanel
             gameObjects,
             scale,
             buttonLayerDepth);
-        mgButton.Clicked += (_, _) => TurretPicked?.Invoke(this, PendingTurretType.MachineGun);
+        mgButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.MachineGun);
 
         var cannonButton = CreateTurretPurchaseButton(
             textureAlias: Textures.Game.TURRET_ICON_CANNON_240,
@@ -196,7 +197,7 @@ internal sealed class TurretPurchasePanel
             gameObjects,
             scale,
             buttonLayerDepth);
-        cannonButton.Clicked += (_, _) => TurretPicked?.Invoke(this, PendingTurretType.Cannon);
+        cannonButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Cannon);
 
         var shotgunButton = CreateTurretPurchaseButton(
             textureAlias: Textures.Game.TURRET_ICON_SHOTGUN_240,
@@ -204,7 +205,7 @@ internal sealed class TurretPurchasePanel
             gameObjects,
             scale,
             buttonLayerDepth);
-        shotgunButton.Clicked += (_, _) => TurretPicked?.Invoke(this, PendingTurretType.Shotgun);
+        shotgunButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Shotgun);
 
         var rocketButton = CreateTurretPurchaseButton(
             textureAlias: Textures.Game.TURRET_ICON_ROCKET_240,
@@ -212,7 +213,7 @@ internal sealed class TurretPurchasePanel
             gameObjects,
             scale,
             buttonLayerDepth);
-        rocketButton.Clicked += (_, _) => TurretPicked?.Invoke(this, PendingTurretType.Rocket);
+        rocketButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Rocket);
 
 
         return

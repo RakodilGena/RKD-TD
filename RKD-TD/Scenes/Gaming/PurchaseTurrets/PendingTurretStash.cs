@@ -1,13 +1,14 @@
 ﻿using System.Collections.Frozen;
 using MonoGameLibrary.Cameras;
+using RKD_TD.Scenes.Gaming.ActiveTurrets;
 
 namespace RKD_TD.Scenes.Gaming.PurchaseTurrets;
 
 internal static class PendingTurretStash
 {
-    private static FrozenDictionary<PendingTurretType, PendingTurret> _turrets = null!;
+    private static FrozenDictionary<TurretType, PendingTurret> _turrets = null!;
 
-    public static PendingTurret GetPendingTurret(PendingTurretType type)
+    public static PendingTurret GetPendingTurret(TurretType type)
     {
         return _turrets[type];
     }
@@ -16,10 +17,10 @@ internal static class PendingTurretStash
     {
         PendingTurret[] turrets =
         [
-            new(PendingTurretType.MachineGun, camera, 100),
-            new(PendingTurretType.Cannon, camera, 200),
-            new(PendingTurretType.Shotgun, camera, 250),
-            new(PendingTurretType.Rocket, camera, 300)
+            new(TurretType.MachineGun, camera, 100),
+            new(TurretType.Cannon, camera, 200),
+            new(TurretType.Shotgun, camera, 250),
+            new(TurretType.Rocket, camera, 300)
         ];
 
         _turrets = turrets.ToFrozenDictionary(t => t.Type);

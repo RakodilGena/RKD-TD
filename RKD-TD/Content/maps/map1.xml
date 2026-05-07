@@ -22,7 +22,7 @@
     <GameObjectsAtlas>images/game/game-objects-atlas-definition.xml</GameObjectsAtlas>
 
     <Health textureAlias="heart_100">15</Health>
-    <Coins textureAlias="coin_100">240</Coins>
+    <Coins textureAlias="coin_100">500</Coins>
     <Portals textureAlias="portal_200">10,2;0,3</Portals>
 
     <Spawner totalWaves="20" pauseBetweenWaves="5">
@@ -92,8 +92,22 @@
         </Waypoints>
     </Spawner>
 
+    <!-- barrelTextureAlias-->
+    <Turrets>
+        <MachineGun
+                barrelAnimationAlias="turret-mg-animation"
+                barrelSize="200;100"
+                barrelOrigin="125;125"
 
-    <TowerPositions>
+                carriageTextureAlias="turret_carriage"
+                carriageSize="140;140"
+                carriageOrigin="100;100"
 
-    </TowerPositions>
+                rotationSpeed="120"
+                reloadTime="0.2"
+                fixateDistance="300"
+                firingDistance="270"
+                firingPoints="0,300,0"
+                projectileType="bullet"/>
+    </Turrets>
 </Map>

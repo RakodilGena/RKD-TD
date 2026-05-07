@@ -32,6 +32,12 @@
         <Region name="tank5" x="0" y="600" width="200" height="200"/>
         <Region name="tank6" x="204" y="600" width="200" height="200"/>
         <Region name="tank7" x="408" y="600" width="200" height="200"/>
+
+        <Region name="turret_carriage" x="612" y="600" width="200" height="200"/>
+
+        <Region name="turret_mg1" x="1030" y="500" width="400" height="200"/>
+        <Region name="turret_mg2" x="1450" y="500" width="400" height="200"/>
+
     </Regions>
     <Animations>
         <Animation name="soldier-animation" delay="100">
@@ -53,6 +59,10 @@
             <Frame region="tank5"/>
             <Frame region="tank6"/>
             <Frame region="tank7"/>
+        </Animation>
+        <Animation name="turret-mg-animation" delay="100">
+            <Frame region="turret_mg1"/>
+            <Frame region="turret_mg2"/>
         </Animation>
     </Animations>
 </TextureAtlas>

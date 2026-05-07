@@ -2,12 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
 using MonoGameLibrary.Cameras;
+using RKD_TD.Scenes.Gaming.ActiveTurrets;
 
 namespace RKD_TD.Scenes.Gaming.PurchaseTurrets;
 
 internal sealed class PendingTurret
 {
-    public PendingTurretType Type { get; }
+    public TurretType Type { get; }
     public Texture2D Texture { get; }
 
     public int Price { get; }
@@ -15,7 +16,7 @@ internal sealed class PendingTurret
     public ICamera Camera { get; }
 
     public PendingTurret(
-        PendingTurretType type,
+        TurretType type,
         ICamera camera,
         int price)
     {

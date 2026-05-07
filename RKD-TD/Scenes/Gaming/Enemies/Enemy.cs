@@ -24,6 +24,7 @@ internal class Enemy
 
 
     private Vector2 _positionForMovement, _positionOnScreen;
+    public Vector2 Target { get; private set; }
 
     private readonly float _appearDistance;
     private float _pathTraveled;
@@ -36,7 +37,7 @@ internal class Enemy
         set
         {
             _sprite.Camera = value;
-            CalculatePositionOnScreen();
+            RecalculateSecondaryPositions();
         }
     }
 
@@ -114,7 +115,7 @@ internal class Enemy
 
         HandleState();
 
-        CalculatePositionOnScreen();
+        RecalculateSecondaryPositions();
     }
 
     private bool HandleReachedEnd()
@@ -227,11 +228,23 @@ internal class Enemy
         _sprite.Draw(spriteBatch, _positionOnScreen);
     }
 
+    private void RecalculateSecondaryPositions()
+    {
+        CalculatePositionOnScreen();
+        CalculateTarget();
+    }
+
     private void CalculatePositionOnScreen()
     {
         var (originScale, _) = Camera.WorldToScreen(_initialScale, _origin);
 
         _positionOnScreen = _positionForMovement + _positionInTile + _origin * originScale;
+    }
+
+    private void CalculateTarget()
+    {
+        Target = _positionForMovement + _positionInTile + _origin;
+        //todo: recalculate rectangle here?
     }
 
     public enum EnemyState

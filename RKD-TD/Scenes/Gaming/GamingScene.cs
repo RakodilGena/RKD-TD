@@ -9,6 +9,7 @@ using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Tiles;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.Scenes;
+using RKD_TD.Scenes.Gaming.ActiveTurrets;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Misc;
 using RKD_TD.Scenes.Gaming.PurchaseTurrets;
@@ -35,12 +36,16 @@ internal sealed class GamingScene : Scene
     private TurretPurchasePanel _turretPurchasePanel = null!;
     private BuildGrid _buildGrid = null!;
     private BuildCell? _hoveredCell;
+    private TurretFactory _turretFactory = null!;
 
     private EnemySpawner _enemySpawner = null!;
     private int _pendingWaveReward;
     private bool _allWavesSpawned;
 
     private readonly HashSet<Enemy> _enemies = [];
+    private readonly HashSet<Turret> _turrets = [];
+
+    private event EventHandler<Enemy>? EnemyRemoved;
 
     public GamingScene(string mapFile)
     {
@@ -114,6 +119,8 @@ internal sealed class GamingScene : Scene
         LoadEnemySpawner(mapDoc);
 
         LoadBuildGrid(mapDoc);
+
+        LoadTurretFactory(mapDoc);
     }
 
     private void LoadGameObjectsTextures(XDocument mapDoc)
@@ -166,6 +173,10 @@ internal sealed class GamingScene : Scene
         _buildGrid = BuildGrid.FromMap(mapDoc);
     }
 
+    private void LoadTurretFactory(XDocument mapDoc)
+    {
+        _turretFactory = TurretFactory.FromFile(mapDoc, _gameObjectsTextures);
+    }
 
     public override void Draw(GameTime gameTime)
     {
@@ -183,6 +194,11 @@ internal sealed class GamingScene : Scene
         foreach (var enemy in _enemies)
         {
             enemy.Draw(sb);
+        }
+
+        foreach (var turret in _turrets)
+        {
+            turret.Draw(sb);
         }
 
         _userResources.Draw(sb);
@@ -321,6 +337,7 @@ internal sealed class GamingScene : Scene
     private void RemoveEnemy(Enemy enemy)
     {
         _enemies.Remove(enemy);
+        EnemyRemoved?.Invoke(this, enemy);
 
         if (_enemies.Count is 0)
         {
@@ -341,7 +358,7 @@ internal sealed class GamingScene : Scene
         }
     }
 
-    private void BeginTurretPlacing(object? sender, PendingTurretType turretType)
+    private void BeginTurretPlacing(object? sender, TurretType turretType)
     {
         var pendingTurret = PendingTurretStash.GetPendingTurret(turretType);
 
@@ -351,13 +368,6 @@ internal sealed class GamingScene : Scene
         _pendingTurret = pendingTurret;
         _gameState = GameState.PlacingTurret;
         Core.IsMouseVisible = false;
-    }
-
-    private void CancelTurretPlacing()
-    {
-        _gameState = GameState.Normal;
-        _pendingTurret = null;
-        Core.IsMouseVisible = true;
     }
 
     private void UpdatePlacementMode(Vector2 mouseWorld)
@@ -370,12 +380,32 @@ internal sealed class GamingScene : Scene
         if (_pendingTurret is null)
             return;
 
-        var mouse = Core.Input.Mouse.Position;
         Console.WriteLine($"TURRET {_pendingTurret.Type} placed at [{cell.WorldPosition.X},{cell.WorldPosition.Y}]");
-        Console.WriteLine($"MOUSE: {mouse.X},{mouse.Y}");
 
-        cell.IsOccupied = true;
+        var turret = _turretFactory.CreateTurret(cell, _pendingTurret.Type);
+        turret.OccupiedCell.IsOccupied = true;
+        turret.Camera = _camera;
+        EnemyRemoved += turret.OnEnemyRemoved;
+        _turrets.Add(turret);
+
+        _userResources.GainCoins(-_pendingTurret.Price);
     }
+
+    private void CancelTurretPlacing()
+    {
+        _gameState = GameState.Normal;
+        _pendingTurret = null;
+        Core.IsMouseVisible = true;
+    }
+
+    private void RemoveTurret(Turret turret)
+    {
+        _turrets.Remove(turret);
+
+        turret.OccupiedCell.IsOccupied = false;
+        EnemyRemoved -= turret.OnEnemyRemoved;
+    }
+
 
     private void OnCriticalDamageReceived(object? sender, EventArgs e)
     {
