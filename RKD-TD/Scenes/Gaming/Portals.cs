@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Graphics.Sprites;
 
 namespace RKD_TD.Scenes.Gaming;
 

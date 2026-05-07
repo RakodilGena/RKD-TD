@@ -3,6 +3,8 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Graphics.Labels;
+using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Assets;
 
 namespace RKD_TD.Scenes.Gaming;

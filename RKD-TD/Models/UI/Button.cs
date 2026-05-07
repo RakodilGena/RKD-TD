@@ -2,7 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
-using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Graphics.Sprites;
 using MonoGameLibrary.Input;
 
 namespace RKD_TD.Models.UI;

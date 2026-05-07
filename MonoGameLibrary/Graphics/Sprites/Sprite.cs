@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
 
-namespace MonoGameLibrary.Graphics;
+namespace MonoGameLibrary.Graphics.Sprites;
 
 public class Sprite
 {

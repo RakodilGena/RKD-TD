@@ -1,6 +1,6 @@
 using System;
 
-namespace MonoGameLibrary.Graphics;
+namespace MonoGameLibrary.Graphics.Sprites;
 
 public class AnimatedSprite : Sprite
 {

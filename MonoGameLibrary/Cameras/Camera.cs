@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Graphics.Tiles;
 
 namespace MonoGameLibrary.Cameras;
 

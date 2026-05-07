@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace MonoGameLibrary.Graphics;
+namespace MonoGameLibrary.Graphics.Sprites;
 
 public class RotatingSprite : Sprite
 {

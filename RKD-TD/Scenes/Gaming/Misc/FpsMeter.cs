@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Graphics.Labels;
 using RKD_TD.Assets;
 
 namespace RKD_TD.Scenes.Gaming.Misc;

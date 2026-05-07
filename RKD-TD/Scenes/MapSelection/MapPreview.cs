@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Models.UI;
 
 namespace RKD_TD.Scenes.MapSelection;

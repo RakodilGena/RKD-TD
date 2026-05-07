@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Assets;
 
 namespace RKD_TD.Scenes.MapSelection;

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Assets;
 using RKD_TD.Models.UI;
 
