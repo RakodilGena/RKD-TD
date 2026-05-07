@@ -243,7 +243,7 @@ internal class Enemy
 
     private void CalculateTarget()
     {
-        Target = _positionForMovement + _positionInTile + _origin;
+        Target = _positionForMovement + _positionInTile + _origin * _initialScale;
         //todo: recalculate rectangle here?
     }
 

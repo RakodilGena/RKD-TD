@@ -251,6 +251,11 @@ internal sealed class GamingScene : Scene
             enemy.Update(clockDelta);
         }
 
+        foreach (var turret in _turrets)
+        {
+            turret.Update(clockDelta, _enemies);
+        }
+
         _enemySpawner.Update(clockDelta);
 
 

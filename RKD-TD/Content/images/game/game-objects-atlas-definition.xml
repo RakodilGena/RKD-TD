@@ -60,7 +60,7 @@
             <Frame region="tank6"/>
             <Frame region="tank7"/>
         </Animation>
-        <Animation name="turret-mg-animation" delay="100">
+        <Animation name="turret-mg-animation" delay="80">
             <Frame region="turret_mg1"/>
             <Frame region="turret_mg2"/>
         </Animation>

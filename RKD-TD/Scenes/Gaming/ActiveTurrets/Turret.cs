@@ -190,29 +190,36 @@ internal sealed class Turret
         return closestTarget;
     }
 
+    private float WrapAngle(float angle)
+    {
+        float twoPi = MathHelper.TwoPi;
+        return ((angle % twoPi) + twoPi) % twoPi;
+    }
+
     private void RotateTowards(float desiredAngle, float deltaSeconds, out bool reached)
     {
-        float diff = desiredAngle - CurrentRotation;
+        float desired = WrapAngle(desiredAngle);
 
-        // wrap diff to (-Pi, Pi) so we always get the shortest arc
-        diff = (diff + MathHelper.Pi) % MathHelper.TwoPi - MathHelper.Pi;
+        float diff = desired - CurrentRotation;
+
+        // now wrap diff to (-Pi, Pi)
+        if (diff > MathHelper.Pi) diff -= MathHelper.TwoPi;
+        if (diff < -MathHelper.Pi) diff += MathHelper.TwoPi;
 
         float maxStep = _rotationSpeedRadianInSec * deltaSeconds;
-
-        float newRotation;
+        float newAngle;
         if (MathF.Abs(diff) <= maxStep)
         {
-            newRotation = desiredAngle;
+            newAngle = desiredAngle;
             reached = true;
         }
         else
         {
-            newRotation = CurrentRotation + MathF.Sign(diff) * maxStep;
+            newAngle = CurrentRotation + MathF.Sign(diff) * maxStep;
             reached = false;
         }
 
-        // keep _currentAngle in (-Pi, Pi)
-        CurrentRotation = (newRotation + MathHelper.Pi) % MathHelper.TwoPi - MathHelper.Pi;
+        CurrentRotation = WrapAngle(newAngle);
     }
 
     private void Fire(float deltaSeconds)
