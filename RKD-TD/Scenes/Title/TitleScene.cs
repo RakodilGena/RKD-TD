@@ -68,7 +68,6 @@ internal sealed class TitleScene : Scene
 
     private static void OnStartClicked(object? sender, EventArgs eventArgs)
     {
-        Console.WriteLine("Start clicked!");
         Core.ChangeScene(new MapSelectionScene());
     }
 
@@ -84,7 +83,6 @@ internal sealed class TitleScene : Scene
 
     private static void OnExitClicked(object? sender, EventArgs eventArgs)
     {
-        Console.WriteLine("Exit clicked!");
         Core.Exit();
     }
 

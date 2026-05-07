@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
@@ -100,13 +99,10 @@ internal sealed class MapSelectionScene : Scene
 
     private static void OnMapClicked(object? sender, MapPreview mapPreview)
     {
-        Console.WriteLine($"Map clicked: {mapPreview.Name}");
+        if (string.IsNullOrEmpty(mapPreview.MapFileName))
+            return;
 
-        if (!string.IsNullOrEmpty(mapPreview.MapFileName))
-        {
-            Console.WriteLine($"Map file: {mapPreview.MapFileName}");
-            Core.ChangeScene(new GamingScene(mapPreview.MapFileName));
-        }
+        Core.ChangeScene(new GamingScene(mapPreview.MapFileName));
     }
 
     private static void BackToTitle()

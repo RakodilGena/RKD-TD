@@ -229,7 +229,7 @@ internal class Enemy
 
     private void CalculatePositionOnScreen()
     {
-        var (originScale, _) = Camera.Apply(_initialScale, _origin);
+        var (originScale, _) = Camera.WorldToScreen(_initialScale, _origin);
 
         _positionOnScreen = _positionForMovement + _positionInTile + _origin * originScale;
     }

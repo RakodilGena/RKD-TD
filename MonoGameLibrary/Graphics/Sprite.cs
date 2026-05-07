@@ -111,7 +111,7 @@ public class Sprite
     /// <param name="position">The xy-coordinate position to render this sprite at.</param>
     public void Draw(SpriteBatch spriteBatch, Vector2 position)
     {
-        var (finalScale, finalPosition) = Camera.Apply(
+        var (finalScale, finalPosition) = Camera.WorldToScreen(
             Scale, position);
 
         Region.Draw(spriteBatch, finalPosition, Color, Rotation, Origin, finalScale, Effects, LayerDepth);

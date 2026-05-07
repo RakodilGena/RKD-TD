@@ -53,6 +53,12 @@ public class Core : Game
     /// </summary>
     public static bool ExitOnEscape { get; set; }
 
+    public new static bool IsMouseVisible
+    {
+        get => ((Game)_instance).IsMouseVisible;
+        set => ((Game)_instance).IsMouseVisible = value;
+    }
+
     /// <summary>
     /// Creates a new Core instance.
     /// </summary>

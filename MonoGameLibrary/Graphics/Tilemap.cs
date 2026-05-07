@@ -136,7 +136,7 @@ public class Tilemap
                 x * TileWidth,
                 y * TileHeight);
 
-            var (finalScale, finalPosition) = Camera.Apply(
+            var (finalScale, finalPosition) = Camera.WorldToScreen(
                 Scale, tilePosition);
             // var position = new Vector2(
             //     x * TileWidth * vpScale,

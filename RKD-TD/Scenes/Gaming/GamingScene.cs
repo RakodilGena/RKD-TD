@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Input;
 using MonoGameLibrary.Scenes;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Misc;
@@ -17,11 +17,11 @@ namespace RKD_TD.Scenes.Gaming;
 
 internal sealed class GamingScene : Scene
 {
-    //titles and meters
-
     private readonly string _mapFile;
     private TextureAtlas _gameObjectsTextures = null!;
 
+    private GameState _gameState = GameState.Normal;
+    private PendingTurret? _pendingTurret;
 
     private Camera _camera = null!;
     private GameClockWidget _gameClockWidget = null!;
@@ -30,12 +30,16 @@ internal sealed class GamingScene : Scene
     private Tilemap _map = null!;
     private Portals _portals = null!;
     private UserResources _userResources = null!;
-    private EnemySpawner _enemySpawner = null!;
-    private TurretPurchasePanel _turretPurchasePanel = null!;
-    private readonly HashSet<Enemy> _enemies = [];
 
+    private TurretPurchasePanel _turretPurchasePanel = null!;
+    private BuildGrid _buildGrid = null!;
+    private BuildCell? _hoveredCell;
+
+    private EnemySpawner _enemySpawner = null!;
     private int _pendingWaveReward;
     private bool _allWavesSpawned;
+
+    private readonly HashSet<Enemy> _enemies = [];
 
     public GamingScene(string mapFile)
     {
@@ -59,7 +63,7 @@ internal sealed class GamingScene : Scene
         _camera = new Camera(
             initialZoom: 1,
             maxZoom: 2,
-            zoomSpeed: 1f,
+            zoomSpeed: 2f,
             cameraMoveSpeed: 400,
             _map,
             putToCenter: true,
@@ -87,6 +91,9 @@ internal sealed class GamingScene : Scene
             scale: 0.6f,
             panelLayerDepth: 0.9f,
             buttonLayerDepth: 0.91f);
+        _turretPurchasePanel.TurretPicked += BeginTurretPlacing;
+
+        PendingTurretStash.InitPendingTurrets(_camera);
     }
 
     public override void LoadContent()
@@ -104,6 +111,8 @@ internal sealed class GamingScene : Scene
         LoadUserResources(mapDoc);
 
         LoadEnemySpawner(mapDoc);
+
+        LoadBuildGrid(mapDoc);
     }
 
     private void LoadGameObjectsTextures(XDocument mapDoc)
@@ -151,6 +160,11 @@ internal sealed class GamingScene : Scene
         _enemySpawner.Resume();
     }
 
+    private void LoadBuildGrid(XDocument mapDoc)
+    {
+        _buildGrid = BuildGrid.FromMap(mapDoc);
+    }
+
 
     public override void Draw(GameTime gameTime)
     {
@@ -174,7 +188,19 @@ internal sealed class GamingScene : Scene
         _enemySpawner.Draw(sb);
         _fpsMeter.Draw(sb);
         _gameClockWidget.Draw(sb);
-        _turretPurchasePanel.Draw(sb);
+
+        if (_gameState is GameState.PlacingTurret)
+        {
+            _hoveredCell?.DrawPlacementOverlay(
+                sb,
+                _pendingTurret,
+                _camera);
+        }
+        else
+        {
+            _turretPurchasePanel.Draw(sb);
+        }
+
 
         sb.End();
         base.Draw(gameTime);
@@ -189,7 +215,17 @@ internal sealed class GamingScene : Scene
 
         _camera.Update(uiDelta);
         _fpsMeter.Update(uiDelta);
-        _gameClockWidget.Update();
+
+        if (_gameState is GameState.PlacingTurret)
+        {
+            var mousePosition = Core.Input.Mouse.Position.ToVector2();
+            UpdatePlacementMode(mousePosition);
+        }
+        else
+        {
+            _turretPurchasePanel.Update();
+            _gameClockWidget.Update();
+        }
 
         _portals.Update(clockDelta);
 
@@ -200,7 +236,6 @@ internal sealed class GamingScene : Scene
 
         _enemySpawner.Update(clockDelta);
 
-        _turretPurchasePanel.Update();
 
         base.Update(gameTime);
     }
@@ -208,10 +243,35 @@ internal sealed class GamingScene : Scene
     private void HandleInput()
     {
         var kb = Core.Input.Keyboard;
-        if (kb.WasKeyJustPressed(Keys.Escape))
+        var mouse = Core.Input.Mouse;
+        if (_gameState is GameState.Normal)
         {
-            Core.ChangeScene(new MapSelectionScene());
-            return;
+            if (kb.WasKeyJustPressed(Keys.Escape))
+            {
+                Core.ChangeScene(new MapSelectionScene());
+                return;
+            }
+        }
+        else
+        {
+            if (kb.WasKeyJustPressed(Keys.Escape) || mouse.WasButtonJustPressed(MouseButton.Right))
+            {
+                CancelTurretPlacing();
+            }
+            else if (mouse.WasButtonJustPressed(MouseButton.Left))
+            {
+                var mousePosition = mouse.Position;
+
+                var cell = _buildGrid.GetCellAtWorld(
+                    mousePosition.ToVector2(),
+                    _camera);
+
+                if (cell is { IsBuildable: true, IsOccupied: false })
+                {
+                    PlaceTurret(cell);
+                    CancelTurretPlacing();
+                }
+            }
         }
 
         if (kb.WasKeyJustPressed(Keys.Space))
@@ -278,6 +338,42 @@ internal sealed class GamingScene : Scene
                 Core.ChangeScene(new MapSelectionScene());
             }
         }
+    }
+
+    private void BeginTurretPlacing(object? sender, PendingTurretType turretType)
+    {
+        var pendingTurret = PendingTurretStash.GetPendingTurret(turretType);
+
+        if (pendingTurret.Price > _userResources.Coins)
+            return;
+
+        _pendingTurret = pendingTurret;
+        _gameState = GameState.PlacingTurret;
+        Core.IsMouseVisible = false;
+    }
+
+    private void CancelTurretPlacing()
+    {
+        _gameState = GameState.Normal;
+        _pendingTurret = null;
+        Core.IsMouseVisible = true;
+    }
+
+    private void UpdatePlacementMode(Vector2 mouseWorld)
+    {
+        _hoveredCell = _buildGrid.GetCellAtWorld(mouseWorld, _camera);
+    }
+
+    private void PlaceTurret(BuildCell cell)
+    {
+        if (_pendingTurret is null)
+            return;
+
+        var mouse = Core.Input.Mouse.Position;
+        Console.WriteLine($"TURRET {_pendingTurret.Type} placed at [{cell.WorldPosition.X},{cell.WorldPosition.Y}]");
+        Console.WriteLine($"MOUSE: {mouse.X},{mouse.Y}");
+
+        cell.IsOccupied = true;
     }
 
     private void OnCriticalDamageReceived(object? sender, EventArgs e)

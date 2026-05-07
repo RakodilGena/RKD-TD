@@ -10,10 +10,19 @@
         00 00 00 02 02 02 02 03 00 00 00
     </Tiles>
 
+    <BuildGrid>
+        01 01 01 01 01 01 01 01 01 00 01
+        01 00 00 00 00 00 01 00 00 00 01
+        01 00 01 01 01 00 01 00 01 00 00
+        00 00 01 00 00 00 01 00 01 00 01
+        01 01 01 00 01 01 00 00 00 00 01
+        01 01 01 00 00 00 00 00 01 01 01
+    </BuildGrid>
+
     <GameObjectsAtlas>images/game/game-objects-atlas-definition.xml</GameObjectsAtlas>
 
     <Health textureAlias="heart_100">15</Health>
-    <Coins textureAlias="coin_100">400</Coins>
+    <Coins textureAlias="coin_100">240</Coins>
     <Portals textureAlias="portal_200">10,2;0,3</Portals>
 
     <Spawner totalWaves="20" pauseBetweenWaves="5">

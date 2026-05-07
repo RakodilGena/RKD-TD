@@ -7,7 +7,7 @@ using RKD_TD.Models.UI;
 
 namespace RKD_TD.Scenes.Gaming.PurchaseTurrets;
 
-public sealed class TurretPurchasePanel
+internal sealed class TurretPurchasePanel
 {
     private readonly Vector2 _panelPosition;
     private readonly Sprite _panelSprite;
@@ -16,6 +16,8 @@ public sealed class TurretPurchasePanel
     private readonly Button _hideButton;
     private bool _hidden;
     private readonly TurretPurchaseButton[] _turretPurchaseButtons;
+
+    public event EventHandler<PendingTurretType>? TurretPicked;
 
     public TurretPurchasePanel(
         Vector2 position,
@@ -49,7 +51,7 @@ public sealed class TurretPurchasePanel
             scale,
             panelLayerDepth);
 
-        var turretPurchaseButtonScale = 0.90f;
+        const float turretPurchaseButtonScale = 0.90f;
         _turretPurchaseButtons = CreateTurretPurchaseButtons(
             _panelPosition,
             gameObjects,
@@ -164,7 +166,7 @@ public sealed class TurretPurchasePanel
     }
 
 
-    private static TurretPurchaseButton[] CreateTurretPurchaseButtons(
+    private TurretPurchaseButton[] CreateTurretPurchaseButtons(
         Vector2 position,
         TextureAtlas gameObjects,
         Vector2 absoluteMargin,
@@ -185,6 +187,7 @@ public sealed class TurretPurchasePanel
             gameObjects,
             scale,
             buttonLayerDepth);
+        mgButton.Clicked += (_, _) => TurretPicked?.Invoke(this, PendingTurretType.MachineGun);
 
         var cannonButton = CreateTurretPurchaseButton(
             textureAlias: Textures.Game.TURRET_ICON_CANNON_240,
@@ -192,6 +195,7 @@ public sealed class TurretPurchasePanel
             gameObjects,
             scale,
             buttonLayerDepth);
+        cannonButton.Clicked += (_, _) => TurretPicked?.Invoke(this, PendingTurretType.Cannon);
 
         var shotgunButton = CreateTurretPurchaseButton(
             textureAlias: Textures.Game.TURRET_ICON_SHOTGUN_240,
@@ -199,6 +203,7 @@ public sealed class TurretPurchasePanel
             gameObjects,
             scale,
             buttonLayerDepth);
+        shotgunButton.Clicked += (_, _) => TurretPicked?.Invoke(this, PendingTurretType.Shotgun);
 
         var rocketButton = CreateTurretPurchaseButton(
             textureAlias: Textures.Game.TURRET_ICON_ROCKET_240,
@@ -206,6 +211,7 @@ public sealed class TurretPurchasePanel
             gameObjects,
             scale,
             buttonLayerDepth);
+        rocketButton.Clicked += (_, _) => TurretPicked?.Invoke(this, PendingTurretType.Rocket);
 
 
         return

@@ -13,7 +13,7 @@ internal sealed class GameCore : Core
         width: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, //1280
         height: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, //720
         targetFps: 60,
-        fullScreen: false,
+        fullScreen: true,
         exitOnEscape: true)
     {
     }

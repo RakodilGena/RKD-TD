@@ -4,7 +4,7 @@ using RKD_TD.Models.UI;
 
 namespace RKD_TD.Scenes.Gaming.PurchaseTurrets;
 
-public sealed class TurretPurchaseButton : Button
+internal sealed class TurretPurchaseButton : Button
 {
     public TurretPurchaseButton(
         Vector2 position,
