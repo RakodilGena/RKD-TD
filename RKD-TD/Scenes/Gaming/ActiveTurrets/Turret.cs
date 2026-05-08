@@ -41,10 +41,11 @@ internal sealed class Turret
 
     private Enemy? _fixatedEnemy;
 
-    
+
     private readonly float _minIdleTimerSec = 1, _idleTimerMultiplierSec = 4;
-    private float 
-        _idleRotationSpeedRadianInSec, 
+
+    private float
+        _idleRotationSpeedRadianInSec,
         _idleTimerSec;
 
     public ICamera? Camera
@@ -245,13 +246,14 @@ internal sealed class Turret
         if (_idleTimerSec <= 0)
         {
             //resetting idle rotation
-            _idleTimerSec = (float)Random.Shared.NextDouble() * _idleTimerMultiplierSec + _minIdleTimerSec; //from 1 to 4
+            _idleTimerSec =
+                (float)Random.Shared.NextDouble() * _idleTimerMultiplierSec + _minIdleTimerSec; //from 1 to 4
 
             //was afk, add angle
             if (_idleRotationSpeedRadianInSec is 0f)
             {
-                var speed= (float)Random.Shared.NextDouble() * _rotationSpeedRadianInSec / 3 
-                                                + _rotationSpeedRadianInSec / 6;// from 1/6 of the targetingSpeed to 1/2 of it
+                var speed = (float)Random.Shared.NextDouble() * _rotationSpeedRadianInSec / 3
+                            + _rotationSpeedRadianInSec / 6; // from 1/6 of the targetingSpeed to 1/2 of it
 
                 var sign = Random.Shared.Next(2) is 0 ? -1 : 1;
 
@@ -262,16 +264,16 @@ internal sealed class Turret
                 //was rotating, set afk
                 _idleRotationSpeedRadianInSec = 0f;
             }
-            
+
             return;
         }
-        
+
         //keep the same rotation
         _idleTimerSec -= deltaSeconds;
-        
+
         if (_idleRotationSpeedRadianInSec is 0f)
             return;
-        
+
         CurrentRotation += _idleRotationSpeedRadianInSec * deltaSeconds;
     }
 

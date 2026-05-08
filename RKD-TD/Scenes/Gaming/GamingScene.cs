@@ -20,6 +20,13 @@ namespace RKD_TD.Scenes.Gaming;
 internal sealed class GamingScene : Scene
 {
     private readonly string _mapFile;
+
+    private const string
+        GAME_OBJECTS_ATLAS_NAME = "images/game/game-objects-atlas-definition.xml",
+        ENEMY_CONFIG_NAME = "configs/enemyconfig.xml",
+        TURRET_CONFIG_NAME = "configs/turretconfig.xml";
+
+
     private TextureAtlas _gameObjectsTextures = null!;
 
     private GameState _gameState = GameState.Normal;
@@ -56,12 +63,15 @@ internal sealed class GamingScene : Scene
     {
         base.Initialize();
 
-        //after base.Initialize() all graphic elements must be created
+        //after base.Initialize() all graphic elements must have been created
 
         _fpsMeter = new FpsMeter(new Vector2(1600, 30));
         InitCamera();
         InitGameClockWidget();
         InitTurretPurchasePanel();
+
+        //free the memory after the atlas no longer needed.
+        _gameObjectsTextures = null!;
     }
 
     private void InitCamera()
@@ -108,7 +118,7 @@ internal sealed class GamingScene : Scene
 
         var mapDoc = XmlLoader.Load(Content, _mapFile);
 
-        LoadGameObjectsTextures(mapDoc);
+        LoadGameObjectsTextures();
 
         LoadMap(mapDoc);
 
@@ -120,15 +130,14 @@ internal sealed class GamingScene : Scene
 
         LoadBuildGrid(mapDoc);
 
-        LoadTurretFactory(mapDoc);
+        LoadTurretFactory();
     }
 
-    private void LoadGameObjectsTextures(XDocument mapDoc)
+    private void LoadGameObjectsTextures()
     {
-        string atlasName = mapDoc.Root!.Element("GameObjectsAtlas")!.Value;
         _gameObjectsTextures = TextureAtlas.FromFile(
             Content,
-            atlasName);
+            GAME_OBJECTS_ATLAS_NAME);
     }
 
     private void LoadMap(XDocument mapDoc)
@@ -156,8 +165,11 @@ internal sealed class GamingScene : Scene
 
     private void LoadEnemySpawner(XDocument mapDoc)
     {
+        var enemyConfigDoc = XmlLoader.Load(Content, ENEMY_CONFIG_NAME);
+
         _enemySpawner = EnemySpawner.FromFile(
             mapDoc,
+            enemyConfigDoc,
             _gameObjectsTextures,
             new Vector2(600, 30));
 
@@ -173,9 +185,10 @@ internal sealed class GamingScene : Scene
         _buildGrid = BuildGrid.FromMap(mapDoc);
     }
 
-    private void LoadTurretFactory(XDocument mapDoc)
+    private void LoadTurretFactory()
     {
-        _turretFactory = TurretFactory.FromFile(mapDoc, _gameObjectsTextures);
+        var turretCfg = XmlLoader.Load(Content, TURRET_CONFIG_NAME);
+        _turretFactory = TurretFactory.FromFile(turretCfg, _gameObjectsTextures);
     }
 
     public override void Draw(GameTime gameTime)

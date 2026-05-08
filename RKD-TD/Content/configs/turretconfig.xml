@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- barrelTextureAlias-->
+<Turrets>
+    <MachineGun
+            barrelAnimationAlias="turret-mg-animation"
+            barrelSize="200;100"
+            barrelOrigin="125;125"
+
+            carriageTextureAlias="turret_carriage"
+            carriageSize="140;140"
+            carriageOrigin="100;100"
+
+            rotationSpeed="120"
+            reloadTime="0.2"
+            fixateDistance="300"
+            firingDistance="270"
+            firingPoints="0,300,0"
+            projectileType="bullet"/>
+  
+</Turrets>

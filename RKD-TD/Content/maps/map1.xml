@@ -26,40 +26,6 @@
     <Portals textureAlias="portal_200">10,2;0,3</Portals>
 
     <Spawner totalWaves="20" pauseBetweenWaves="5">
-        <Enemies> <!-- Soldier, Speedster, Tank, Swarm, BOSS??? -->
-            <Enemy alias="soldier"
-                   health="100"
-                   speed="120"
-                   cost="100"
-                   reward="50"
-                   damage="1"
-                   animationAlias="soldier-animation"
-                   size="140;140"
-                   appearDistance="120"/> <!--textureAlias="soldier"-->
-
-            <Enemy alias="tank"
-                   health="1000"
-                   speed="80"
-                   cost="500"
-                   reward="200"
-                   damage="3"
-                   animationAlias="tank-animation"
-                   size="160;160"
-                   appearDistance="80"/>
-
-            <!-- final swarmer created a swarmer-pack.-->
-            <Enemy alias="swarmer"
-                   health="30"
-                   speed="100"
-                   cost="100"
-                   reward="20"
-                   damage="1"
-                   animationAlias="soldier-animation"
-                   size="80;80"
-                   customType="swarm"
-                   appearDistance="100"/>
-        </Enemies>
-
         <Waves basicReward="200" rewardLevelMultiplier="50">
             <!--The waves from here are hardcoded to better introduce them to the player-->
             <Wave spawnTime="10">
@@ -91,23 +57,4 @@
             <Waypoint>0;3</Waypoint>
         </Waypoints>
     </Spawner>
-
-    <!-- barrelTextureAlias-->
-    <Turrets>
-        <MachineGun
-                barrelAnimationAlias="turret-mg-animation"
-                barrelSize="200;100"
-                barrelOrigin="125;125"
-
-                carriageTextureAlias="turret_carriage"
-                carriageSize="140;140"
-                carriageOrigin="100;100"
-
-                rotationSpeed="120"
-                reloadTime="0.2"
-                fixateDistance="300"
-                firingDistance="270"
-                firingPoints="0,300,0"
-                projectileType="bullet"/>
-    </Turrets>
 </Map>

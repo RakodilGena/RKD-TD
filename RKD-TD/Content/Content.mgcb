@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin configs/enemyconfig.xml
+/copy:configs/enemyconfig.xml
+
+#begin configs/turretconfig.xml
+/copy:configs/turretconfig.xml
+
 #begin fonts/font-atlas-definition.xml
 /copy:fonts/font-atlas-definition.xml
 

@@ -140,6 +140,7 @@ internal sealed class EnemyFactory
 
     public static EnemyFactory FromFile(
         XDocument mapDoc,
+        XDocument enemyConfigDoc,
         TextureAtlas gameObjectsTextures)
     {
         var tileSet = mapDoc.Root!.Element("Tileset")!;
@@ -149,11 +150,7 @@ internal sealed class EnemyFactory
 
         var waypointPath = WaypointPath.FromFile(mapDoc, tileSize);
 
-
-        var enemies = mapDoc.Root!
-            .Element("Spawner")!
-            .Elements("Enemies")
-            .Elements("Enemy");
+        var enemies = enemyConfigDoc.Root!.Elements("Enemy");
 
         Dictionary<string, EnemyTemplate> templates = [];
 

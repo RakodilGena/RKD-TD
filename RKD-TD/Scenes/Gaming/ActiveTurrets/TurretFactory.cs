@@ -62,10 +62,10 @@ internal sealed class TurretFactory
     }
 
     public static TurretFactory FromFile(
-        XDocument doc,
+        XDocument turretConfigDoc,
         TextureAtlas gameObjectTextures)
     {
-        var turretsElement = doc.Root!.Element("Turrets")!;
+        var turretsElement = turretConfigDoc.Root!;
 
         var mgTemplate = CreateTurretTemplate(
             turretsElement,
