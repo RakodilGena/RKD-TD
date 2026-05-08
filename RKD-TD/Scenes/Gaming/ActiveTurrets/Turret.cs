@@ -34,13 +34,18 @@ internal sealed class Turret
         get;
         set
         {
-            field = value;
-            _barrelSprite.Rotation = value;
+            field = WrapAngle(value);
+            _barrelSprite.Rotation = field;
         }
     }
 
     private Enemy? _fixatedEnemy;
-    //private float _idleFixateAngle;
+
+    
+    private readonly float _minIdleTimerSec = 1, _idleTimerMultiplierSec = 4;
+    private float 
+        _idleRotationSpeedRadianInSec, 
+        _idleTimerSec;
 
     public ICamera? Camera
     {
@@ -150,12 +155,7 @@ internal sealed class Turret
             return;
         }
 
-        //todo cant find anything, imitate idle rotation
-        // RotateTowards(_idleFixateAngle, deltaSeconds, out var reachedIdleAngle);
-        // if (reachedIdleAngle)
-        // {
-        //     _idleFixateAngle = MathHelper.ToRadians(Random.Shared.Next(-360, 360));
-        // }
+        HandleIdleRotation(deltaSeconds);
     }
 
     private void HandleReload(float deltaSeconds)
@@ -164,7 +164,12 @@ internal sealed class Turret
             _currentReloadTime -= deltaSeconds * _reloadTimeInSec;
     }
 
-    private void Unfixate() => _fixatedEnemy = null;
+    private void Unfixate()
+    {
+        _fixatedEnemy = null;
+        _idleRotationSpeedRadianInSec = 0f;
+        _idleTimerSec = _minIdleTimerSec * 2;
+    }
 
     private void Fixate(Enemy enemy) => _fixatedEnemy = enemy;
 
@@ -190,10 +195,10 @@ internal sealed class Turret
         return closestTarget;
     }
 
-    private float WrapAngle(float angle)
+    private static float WrapAngle(float angle)
     {
         float twoPi = MathHelper.TwoPi;
-        return ((angle % twoPi) + twoPi) % twoPi;
+        return (angle % twoPi + twoPi) % twoPi;
     }
 
     private void RotateTowards(float desiredAngle, float deltaSeconds, out bool reached)
@@ -219,7 +224,7 @@ internal sealed class Turret
             reached = false;
         }
 
-        CurrentRotation = WrapAngle(newAngle);
+        CurrentRotation = newAngle;
     }
 
     private void Fire(float deltaSeconds)
@@ -233,6 +238,41 @@ internal sealed class Turret
         Console.WriteLine("SHOOTING!");
         //todo implement shooting
         _currentReloadTime += _reloadTimeInSec;
+    }
+
+    private void HandleIdleRotation(float deltaSeconds)
+    {
+        if (_idleTimerSec <= 0)
+        {
+            //resetting idle rotation
+            _idleTimerSec = (float)Random.Shared.NextDouble() * _idleTimerMultiplierSec + _minIdleTimerSec; //from 1 to 4
+
+            //was afk, add angle
+            if (_idleRotationSpeedRadianInSec is 0f)
+            {
+                var speed= (float)Random.Shared.NextDouble() * _rotationSpeedRadianInSec / 3 
+                                                + _rotationSpeedRadianInSec / 6;// from 1/6 of the targetingSpeed to 1/2 of it
+
+                var sign = Random.Shared.Next(2) is 0 ? -1 : 1;
+
+                _idleRotationSpeedRadianInSec = speed * sign;
+            }
+            else
+            {
+                //was rotating, set afk
+                _idleRotationSpeedRadianInSec = 0f;
+            }
+            
+            return;
+        }
+        
+        //keep the same rotation
+        _idleTimerSec -= deltaSeconds;
+        
+        if (_idleRotationSpeedRadianInSec is 0f)
+            return;
+        
+        CurrentRotation += _idleRotationSpeedRadianInSec * deltaSeconds;
     }
 
     /// <summary>
