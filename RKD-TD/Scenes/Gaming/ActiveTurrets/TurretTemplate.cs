@@ -17,4 +17,5 @@ internal sealed record TurretTemplate(
     float FixateDistanceSquared,
     float FiringDistanceSquared,
     TurretFiringPoint[] FiringPoints,
-    string ProjectileType);
+    TurretFiringMode FiringMode,
+    string ProjectileAlias);

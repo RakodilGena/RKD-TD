@@ -12,6 +12,7 @@ using MonoGameLibrary.Scenes;
 using RKD_TD.Scenes.Gaming.ActiveTurrets;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Misc;
+using RKD_TD.Scenes.Gaming.Projectiles;
 using RKD_TD.Scenes.Gaming.PurchaseTurrets;
 using RKD_TD.Scenes.MapSelection;
 
@@ -51,6 +52,7 @@ internal sealed class GamingScene : Scene
 
     private readonly HashSet<Enemy> _enemies = [];
     private readonly HashSet<Turret> _turrets = [];
+    private readonly HashSet<Projectile> _projectiles = [];
 
     private event EventHandler<Enemy>? EnemyRemoved;
 
@@ -214,6 +216,11 @@ internal sealed class GamingScene : Scene
             turret.Draw(sb);
         }
 
+        foreach (var projectile in _projectiles)
+        {
+            projectile.Draw(sb);
+        }
+
         _userResources.Draw(sb);
         _enemySpawner.Draw(sb);
         _fpsMeter.Draw(sb);
@@ -262,6 +269,11 @@ internal sealed class GamingScene : Scene
         foreach (var enemy in _enemies)
         {
             enemy.Update(clockDelta);
+        }
+
+        foreach (var projectile in _projectiles)
+        {
+            projectile.Update(clockDelta);
         }
 
         foreach (var turret in _turrets)
@@ -404,6 +416,7 @@ internal sealed class GamingScene : Scene
         turret.OccupiedCell.IsOccupied = true;
         turret.Camera = _camera;
         EnemyRemoved += turret.OnEnemyRemoved;
+        turret.ProjectilesFired += OnProjectilesFired;
         _turrets.Add(turret);
 
         _userResources.GainCoins(-_pendingTurret.Price);
@@ -422,6 +435,27 @@ internal sealed class GamingScene : Scene
 
         turret.OccupiedCell.IsOccupied = false;
         EnemyRemoved -= turret.OnEnemyRemoved;
+    }
+
+    private void OnProjectilesFired(object? sender, ReadOnlySpan<Projectile> projectiles)
+    {
+        foreach (var projectile in projectiles)
+        {
+            projectile.Exhausted += OnProjectileExhausted;
+            projectile.Camera = _camera;
+            _projectiles.Add(projectile);
+        }
+        //todo: subscribe on move there etc
+    }
+
+    private void OnProjectileExhausted(object? sender, EventArgs e)
+    {
+        RemoveProjectile((Projectile)sender!);
+    }
+
+    private void RemoveProjectile(Projectile projectile)
+    {
+        _projectiles.Remove(projectile);
     }
 
 

@@ -1,20 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- barrelTextureAlias-->
-<Turrets>
-    <MachineGun
-            barrelAnimationAlias="turret-mg-animation"
-            barrelSize="200;100"
-            barrelOrigin="125;125"
+<Root>
+    <Turrets>
+        <!-- barrelTextureAlias XOR barrelAnimationAlias-->
+        <!-- firingMode - single (1st fp), random (one of fps at random), rotation (one by one), all-->
+        <MachineGun
+                barrelAnimationAlias="turret-mg-animation"
+                barrelSize="200;100"
+                barrelOrigin="125;125"
 
-            carriageTextureAlias="turret_carriage"
-            carriageSize="140;140"
-            carriageOrigin="100;100"
+                carriageTextureAlias="turret_carriage"
+                carriageSize="140;140"
+                carriageOrigin="100;100"
 
-            rotationSpeed="120"
-            reloadTime="0.2"
-            fixateDistance="300"
-            firingDistance="270"
-            firingPoints="0,300,0"
-            projectileType="bullet"/>
-  
-</Turrets>
+                rotationSpeed="120"
+                reloadTime="0.1"
+                fixateDistance="300"
+                firingDistance="270"
+
+                firingPoints="-20,300,-5; -10,300,-3; 0,300,0; 10,300,3; 20,300,5"
+                firingMode="random"
+
+                projectileAlias="mg_bullet"/>
+    </Turrets>
+
+    <Projectiles>
+        <!--animationAlias XOR textureAlias-->
+        <!--customType [homing,..]-->
+        <!--aoeRange, aoeDamage-->
+        <Projectile
+                alias="mg_bullet"
+                textureAlias="projectile_bullet"
+                size="20;6"
+                origin="50;15"
+                speed="500"
+                flightRange="400"
+                directDamage="10"
+        />
+    </Projectiles>
+</Root>

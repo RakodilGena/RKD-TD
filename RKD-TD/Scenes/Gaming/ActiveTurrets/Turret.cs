@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
+using MonoGameLibrary.Extensions;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies;
+using RKD_TD.Scenes.Gaming.Projectiles;
 using RKD_TD.Scenes.Gaming.PurchaseTurrets;
 
 namespace RKD_TD.Scenes.Gaming.ActiveTurrets;
@@ -20,11 +22,7 @@ internal sealed class Turret
         _fixateDistanceSquared,
         _firingDistanceSquared;
 
-
-    private readonly TurretFiringPoint[] _firingPoints;
-    private readonly string _projectileType;
-
-    //todo: add ProjectileFactory
+    private readonly TurretBarrel _turretBarrel;
 
 
     private float _currentReloadTime;
@@ -34,15 +32,16 @@ internal sealed class Turret
         get;
         set
         {
-            field = WrapAngle(value);
-            _barrelSprite.Rotation = field;
+            field = value;
+            _barrelSprite.Rotation = value;
         }
     }
 
     private Enemy? _fixatedEnemy;
 
 
-    private readonly float _minIdleTimerSec = 1, _idleTimerMultiplierSec = 4;
+    private const float MIN_IDLE_TIMER_SEC = 1;
+    private const float IDLE_TIMER_MULTIPLIER_SEC = 4;
 
     private float
         _idleRotationSpeedRadianInSec,
@@ -62,6 +61,8 @@ internal sealed class Turret
     public BuildCell OccupiedCell { get; private set; }
 
 
+    public event EventHandler<ReadOnlySpan<Projectile>>? ProjectilesFired;
+
     public Turret(
         Sprite barrelSprite,
         Sprite carriageSprite,
@@ -71,8 +72,10 @@ internal sealed class Turret
         float fixateDistanceSquared,
         float firingDistanceSquared,
         TurretFiringPoint[] firingPoints,
-        string projectileType,
-        BuildCell occupiedCell)
+        TurretFiringMode firingMode,
+        string projectileAlias,
+        BuildCell occupiedCell,
+        ProjectileFactory projectileFactory)
     {
         _barrelSprite = barrelSprite;
         _position = position;
@@ -80,10 +83,10 @@ internal sealed class Turret
         _reloadTimeInSec = reloadTimeInSec;
         _fixateDistanceSquared = fixateDistanceSquared;
         _firingDistanceSquared = firingDistanceSquared;
-        _firingPoints = firingPoints;
-        _projectileType = projectileType;
         OccupiedCell = occupiedCell;
         _carriageSprite = carriageSprite;
+
+        _turretBarrel = new TurretBarrel(firingPoints, projectileFactory, firingMode, projectileAlias);
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -162,14 +165,14 @@ internal sealed class Turret
     private void HandleReload(float deltaSeconds)
     {
         if (_currentReloadTime > 0)
-            _currentReloadTime -= deltaSeconds * _reloadTimeInSec;
+            _currentReloadTime -= deltaSeconds;
     }
 
     private void Unfixate()
     {
         _fixatedEnemy = null;
         _idleRotationSpeedRadianInSec = 0f;
-        _idleTimerSec = _minIdleTimerSec * 2;
+        _idleTimerSec = MIN_IDLE_TIMER_SEC * 2;
     }
 
     private void Fixate(Enemy enemy) => _fixatedEnemy = enemy;
@@ -196,36 +199,14 @@ internal sealed class Turret
         return closestTarget;
     }
 
-    private static float WrapAngle(float angle)
-    {
-        float twoPi = MathHelper.TwoPi;
-        return (angle % twoPi + twoPi) % twoPi;
-    }
-
     private void RotateTowards(float desiredAngle, float deltaSeconds, out bool reached)
     {
-        float desired = WrapAngle(desiredAngle);
-
-        float diff = desired - CurrentRotation;
-
-        // now wrap diff to (-Pi, Pi)
-        if (diff > MathHelper.Pi) diff -= MathHelper.TwoPi;
-        if (diff < -MathHelper.Pi) diff += MathHelper.TwoPi;
-
-        float maxStep = _rotationSpeedRadianInSec * deltaSeconds;
-        float newAngle;
-        if (MathF.Abs(diff) <= maxStep)
-        {
-            newAngle = desiredAngle;
-            reached = true;
-        }
-        else
-        {
-            newAngle = CurrentRotation + MathF.Sign(diff) * maxStep;
-            reached = false;
-        }
-
-        CurrentRotation = newAngle;
+        var newAngle = CurrentRotation.RotateTowards(
+            desiredAngle,
+            _rotationSpeedRadianInSec,
+            deltaSeconds,
+            out reached);
+        CurrentRotation = newAngle.WrapAngle();
     }
 
     private void Fire(float deltaSeconds)
@@ -236,8 +217,11 @@ internal sealed class Turret
             return;
 
 
-        Console.WriteLine("SHOOTING!");
-        //todo implement shooting
+        Console.WriteLine($"SHOOTING! {DateTime.Now}");
+
+        var projectiles = _turretBarrel.CreateProjectiles(_position, CurrentRotation);
+        ProjectilesFired?.Invoke(this, projectiles);
+
         _currentReloadTime += _reloadTimeInSec;
     }
 
@@ -247,7 +231,7 @@ internal sealed class Turret
         {
             //resetting idle rotation
             _idleTimerSec =
-                (float)Random.Shared.NextDouble() * _idleTimerMultiplierSec + _minIdleTimerSec; //from 1 to 4
+                (float)Random.Shared.NextDouble() * IDLE_TIMER_MULTIPLIER_SEC + MIN_IDLE_TIMER_SEC; //from 1 to 4
 
             //was afk, add angle
             if (_idleRotationSpeedRadianInSec is 0f)

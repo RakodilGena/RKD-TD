@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Scenes.Gaming.Projectiles;
 using RKD_TD.Scenes.Gaming.PurchaseTurrets;
 
 namespace RKD_TD.Scenes.Gaming.ActiveTurrets;
@@ -13,10 +14,14 @@ namespace RKD_TD.Scenes.Gaming.ActiveTurrets;
 internal sealed class TurretFactory
 {
     private readonly FrozenDictionary<TurretType, TurretTemplate> _turrets;
+    private readonly ProjectileFactory _projectileFactory;
 
-    public TurretFactory(FrozenDictionary<TurretType, TurretTemplate> turrets)
+    public TurretFactory(
+        FrozenDictionary<TurretType, TurretTemplate> turrets,
+        ProjectileFactory projectileFactory)
     {
         _turrets = turrets;
+        _projectileFactory = projectileFactory;
     }
 
     public Turret CreateTurret(
@@ -57,15 +62,17 @@ internal sealed class TurretFactory
             template.FixateDistanceSquared,
             template.FiringDistanceSquared,
             template.FiringPoints,
-            template.ProjectileType,
-            destination);
+            template.FiringMode,
+            template.ProjectileAlias,
+            destination,
+            _projectileFactory);
     }
 
     public static TurretFactory FromFile(
         XDocument turretConfigDoc,
         TextureAtlas gameObjectTextures)
     {
-        var turretsElement = turretConfigDoc.Root!;
+        var turretsElement = turretConfigDoc.Root!.Element("Turrets")!;
 
         var mgTemplate = CreateTurretTemplate(
             turretsElement,
@@ -77,7 +84,11 @@ internal sealed class TurretFactory
             { TurretType.MachineGun, mgTemplate }
         };
 
-        return new TurretFactory(templates.ToFrozenDictionary());
+        var projectileFactory = ProjectileFactory.FromFile(turretConfigDoc, gameObjectTextures);
+
+        return new TurretFactory(
+            turrets: templates.ToFrozenDictionary(),
+            projectileFactory);
     }
 
     private static TurretTemplate CreateTurretTemplate(
@@ -119,7 +130,7 @@ internal sealed class TurretFactory
         var reloadTime = float.Parse(turretElement.Attribute("reloadTime")!.Value);
         var fixateDistance = float.Parse(turretElement.Attribute("fixateDistance")!.Value);
         var firingDistance = float.Parse(turretElement.Attribute("firingDistance")!.Value);
-        var projectileType = turretElement.Attribute("projectileType")!.Value;
+        var projectileAlias = turretElement.Attribute("projectileAlias")!.Value;
 
         var firingPoints = turretElement.Attribute("firingPoints")!.Value
             .Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
@@ -129,10 +140,20 @@ internal sealed class TurretFactory
                     .ToArray()
             )
             .Select(pointValues => new TurretFiringPoint(
-                Position: new Vector2(pointValues[0], pointValues[1]),
+                Position: new Vector2(
+                    x: pointValues[0] * barrelScale.X,
+                    y: pointValues[1] * barrelScale.Y),
                 BulletExtraAngleInRadians: MathHelper.ToRadians(pointValues[2])))
             .ToArray();
 
+        var firingModeValue = turretElement.Attribute("firingMode")?.Value;
+        var firingMode = firingModeValue switch
+        {
+            "random" => TurretFiringMode.Random,
+            "all" => TurretFiringMode.All,
+            "rotation" => TurretFiringMode.Rotation,
+            _ => TurretFiringMode.Single
+        };
 
         return new TurretTemplate(
             barrelTexture,
@@ -147,7 +168,8 @@ internal sealed class TurretFactory
             FixateDistanceSquared: fixateDistance * fixateDistance,
             FiringDistanceSquared: firingDistance * firingDistance,
             firingPoints,
-            projectileType);
+            firingMode,
+            projectileAlias);
 
         static Vector2 CalculateScale(
             float[] size,
