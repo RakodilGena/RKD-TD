@@ -43,7 +43,7 @@ internal sealed class TitleScene : Scene
         const string mainTitleText = "RKD TOWER DEFENSE";
         var textCenter = kwFont180.MeasureString(mainTitleText) / 2;
 
-        _gameTitle = new Label(
+        _gameTitle = new BorderedLabel(
             position: new Vector2(
                 screenCenter,
                 80),
@@ -52,9 +52,11 @@ internal sealed class TitleScene : Scene
                 0),
             mainTitleText,
             kwFont180,
-            Color.Black,
+            color: Color.Green,
             scale: Vector2.One,
-            layerDepth: 1);
+            layerDepth: 1,
+            borderColor: Color.Black,
+            borderWidth: new Vector2(3));
     }
 
     private void InitTitleMenu()

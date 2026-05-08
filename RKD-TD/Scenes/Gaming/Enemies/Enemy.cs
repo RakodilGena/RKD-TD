@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
+using MonoGameLibrary.Collisions;
 using MonoGameLibrary.Graphics.Sprites;
 
 namespace RKD_TD.Scenes.Gaming.Enemies;
@@ -21,10 +22,10 @@ internal class Enemy
     private int _currentWaypointIndex;
     private readonly WaypointPath _path;
     private readonly Vector2 _origin;
+    private readonly int _hitCircleRadius;
 
-
-    private Vector2 _positionForMovement, _positionOnScreen;
-    public Vector2 Target { get; private set; }
+    private Vector2 _positionForMovement;
+    public Vector2 Center { get; private set; }
 
     private readonly float _appearDistance;
     private float _pathTraveled;
@@ -37,7 +38,7 @@ internal class Enemy
         set
         {
             _sprite.Camera = value;
-            RecalculateSecondaryPositions();
+            CalculateCenter();
         }
     }
 
@@ -54,7 +55,8 @@ internal class Enemy
         WaypointPath path,
         Vector2 positionInTile,
         Vector2 origin,
-        float appearDistance)
+        float appearDistance,
+        int hitCircleRadius)
     {
         _maxHealth = _currentHealth = maxHealth;
         _speed = speed;
@@ -70,6 +72,7 @@ internal class Enemy
         _positionInTile = positionInTile;
         _origin = origin;
         _appearDistance = appearDistance;
+        _hitCircleRadius = hitCircleRadius;
         _damage = damage;
 
         _positionForMovement = path.Start;
@@ -105,6 +108,8 @@ internal class Enemy
 
         _sprite.Update(deltaSeconds);
 
+        //todo: handle dying here
+
         if (HandleReachedEnd())
             return;
 
@@ -115,7 +120,7 @@ internal class Enemy
 
         HandleState();
 
-        RecalculateSecondaryPositions();
+        CalculateCenter();
     }
 
     private bool HandleReachedEnd()
@@ -128,7 +133,7 @@ internal class Enemy
         return true;
     }
 
-    private void ReceiveDamage(int damage)
+    public void ReceiveDamage(int damage)
     {
         _currentHealth -= damage;
     }
@@ -141,6 +146,8 @@ internal class Enemy
         Destroyed?.Invoke(this, _reward);
         State = EnemyState.Finished;
         return true;
+
+        //todo: if any dying animation then it starts here. 
     }
 
     private void MoveTowardsPath(float deltaSeconds)
@@ -225,33 +232,13 @@ internal class Enemy
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        _sprite.Draw(spriteBatch, _positionOnScreen);
+        _sprite.Draw(spriteBatch, Center);
     }
 
-    private void RecalculateSecondaryPositions()
+    private void CalculateCenter()
     {
-        CalculatePositionOnScreen();
-        CalculateTarget();
+        Center = _positionForMovement + _positionInTile + _origin * _initialScale;
     }
 
-    private void CalculatePositionOnScreen()
-    {
-        var (originScale, _) = Camera.WorldToScreen(_initialScale, _origin);
-
-        _positionOnScreen = _positionForMovement + _positionInTile + _origin * originScale;
-    }
-
-    private void CalculateTarget()
-    {
-        Target = _positionForMovement + _positionInTile + _origin * _initialScale;
-        //todo: recalculate rectangle here?
-    }
-
-    public enum EnemyState
-    {
-        Appearing,
-        Vulnerable,
-        Disappearing,
-        Finished
-    }
+    public Circle HitCircle => new(Center, _hitCircleRadius);
 }

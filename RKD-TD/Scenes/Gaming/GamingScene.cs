@@ -273,7 +273,7 @@ internal sealed class GamingScene : Scene
 
         foreach (var projectile in _projectiles)
         {
-            projectile.Update(clockDelta);
+            projectile.Update(_enemies, clockDelta);
         }
 
         foreach (var turret in _turrets)
@@ -442,6 +442,7 @@ internal sealed class GamingScene : Scene
         foreach (var projectile in projectiles)
         {
             projectile.Exhausted += OnProjectileExhausted;
+            projectile.Exploded += OnProjectileExploded;
             projectile.Camera = _camera;
             _projectiles.Add(projectile);
         }
@@ -450,6 +451,12 @@ internal sealed class GamingScene : Scene
 
     private void OnProjectileExhausted(object? sender, EventArgs e)
     {
+        RemoveProjectile((Projectile)sender!);
+    }
+
+    private void OnProjectileExploded(object? sender, EventArgs e)
+    {
+        //todo: put explosion here
         RemoveProjectile((Projectile)sender!);
     }
 

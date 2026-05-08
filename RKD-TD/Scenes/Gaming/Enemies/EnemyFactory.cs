@@ -57,7 +57,8 @@ internal sealed class EnemyFactory
                 _waypointPath,
                 positionInTile,
                 template.Origin,
-                template.AppearDistance);
+                template.AppearDistance,
+                template.HitCircleRadius);
 
             return [enemy];
         }
@@ -85,7 +86,8 @@ internal sealed class EnemyFactory
                     _waypointPath,
                     positionInTile,
                     template.Origin,
-                    template.AppearDistance);
+                    template.AppearDistance,
+                    template.HitCircleRadius);
 
                 enemies[i] = enemy;
             }
@@ -96,7 +98,7 @@ internal sealed class EnemyFactory
         throw new ArgumentOutOfRangeException(nameof(template.Type));
     }
 
-    Sprite GetSprite(EnemyTemplate tmp)
+    private static Sprite GetSprite(EnemyTemplate tmp)
     {
         Sprite sprite;
 
@@ -194,6 +196,8 @@ internal sealed class EnemyFactory
 
             var (scale, origin) = CalculateScaleAndOrigin(size, texture, animation);
 
+            var hitCircleRadius = int.Parse(enemy.Attribute("hitCircleRadius")!.Value);
+
             var template = new EnemyTemplate(
                 alias,
                 health,
@@ -206,7 +210,8 @@ internal sealed class EnemyFactory
                 scale,
                 texture,
                 animation,
-                origin);
+                origin,
+                hitCircleRadius);
 
             templates[alias] = template;
         }

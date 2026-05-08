@@ -12,6 +12,7 @@ internal sealed record ProjectileTemplate(
     Vector2 Scale,
     float Speed,
     float FlightRange,
-    float DirectDamage,
+    int DirectDamage,
     float AoeRange,
-    float AoeDamage);
+    int AoeDamage,
+    int HitCircleRadius);

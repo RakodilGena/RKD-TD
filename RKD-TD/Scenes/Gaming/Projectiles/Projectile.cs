@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
+using MonoGameLibrary.Collisions;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Scenes.Gaming.Enemies;
 
 namespace RKD_TD.Scenes.Gaming.Projectiles;
 
@@ -23,13 +26,14 @@ internal class Projectile
     private readonly float
         _speed,
         _flightRange,
-        _directDamage,
-        _aoeDamage,
         _aoeRange;
+
+    private readonly int _directDamage, _aoeDamage, _hitCircleRadius;
 
     private Vector2 _position;
 
     private float _pathTraveled;
+    private bool _dead;
 
     public ICamera? Camera
     {
@@ -42,13 +46,15 @@ internal class Projectile
     }
 
     public event EventHandler? Exhausted;
+    public event EventHandler? Exploded;
 
     public Projectile(
         Sprite sprite,
         float speed,
         float flightRange,
-        float directDamage,
-        float aoeDamage,
+        int hitCircleRadius,
+        int directDamage,
+        int aoeDamage,
         float aoeRange,
         Vector2 position,
         float rotation)
@@ -60,6 +66,7 @@ internal class Projectile
         _aoeDamage = aoeDamage;
         _aoeRange = aoeRange;
         Rotation = rotation;
+        _hitCircleRadius = hitCircleRadius;
         _position = position;
     }
 
@@ -68,14 +75,57 @@ internal class Projectile
         _sprite.Draw(spriteBatch, _position);
     }
 
-    public void Update(float deltaSeconds)
+    public void Update(
+        HashSet<Enemy> enemies,
+        float deltaSeconds)
     {
-        if (_pathTraveled > _flightRange)
-        {
-            Exhausted?.Invoke(this, EventArgs.Empty);
+        if (_dead)
             return;
+
+        if (HandleExhausted())
+            return;
+
+        if (HandleHit(enemies))
+            return;
+
+        HandleMove(deltaSeconds);
+    }
+
+    private bool HandleExhausted()
+    {
+        if (_pathTraveled < _flightRange)
+            return false;
+
+        Exhausted?.Invoke(this, EventArgs.Empty);
+        _dead = true;
+        return true;
+    }
+
+    private bool HandleHit(HashSet<Enemy> enemies)
+    {
+        foreach (var enemy in enemies)
+        {
+            if (enemy.State is not EnemyState.Vulnerable)
+                continue;
+
+            var enemyCircle = enemy.HitCircle;
+            var circle = new Circle(_position, _hitCircleRadius);
+
+            if (enemyCircle.Intersects(circle))
+            {
+                enemy.ReceiveDamage(_directDamage);
+                Exploded?.Invoke(this, EventArgs.Empty);
+                _dead = true;
+                return true;
+                //todo: put explosion into event args (from factory)
+            }
         }
 
+        return false;
+    }
+
+    private void HandleMove(float deltaSeconds)
+    {
         var momentSpeed = _speed * deltaSeconds;
 
         _position += new Vector2(

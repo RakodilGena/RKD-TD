@@ -42,6 +42,7 @@ internal sealed class ProjectileFactory
             sprite,
             template.Speed,
             template.FlightRange,
+            template.HitCircleRadius,
             template.DirectDamage,
             template.AoeDamage,
             template.AoeRange,
@@ -84,7 +85,7 @@ internal sealed class ProjectileFactory
 
             var speed = float.Parse(projElement.Attribute("speed")?.Value!);
             var flightRange = float.Parse(projElement.Attribute("flightRange")?.Value!);
-            var directDamage = float.Parse(projElement.Attribute("directDamage")?.Value!);
+            var directDamage = int.Parse(projElement.Attribute("directDamage")?.Value!);
 
             var aoeRangeValue = projElement.Attribute("aoeRange")?.Value;
             var aoeRange = !string.IsNullOrEmpty(aoeRangeValue)
@@ -93,8 +94,10 @@ internal sealed class ProjectileFactory
 
             var aoeDamageValue = projElement.Attribute("aoeDamage")?.Value;
             var aoeDamage = !string.IsNullOrEmpty(aoeDamageValue)
-                ? float.Parse(aoeDamageValue)
+                ? int.Parse(aoeDamageValue)
                 : 0;
+
+            var hitCircleRadius = int.Parse(projElement.Attribute("hitCircleRadius")!.Value);
 
             templates.Add(
                 new ProjectileTemplate(
@@ -107,7 +110,8 @@ internal sealed class ProjectileFactory
                     flightRange,
                     directDamage,
                     aoeRange,
-                    aoeDamage));
+                    aoeDamage,
+                    hitCircleRadius));
         }
 
         return new ProjectileFactory(

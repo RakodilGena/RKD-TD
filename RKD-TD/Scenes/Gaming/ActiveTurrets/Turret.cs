@@ -104,13 +104,13 @@ internal sealed class Turret
         //if enemy fixated - check distance.
         if (_fixatedEnemy is not null)
         {
-            if (_fixatedEnemy.State is not Enemy.EnemyState.Vulnerable)
+            if (_fixatedEnemy.State is not EnemyState.Vulnerable)
             {
                 Unfixate();
                 return;
             }
 
-            var vectorToEnemy = _fixatedEnemy.Target - _position;
+            var vectorToEnemy = _fixatedEnemy.Center - _position;
             var distanceToEnemySquared = vectorToEnemy.LengthSquared();
             if (distanceToEnemySquared > _fixateDistanceSquared)
             {
@@ -184,10 +184,10 @@ internal sealed class Turret
 
         foreach (var enemy in enemies)
         {
-            if (enemy.State is not Enemy.EnemyState.Vulnerable)
+            if (enemy.State is not EnemyState.Vulnerable)
                 continue;
 
-            var distanceToEnemy = (enemy.Target - _position).LengthSquared();
+            var distanceToEnemy = (enemy.Center - _position).LengthSquared();
 
             if (minDistance < distanceToEnemy)
                 continue;
@@ -215,9 +215,6 @@ internal sealed class Turret
 
         if (_currentReloadTime > 0)
             return;
-
-
-        Console.WriteLine($"SHOOTING! {DateTime.Now}");
 
         var projectiles = _turretBarrel.CreateProjectiles(_position, CurrentRotation);
         ProjectilesFired?.Invoke(this, projectiles);

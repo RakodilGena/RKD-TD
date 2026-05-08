@@ -53,6 +53,12 @@ public sealed class BorderedLabel : Label
             DrawBorder(spriteBatch, -verticalVector);
         }
 
+        // DrawBorder(spriteBatch, BorderWidth);
+        // DrawBorder(spriteBatch, -BorderWidth);
+        //
+        // DrawBorder(spriteBatch, new Vector2(BorderWidth.X, -BorderWidth.Y));
+        // DrawBorder(spriteBatch, new Vector2(-BorderWidth.X, BorderWidth.Y));
+
         base.Draw(spriteBatch);
     }
 

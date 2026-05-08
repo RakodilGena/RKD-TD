@@ -5,11 +5,11 @@
         <!-- firingMode - single (1st fp), random (one of fps at random), rotation (one by one), all-->
         <MachineGun
                 barrelAnimationAlias="turret-mg-animation"
-                barrelSize="200;100"
-                barrelOrigin="125;125"
+                barrelSize="180;90"
+                barrelOrigin="135;125"
 
                 carriageTextureAlias="turret_carriage"
-                carriageSize="140;140"
+                carriageSize="120;120"
                 carriageOrigin="100;100"
 
                 rotationSpeed="120"
@@ -17,7 +17,7 @@
                 fixateDistance="300"
                 firingDistance="270"
 
-                firingPoints="-20,300,-5; -10,300,-3; 0,300,0; 10,300,3; 20,300,5"
+                firingPoints="-20,290,-5; -10,290,-3; 0,290,0; 10,290,3; 20,290,5"
                 firingMode="random"
 
                 projectileAlias="mg_bullet"/>
@@ -35,6 +35,7 @@
                 speed="500"
                 flightRange="400"
                 directDamage="10"
+                hitCircleRadius="5"
         />
     </Projectiles>
 </Root>

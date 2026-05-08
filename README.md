@@ -6,7 +6,7 @@ TODOs:
 2. develop enemy health bars
 3. develop homing missile
 4. develop selling and leveling system
-5. finish other tower types 
+5. finish other tower types
 6. finish enemy types
 7. finish auto-spawner
 8. add actual field textures (painted)

@@ -8,7 +8,10 @@
            reward="50"
            damage="1"
            animationAlias="soldier-animation"
+
            size="140;140"
+           hitCircleRadius="60"
+
            appearDistance="120"/> <!--textureAlias="soldier"-->
 
     <Enemy alias="tank"
@@ -18,7 +21,10 @@
            reward="200"
            damage="3"
            animationAlias="tank-animation"
+           
            size="160;160"
+           hitCircleRadius="70"
+
            appearDistance="80"/>
 
     <!-- final swarmer created a swarmer-pack.-->
@@ -29,7 +35,10 @@
            reward="20"
            damage="1"
            animationAlias="soldier-animation"
+
            size="80;80"
+           hitCircleRadius="35"
+
            customType="swarm"
            appearDistance="100"/>
 </Enemies>
