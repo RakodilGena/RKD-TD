@@ -2,30 +2,13 @@
 
 TODOs:
 
-develop and test towers one by one. Roadmap: add turret -> develop buying/purchasing/upgrading system -> damage
-system, enemies damaging and dying -> develop other towers
-
-TILES Types:
-LEGEND
-
-чято надо для пушки?
-
-текстура
-позиция
-скорость вращения
-центр вращения
-частота стрельбы FireRate
-точка отстрела патрона + вектор отклонения, причем в массиве (для дробика)
-сам тип рождаемого патрона
-дистанция фиксации на цели
-дистанция эффективной стрельбы
-положим в пушку фабрику патронов?
-
-патрон___
-текстура
-позиция
-ротация
-урон
-сам ректангл патрона
-АОЕ радиус (0 и выше) - это если взрыв.
-дальность полета
+1. develop damaging system (including aoe)
+2. develop enemy health bars
+3. develop homing missile
+4. develop selling and leveling system
+5. finish other tower types 
+6. finish enemy types
+7. finish auto-spawner
+8. add actual field textures (painted)
+9. paint unpainted stuff
+10. put title pic to title and scene
