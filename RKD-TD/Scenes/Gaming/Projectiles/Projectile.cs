@@ -73,6 +73,11 @@ internal class Projectile
     public void Draw(SpriteBatch spriteBatch)
     {
         _sprite.Draw(spriteBatch, _position);
+
+        if (GameCore.DRAW_HIT_BOX)
+        {
+            Circle.DrawHitCircle(spriteBatch, Camera, _position, _hitCircleRadius, Color.BlueViolet);
+        }
     }
 
     public void Update(
