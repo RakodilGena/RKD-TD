@@ -6,7 +6,7 @@ using MonoGameLibrary.Graphics.Sprites;
 
 namespace RKD_TD.Scenes.Gaming.Animations;
 
-internal sealed class GunShotFlash
+internal sealed class Flash
 {
     private readonly Vector2 _position;
     private readonly AnimatedSprite _sprite;
@@ -22,7 +22,7 @@ internal sealed class GunShotFlash
 
     public event EventHandler? Finished;
 
-    public GunShotFlash(AnimatedSprite sprite, Vector2 position)
+    public Flash(AnimatedSprite sprite, Vector2 position)
     {
         _sprite = sprite;
         _position = position;

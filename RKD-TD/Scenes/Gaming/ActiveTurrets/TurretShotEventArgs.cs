@@ -7,11 +7,11 @@ namespace RKD_TD.Scenes.Gaming.ActiveTurrets;
 internal readonly ref struct TurretShotEventArgs
 {
     public readonly ReadOnlySpan<Projectile> Projectiles;
-    public readonly ReadOnlySpan<GunShotFlash> Flashes;
+    public readonly ReadOnlySpan<Flash> Flashes;
 
     public TurretShotEventArgs(
         ReadOnlySpan<Projectile> projectiles,
-        ReadOnlySpan<GunShotFlash> flashes)
+        ReadOnlySpan<Flash> flashes)
     {
         Projectiles = projectiles;
         Flashes = flashes;

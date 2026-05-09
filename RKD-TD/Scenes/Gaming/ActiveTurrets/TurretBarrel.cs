@@ -16,7 +16,7 @@ internal sealed class TurretBarrel
     private readonly string _flashAlias;
 
     private readonly ProjectileFactory _projectileFactory;
-    private readonly GunShotFlashFactory _gunShotFlashFactory;
+    private readonly FlashFactory _flashFactory;
 
     private int _currentFiringPointIdx;
 
@@ -27,18 +27,18 @@ internal sealed class TurretBarrel
         string projectileAlias,
         string flashAlias,
         ProjectileFactory projectileFactory,
-        GunShotFlashFactory gunShotFlashFactory)
+        FlashFactory flashFactory)
     {
         _firingPoints = firingPoints;
         _projectileFactory = projectileFactory;
         _firingMode = firingMode;
         _projectileAlias = projectileAlias;
         _flashAlias = flashAlias;
-        _gunShotFlashFactory = gunShotFlashFactory;
+        _flashFactory = flashFactory;
         _gunFlashPoints = gunFlashPoints;
     }
 
-    public (Projectile[] projectiles, GunShotFlash[] flashes) Fire(
+    public (Projectile[] projectiles, Flash[] flashes) Fire(
         Vector2 turretCenter,
         float rotation)
     {
@@ -81,7 +81,7 @@ internal sealed class TurretBarrel
         {
             //all
             var projectiles = new Projectile[_firingPoints.Length];
-            var flashes = new GunShotFlash[_firingPoints.Length];
+            var flashes = new Flash[_firingPoints.Length];
 
             for (int pointIdx = 0; pointIdx < _firingPoints.Length; pointIdx++)
             {
@@ -98,7 +98,7 @@ internal sealed class TurretBarrel
         }
     }
 
-    private (Projectile projectile, GunShotFlash flash) CreateProjectileAndFlash(
+    private (Projectile projectile, Flash flash) CreateProjectileAndFlash(
         Vector2 turretCenter,
         float rotation,
         int pointIdx)
@@ -119,7 +119,7 @@ internal sealed class TurretBarrel
             _gunFlashPoints[pointIdx],
             rotation);
 
-        var flash = _gunShotFlashFactory.Create(
+        var flash = _flashFactory.Create(
             _flashAlias,
             flashPointAbsolutePosition,
             rotation);

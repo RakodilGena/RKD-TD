@@ -79,7 +79,7 @@ internal sealed class Turret
         string flashAlias,
         BuildCell occupiedCell,
         ProjectileFactory projectileFactory,
-        GunShotFlashFactory gunShotFlashFactory)
+        FlashFactory flashFactory)
     {
         _barrelSprite = barrelSprite;
         _position = position;
@@ -97,7 +97,7 @@ internal sealed class Turret
             projectileAlias,
             flashAlias,
             projectileFactory,
-            gunShotFlashFactory);
+            flashFactory);
     }
 
     public void Draw(SpriteBatch spriteBatch)

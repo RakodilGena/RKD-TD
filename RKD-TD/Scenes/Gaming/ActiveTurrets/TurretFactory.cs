@@ -17,12 +17,12 @@ internal sealed class TurretFactory
 {
     private readonly FrozenDictionary<TurretType, TurretTemplate> _turrets;
     private readonly ProjectileFactory _projectileFactory;
-    private readonly GunShotFlashFactory _gunshotFlashFactory;
+    private readonly FlashFactory _gunshotFlashFactory;
 
     public TurretFactory(
         FrozenDictionary<TurretType, TurretTemplate> turrets,
         ProjectileFactory projectileFactory,
-        GunShotFlashFactory gunshotFlashFactory)
+        FlashFactory gunshotFlashFactory)
     {
         _turrets = turrets;
         _projectileFactory = projectileFactory;
@@ -93,7 +93,7 @@ internal sealed class TurretFactory
         };
 
         var projectileFactory = ProjectileFactory.FromFile(turretConfigDoc, gameObjectTextures);
-        var gunShotFlashFactory = GunShotFlashFactory.FromFile(turretConfigDoc, gameObjectTextures);
+        var gunShotFlashFactory = FlashFactory.FromFile(turretConfigDoc, gameObjectTextures);
 
         return new TurretFactory(
             turrets: templates.ToFrozenDictionary(),

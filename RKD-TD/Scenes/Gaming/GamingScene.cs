@@ -54,7 +54,7 @@ internal sealed class GamingScene : Scene
     private readonly HashSet<Enemy> _enemies = [];
     private readonly HashSet<Turret> _turrets = [];
     private readonly HashSet<Projectile> _projectiles = [];
-    private readonly HashSet<GunShotFlash> _flashes = [];
+    private readonly HashSet<Flash> _flashes = [];
 
     private event EventHandler<Enemy>? EnemyRemoved;
 
@@ -480,7 +480,7 @@ internal sealed class GamingScene : Scene
 
     private void OnFlashFinished(object? sender, EventArgs e)
     {
-        _flashes.Remove((GunShotFlash)sender!);
+        _flashes.Remove((Flash)sender!);
     }
 
     private void RemoveProjectile(Projectile projectile)

@@ -8,16 +8,16 @@ using RKD_TD.Helpers;
 
 namespace RKD_TD.Scenes.Gaming.Animations;
 
-internal sealed class GunShotFlashFactory
+internal sealed class FlashFactory
 {
-    private readonly FrozenDictionary<string, GunShotFlashTemplate> _flashTemplates;
+    private readonly FrozenDictionary<string, FlashTemplate> _flashTemplates;
 
-    public GunShotFlashFactory(FrozenDictionary<string, GunShotFlashTemplate> flashTemplates)
+    public FlashFactory(FrozenDictionary<string, FlashTemplate> flashTemplates)
     {
         _flashTemplates = flashTemplates;
     }
 
-    public GunShotFlash Create(
+    public Flash Create(
         string flashAlias,
         Vector2 position,
         float angle)
@@ -31,12 +31,12 @@ internal sealed class GunShotFlashFactory
             Origin = tmp.Origin
         };
 
-        return new GunShotFlash(
+        return new Flash(
             sprite,
             position);
     }
 
-    public static GunShotFlashFactory FromFile(
+    public static FlashFactory FromFile(
         XDocument turretConfig,
         TextureAtlas gameObjectTextures)
     {
@@ -44,7 +44,7 @@ internal sealed class GunShotFlashFactory
             .Element("Flashes")!
             .Elements("Flash");
 
-        List<GunShotFlashTemplate> templates = [];
+        List<FlashTemplate> templates = [];
 
         foreach (var flashElement in flashElements)
         {
@@ -58,14 +58,14 @@ internal sealed class GunShotFlashFactory
             var scale = TextureHelper.CalculateScale(size, textureRegion: null, animation);
 
             templates.Add(
-                new GunShotFlashTemplate(
+                new FlashTemplate(
                     alias,
                     animation,
                     Origin: new Vector2(origin[0], origin[1]),
                     scale));
         }
 
-        return new GunShotFlashFactory(
+        return new FlashFactory(
             templates.ToFrozenDictionary(t => t.Alias));
     }
 }
