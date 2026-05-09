@@ -10,6 +10,7 @@ using MonoGameLibrary.Graphics.Tiles;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.Scenes;
 using RKD_TD.Scenes.Gaming.ActiveTurrets;
+using RKD_TD.Scenes.Gaming.Animations;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Misc;
 using RKD_TD.Scenes.Gaming.Projectiles;
@@ -53,6 +54,7 @@ internal sealed class GamingScene : Scene
     private readonly HashSet<Enemy> _enemies = [];
     private readonly HashSet<Turret> _turrets = [];
     private readonly HashSet<Projectile> _projectiles = [];
+    private readonly HashSet<GunShotFlash> _flashes = [];
 
     private event EventHandler<Enemy>? EnemyRemoved;
 
@@ -221,6 +223,11 @@ internal sealed class GamingScene : Scene
             projectile.Draw(sb);
         }
 
+        foreach (var flash in _flashes)
+        {
+            flash.Draw(sb);
+        }
+        
         _userResources.Draw(sb);
         _enemySpawner.Draw(sb);
         _fpsMeter.Draw(sb);
@@ -271,6 +278,11 @@ internal sealed class GamingScene : Scene
             enemy.Update(clockDelta);
         }
 
+        foreach (var flash in _flashes)
+        {
+            flash.Update(clockDelta);
+        }
+
         foreach (var projectile in _projectiles)
         {
             projectile.Update(_enemies, clockDelta);
@@ -291,15 +303,7 @@ internal sealed class GamingScene : Scene
     {
         var kb = Core.Input.Keyboard;
         var mouse = Core.Input.Mouse;
-        if (_gameState is GameState.Normal)
-        {
-            if (kb.WasKeyJustPressed(Keys.Escape))
-            {
-                Core.ChangeScene(new MapSelectionScene());
-                return;
-            }
-        }
-        else
+        if (_gameState is GameState.PlacingTurret)
         {
             if (kb.WasKeyJustPressed(Keys.Escape) || mouse.WasButtonJustPressed(MouseButton.Right))
             {
@@ -318,6 +322,14 @@ internal sealed class GamingScene : Scene
                     PlaceTurret(cell);
                     CancelTurretPlacing();
                 }
+            }
+        }
+        else if (_gameState is GameState.Normal)
+        {
+            if (kb.WasKeyJustPressed(Keys.Escape))
+            {
+                Core.ChangeScene(new MapSelectionScene());
+                return;
             }
         }
 
@@ -437,16 +449,22 @@ internal sealed class GamingScene : Scene
         EnemyRemoved -= turret.OnEnemyRemoved;
     }
 
-    private void OnProjectilesFired(object? sender, ReadOnlySpan<Projectile> projectiles)
+    private void OnProjectilesFired(object? sender, TurretShotEventArgs e)
     {
-        foreach (var projectile in projectiles)
+        foreach (var projectile in e.Projectiles)
         {
             projectile.Exhausted += OnProjectileExhausted;
             projectile.Exploded += OnProjectileExploded;
             projectile.Camera = _camera;
             _projectiles.Add(projectile);
         }
-        //todo: subscribe on move there etc
+
+        foreach (var flash in e.Flashes)
+        {
+            flash.Finished += OnFlashFinished;
+            flash.Camera = _camera;
+            _flashes.Add(flash);
+        }
     }
 
     private void OnProjectileExhausted(object? sender, EventArgs e)
@@ -456,8 +474,13 @@ internal sealed class GamingScene : Scene
 
     private void OnProjectileExploded(object? sender, EventArgs e)
     {
-        //todo: put explosion here
         RemoveProjectile((Projectile)sender!);
+        //todo: put explosion here
+    }
+
+    private void OnFlashFinished(object? sender, EventArgs e)
+    {
+        _flashes.Remove((GunShotFlash)sender!);
     }
 
     private void RemoveProjectile(Projectile projectile)

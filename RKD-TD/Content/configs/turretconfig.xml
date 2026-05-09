@@ -14,13 +14,16 @@
 
                 rotationSpeed="120"
                 reloadTime="0.1"
-                fixateDistance="300"
-                firingDistance="270"
+                fixateDistance="500"
+                firingDistance="400"
 
-                firingPoints="290,-20,-5; 290,-10,-3; 290,0,0; 290,10,3; 290,20,5"
+                firingPoints="270,-20,-5; 270,-10,-3; 270,0,0; 270,10,3; 270,20,5"
                 firingMode="random"
-
-                projectileAlias="mg_bullet"/>
+                flashPoints="260,-15; 260,-8; 260,0; 260,8; 260,15"
+                
+                
+                projectileAlias="mg_bullet"
+                flashAlias="mg_flash"/>
     </Turrets>
 
     <Projectiles>
@@ -33,9 +36,19 @@
                 size="20;6"
                 origin="50;15"
                 speed="500"
-                flightRange="400"
-                directDamage="10"
+                flightRange="500"
+                directDamage="2"
                 hitCircleRadius="5"
         />
     </Projectiles>
+    
+    <Flashes>
+        <Flash 
+                alias="mg_flash"
+                animationAlias="flash-mg-animation-alt"
+                size="50;50"
+                origin="0;100"
+        />
+        
+    </Flashes>
 </Root>

@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Helpers;
 
 namespace RKD_TD.Scenes.Gaming.Enemies;
 
@@ -174,10 +175,6 @@ internal sealed class EnemyFactory
             };
             //customType="swarm"
 
-            var size = enemy.Attribute("size")!.Value
-                .Split(';')
-                .Select(float.Parse)
-                .ToArray();
 
             var textureAlias = enemy.Attribute("textureAlias")?.Value;
             var animationAlias = enemy.Attribute("animationAlias")?.Value;
@@ -194,7 +191,9 @@ internal sealed class EnemyFactory
                 ? null
                 : gameObjectsTextures.GetAnimation(animationAlias);
 
-            var (scale, origin) = CalculateScaleAndOrigin(size, texture, animation);
+            var size = ParseHelper.ParseToFloatArr(enemy, "size", ';');
+            
+            var (scale, origin) = TextureHelper.CalculateScaleAndOrigin(size, texture, animation);
 
             var hitCircleRadius = int.Parse(enemy.Attribute("hitCircleRadius")!.Value);
 
@@ -220,35 +219,5 @@ internal sealed class EnemyFactory
             templates.ToFrozenDictionary(),
             waypointPath,
             tileSize);
-
-        static (Vector2 scale, Vector2 origin) CalculateScaleAndOrigin(
-            float[] size,
-            TextureRegion? textureRegion,
-            Animation? animation)
-        {
-            Vector2 scale, origin;
-            if (textureRegion is not null)
-            {
-                scale = new Vector2(
-                    size[0] / textureRegion.Width,
-                    size[1] / textureRegion.Height);
-
-                origin = new Vector2(
-                    textureRegion.Width * 0.5f,
-                    textureRegion.Height * 0.5f);
-            }
-            else
-            {
-                scale = new Vector2(
-                    size[0] / animation!.Frames[0].Width,
-                    size[1] / animation.Frames[0].Height);
-
-                origin = new Vector2(
-                    animation.Frames[0].Width * 0.5f,
-                    animation.Frames[0].Height * 0.5f);
-            }
-
-            return (scale, origin);
-        }
     }
 }

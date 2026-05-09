@@ -10,7 +10,7 @@
            animationAlias="soldier-animation"
 
            size="140;140"
-           hitCircleRadius="60"
+           hitCircleRadius="52"
 
            appearDistance="120"/> <!--textureAlias="soldier"-->
 
@@ -23,7 +23,7 @@
            animationAlias="tank-animation"
            
            size="160;160"
-           hitCircleRadius="70"
+           hitCircleRadius="60"
 
            appearDistance="80"/>
 
@@ -37,7 +37,7 @@
            animationAlias="soldier-animation"
 
            size="80;80"
-           hitCircleRadius="35"
+           hitCircleRadius="30"
 
            customType="swarm"
            appearDistance="100"/>

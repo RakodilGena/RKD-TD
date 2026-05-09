@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Helpers;
 
 namespace RKD_TD.Scenes.Gaming.Projectiles;
 
@@ -79,9 +80,9 @@ internal sealed class ProjectileFactory
                 : gameObjectTextures.GetAnimation(projAnimationAlias);
 
             var alias = projElement.Attribute("alias")?.Value!;
-            var projOrigin = ParseToFloatArr(projElement, "origin");
-            var projSize = ParseToFloatArr(projElement, "size");
-            var projScale = CalculateScale(projSize, projTexture, projAnimation);
+            var projOrigin = ParseHelper.ParseToFloatArr(projElement, "origin", ';');
+            var projSize = ParseHelper.ParseToFloatArr(projElement, "size", ';');
+            var projScale = TextureHelper.CalculateScale(projSize, projTexture, projAnimation);
 
             var speed = float.Parse(projElement.Attribute("speed")?.Value!);
             var flightRange = float.Parse(projElement.Attribute("flightRange")?.Value!);
@@ -116,35 +117,5 @@ internal sealed class ProjectileFactory
 
         return new ProjectileFactory(
             templates.ToFrozenDictionary(t => t.Alias));
-
-        static Vector2 CalculateScale(
-            float[] size,
-            TextureRegion? textureRegion,
-            Animation? animation)
-        {
-            Vector2 scale;
-            if (textureRegion is not null)
-            {
-                scale = new Vector2(
-                    size[0] / textureRegion.Width,
-                    size[1] / textureRegion.Height);
-            }
-            else
-            {
-                scale = new Vector2(
-                    size[0] / animation!.Frames[0].Width,
-                    size[1] / animation.Frames[0].Height);
-            }
-
-            return scale;
-        }
-
-        static float[] ParseToFloatArr(XElement element, string attributeName)
-        {
-            return element.Attribute(attributeName)!.Value
-                .Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                .Select(float.Parse)
-                .ToArray();
-        }
     }
 }

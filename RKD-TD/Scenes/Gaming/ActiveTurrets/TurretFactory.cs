@@ -6,6 +6,8 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Helpers;
+using RKD_TD.Scenes.Gaming.Animations;
 using RKD_TD.Scenes.Gaming.Projectiles;
 using RKD_TD.Scenes.Gaming.PurchaseTurrets;
 
@@ -15,13 +17,16 @@ internal sealed class TurretFactory
 {
     private readonly FrozenDictionary<TurretType, TurretTemplate> _turrets;
     private readonly ProjectileFactory _projectileFactory;
+    private readonly GunShotFlashFactory _gunshotFlashFactory;
 
     public TurretFactory(
         FrozenDictionary<TurretType, TurretTemplate> turrets,
-        ProjectileFactory projectileFactory)
+        ProjectileFactory projectileFactory, 
+        GunShotFlashFactory gunshotFlashFactory)
     {
         _turrets = turrets;
         _projectileFactory = projectileFactory;
+        _gunshotFlashFactory = gunshotFlashFactory;
     }
 
     public Turret CreateTurret(
@@ -61,11 +66,17 @@ internal sealed class TurretFactory
             template.ReloadTimeInSec,
             template.FixateDistanceSquared,
             template.FiringDistanceSquared,
+            
             template.FiringPoints,
             template.FiringMode,
+            template.GunFlashPoints,
+            
             template.ProjectileAlias,
+            template.FlashAlias,
             destination,
-            _projectileFactory);
+            
+            _projectileFactory,
+            _gunshotFlashFactory);
     }
 
     public static TurretFactory FromFile(
@@ -85,10 +96,12 @@ internal sealed class TurretFactory
         };
 
         var projectileFactory = ProjectileFactory.FromFile(turretConfigDoc, gameObjectTextures);
+        var gunShotFlashFactory = GunShotFlashFactory.FromFile(turretConfigDoc, gameObjectTextures);
 
         return new TurretFactory(
             turrets: templates.ToFrozenDictionary(),
-            projectileFactory);
+            projectileFactory,
+            gunShotFlashFactory);
     }
 
     private static TurretTemplate CreateTurretTemplate(
@@ -114,31 +127,28 @@ internal sealed class TurretFactory
             ? null
             : gameObjectTextures.GetAnimation(barrelAnimationAlias);
 
-        var barrelOrigin = ParseToFloatArr(turretElement, "barrelOrigin");
-        var barrelSize = ParseToFloatArr(turretElement, "barrelSize");
-        var barrelScale = CalculateScale(barrelSize, barrelTexture, barrelAnimation);
+        var barrelOrigin = ParseHelper.ParseToFloatArr(turretElement, "barrelOrigin", ';');
+        var barrelSize = ParseHelper.ParseToFloatArr(turretElement, "barrelSize", ';');
+        var barrelScale = TextureHelper.CalculateScale(barrelSize, barrelTexture, barrelAnimation);
 
 
         var carriageTextureAlias = turretElement.Attribute("carriageTextureAlias")!.Value;
         var carriageTexture = gameObjectTextures.GetRegion(carriageTextureAlias);
 
-        var carriageOrigin = ParseToFloatArr(turretElement, "carriageOrigin");
-        var carriageSize = ParseToFloatArr(turretElement, "carriageSize");
-        var carriageScale = CalculateScale(carriageSize, carriageTexture, null);
+        var carriageOrigin = ParseHelper.ParseToFloatArr(turretElement, "carriageOrigin", ';');
+        var carriageSize = ParseHelper.ParseToFloatArr(turretElement, "carriageSize", ';');
+        var carriageScale = TextureHelper.CalculateScale(carriageSize, carriageTexture, null);
 
         var rotationSpeed = float.Parse(turretElement.Attribute("rotationSpeed")!.Value);
         var reloadTime = float.Parse(turretElement.Attribute("reloadTime")!.Value);
         var fixateDistance = float.Parse(turretElement.Attribute("fixateDistance")!.Value);
         var firingDistance = float.Parse(turretElement.Attribute("firingDistance")!.Value);
         var projectileAlias = turretElement.Attribute("projectileAlias")!.Value;
+        var flashAlias = turretElement.Attribute("flashAlias")!.Value;
 
         var firingPoints = turretElement.Attribute("firingPoints")!.Value
             .Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Select(point =>
-                point.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                    .Select(float.Parse)
-                    .ToArray()
-            )
+            .Select(point => ParseHelper.ParseToFloatArr(point, ','))
             .Select(pointValues => new TurretFiringPoint(
                 Position: new Vector2(
                     x: pointValues[0] * barrelScale.X,
@@ -154,6 +164,14 @@ internal sealed class TurretFactory
             "rotation" => TurretFiringMode.Rotation,
             _ => TurretFiringMode.Single
         };
+        
+        var flashPoints = turretElement.Attribute("flashPoints")!.Value
+            .Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(point => ParseHelper.ParseToFloatArr(point, ','))
+            .Select(pointValues => new Vector2(
+                    x: pointValues[0] * barrelScale.X,
+                    y: pointValues[1] * barrelScale.Y))
+            .ToArray();
 
         return new TurretTemplate(
             barrelTexture,
@@ -167,38 +185,12 @@ internal sealed class TurretFactory
             reloadTime,
             FixateDistanceSquared: fixateDistance * fixateDistance,
             FiringDistanceSquared: firingDistance * firingDistance,
+            
             firingPoints,
             firingMode,
-            projectileAlias);
-
-        static Vector2 CalculateScale(
-            float[] size,
-            TextureRegion? textureRegion,
-            Animation? animation)
-        {
-            Vector2 scale;
-            if (textureRegion is not null)
-            {
-                scale = new Vector2(
-                    size[0] / textureRegion.Width,
-                    size[1] / textureRegion.Height);
-            }
-            else
-            {
-                scale = new Vector2(
-                    size[0] / animation!.Frames[0].Width,
-                    size[1] / animation.Frames[0].Height);
-            }
-
-            return scale;
-        }
-
-        static float[] ParseToFloatArr(XElement element, string attributeName)
-        {
-            return element.Attribute(attributeName)!.Value
-                .Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                .Select(float.Parse)
-                .ToArray();
-        }
+            flashPoints,
+            
+            projectileAlias,
+            flashAlias);
     }
 }

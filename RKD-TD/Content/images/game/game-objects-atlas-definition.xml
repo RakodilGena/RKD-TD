@@ -46,8 +46,25 @@
         <!--projectiles-->
         <Region name="projectile_bullet" x="1920" y="760" width="100" height="30"/>
 
+        <!--flashes-->
+        <Region name="flash_mg1" x="1030" y="700" width="200" height="200"/>
+        <Region name="flash_mg2" x="1235" y="700" width="200" height="200"/>
+        <Region name="flash_mg3" x="1440" y="700" width="200" height="200"/>
+        <Region name="flash_mg4" x="1645" y="700" width="200" height="200"/>
+        
+        <Region name="flash_mg1_alt" x="1030" y="900" width="200" height="200"/>
+        <Region name="flash_mg2_alt" x="1235" y="900" width="200" height="200"/>
+        <Region name="flash_mg3_alt" x="1440" y="900" width="200" height="200"/>
+
+
+        <!--explosions-->
+
+        200x200
+        origin: 0;100
+            
     </Regions>
     <Animations>
+        <!--enemies-->
         <Animation name="soldier-animation" delay="100">
             <Frame region="soldier0"/>
             <Frame region="soldier1"/>
@@ -68,9 +85,29 @@
             <Frame region="tank6"/>
             <Frame region="tank7"/>
         </Animation>
+
+        <!--turrets-->
         <Animation name="turret-mg-animation" delay="80">
             <Frame region="turret_mg1"/>
             <Frame region="turret_mg2"/>
         </Animation>
+
+
+        <!--flashes-->
+        <Animation name="flash-mg-animation" delay="35">
+            <Frame region="flash_mg1"/>
+            <Frame region="flash_mg2"/>
+            <Frame region="flash_mg3"/>
+            <Frame region="flash_mg4"/>
+        </Animation>
+        
+        <Animation name="flash-mg-animation-alt" delay="20">
+            <Frame region="flash_mg1_alt"/>
+            <Frame region="flash_mg2_alt"/>
+            <Frame region="flash_mg3_alt"/>
+        </Animation>
+        
+        
+        <!--explosions-->
     </Animations>
 </TextureAtlas>

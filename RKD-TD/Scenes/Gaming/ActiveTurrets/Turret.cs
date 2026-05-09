@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Extensions;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Scenes.Gaming.Animations;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Projectiles;
 using RKD_TD.Scenes.Gaming.PurchaseTurrets;
@@ -61,7 +62,7 @@ internal sealed class Turret
     public BuildCell OccupiedCell { get; private set; }
 
 
-    public event EventHandler<ReadOnlySpan<Projectile>>? ProjectilesFired;
+    public event EventHandler<TurretShotEventArgs>? ProjectilesFired;
 
     public Turret(
         Sprite barrelSprite,
@@ -71,11 +72,18 @@ internal sealed class Turret
         float reloadTimeInSec,
         float fixateDistanceSquared,
         float firingDistanceSquared,
+        
         TurretFiringPoint[] firingPoints,
-        TurretFiringMode firingMode,
+        TurretFiringMode firingMode, 
+        Vector2[] gunFlashPoints,
+        
         string projectileAlias,
+        string flashAlias, 
+        
         BuildCell occupiedCell,
-        ProjectileFactory projectileFactory)
+        
+        ProjectileFactory projectileFactory,
+        GunShotFlashFactory gunShotFlashFactory)
     {
         _barrelSprite = barrelSprite;
         _position = position;
@@ -86,7 +94,14 @@ internal sealed class Turret
         OccupiedCell = occupiedCell;
         _carriageSprite = carriageSprite;
 
-        _turretBarrel = new TurretBarrel(firingPoints, projectileFactory, firingMode, projectileAlias);
+        _turretBarrel = new TurretBarrel(
+            firingPoints, 
+            firingMode, 
+            gunFlashPoints, 
+            projectileAlias,
+            flashAlias, 
+            projectileFactory, 
+            gunShotFlashFactory);
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -216,8 +231,9 @@ internal sealed class Turret
         if (_currentReloadTime > 0)
             return;
 
-        var projectiles = _turretBarrel.CreateProjectiles(_position, CurrentRotation);
-        ProjectilesFired?.Invoke(this, projectiles);
+        var (projectiles, flashes) = _turretBarrel.Fire(_position, CurrentRotation);
+        
+        ProjectilesFired?.Invoke(this, new TurretShotEventArgs(projectiles, flashes));
 
         _currentReloadTime += _reloadTimeInSec;
     }
