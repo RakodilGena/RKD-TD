@@ -11,7 +11,7 @@ internal sealed class TurretBarrel
     private readonly TurretFiringPoint[] _firingPoints;
     private readonly TurretFiringMode _firingMode;
     private readonly Vector2[] _gunFlashPoints;
-    
+
     private readonly string _projectileAlias;
     private readonly string _flashAlias;
 
@@ -22,12 +22,10 @@ internal sealed class TurretBarrel
 
     public TurretBarrel(
         TurretFiringPoint[] firingPoints,
-        TurretFiringMode firingMode, 
+        TurretFiringMode firingMode,
         Vector2[] gunFlashPoints,
-        
         string projectileAlias,
-        string flashAlias, 
-        
+        string flashAlias,
         ProjectileFactory projectileFactory,
         GunShotFlashFactory gunShotFlashFactory)
     {
@@ -47,22 +45,22 @@ internal sealed class TurretBarrel
         if (_firingMode is TurretFiringMode.Single)
         {
             var (projectile, flash) = CreateProjectileAndFlash(
-                turretCenter, 
-                rotation, 
+                turretCenter,
+                rotation,
                 pointIdx: 0);
-            
+
             return ([projectile], [flash]);
         }
 
         if (_firingMode is TurretFiringMode.Random)
         {
             var idx = Random.Shared.Next(_firingPoints.Length);
-            
+
             var (projectile, flash) = CreateProjectileAndFlash(
-                turretCenter, 
-                rotation, 
+                turretCenter,
+                rotation,
                 idx);
-            
+
             return ([projectile], [flash]);
         }
 
@@ -70,7 +68,7 @@ internal sealed class TurretBarrel
         {
             var (projectile, flash) = CreateProjectileAndFlash(
                 turretCenter,
-                rotation, 
+                rotation,
                 _currentFiringPointIdx);
 
             _currentFiringPointIdx++;
@@ -82,19 +80,20 @@ internal sealed class TurretBarrel
 
         {
             //all
-            var projectiles =  new Projectile[_firingPoints.Length];
-            var flashes =  new GunShotFlash[_firingPoints.Length];
+            var projectiles = new Projectile[_firingPoints.Length];
+            var flashes = new GunShotFlash[_firingPoints.Length];
 
             for (int pointIdx = 0; pointIdx < _firingPoints.Length; pointIdx++)
             {
                 var (projectile, flash) = CreateProjectileAndFlash(
                     turretCenter,
-                    rotation, 
+                    rotation,
                     pointIdx);
-                
+
                 projectiles[pointIdx] = projectile;
                 flashes[pointIdx] = flash;
             }
+
             return (projectiles, flashes);
         }
     }
@@ -105,7 +104,7 @@ internal sealed class TurretBarrel
         int pointIdx)
     {
         var firingPoint = _firingPoints[pointIdx];
-        
+
         var firingPointAbsolutePosition = turretCenter + Vector2Helper.GetRotatedVector(
             firingPoint.Position,
             rotation);
@@ -119,14 +118,12 @@ internal sealed class TurretBarrel
         var flashPointAbsolutePosition = turretCenter + Vector2Helper.GetRotatedVector(
             _gunFlashPoints[pointIdx],
             rotation);
-        
+
         var flash = _gunShotFlashFactory.Create(
             _flashAlias,
             flashPointAbsolutePosition,
             rotation);
-        
+
         return (projectile, flash);
     }
-
-    
 }

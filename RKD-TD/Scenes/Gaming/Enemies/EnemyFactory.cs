@@ -59,7 +59,8 @@ internal sealed class EnemyFactory
                 positionInTile,
                 template.Origin,
                 template.AppearDistance,
-                template.HitCircleRadius);
+                template.HitCircleRadius,
+                template.HitCircleOffset);
 
             return [enemy];
         }
@@ -88,7 +89,8 @@ internal sealed class EnemyFactory
                     positionInTile,
                     template.Origin,
                     template.AppearDistance,
-                    template.HitCircleRadius);
+                    template.HitCircleRadius,
+                    template.HitCircleOffset);
 
                 enemies[i] = enemy;
             }
@@ -192,10 +194,24 @@ internal sealed class EnemyFactory
                 : gameObjectsTextures.GetAnimation(animationAlias);
 
             var size = ParseHelper.ParseToFloatArr(enemy, "size", ';');
-            
+
             var (scale, origin) = TextureHelper.CalculateScaleAndOrigin(size, texture, animation);
 
             var hitCircleRadius = int.Parse(enemy.Attribute("hitCircleRadius")!.Value);
+
+            var hitCircleOffsetValue = enemy.Attribute("hitCircleOffset")?.Value;
+
+            Vector2 hitCircleOffset;
+            if (!string.IsNullOrWhiteSpace(hitCircleOffsetValue))
+            {
+                var hitCircleOffsetArr = ParseHelper.ParseToFloatArr(enemy, "hitCircleOffset", ';');
+                hitCircleOffset = new Vector2(hitCircleOffsetArr[0], hitCircleOffsetArr[1]);
+            }
+            else
+            {
+                hitCircleOffset = Vector2.Zero;
+            }
+
 
             var template = new EnemyTemplate(
                 alias,
@@ -210,7 +226,8 @@ internal sealed class EnemyFactory
                 texture,
                 animation,
                 origin,
-                hitCircleRadius);
+                hitCircleRadius,
+                hitCircleOffset);
 
             templates[alias] = template;
         }

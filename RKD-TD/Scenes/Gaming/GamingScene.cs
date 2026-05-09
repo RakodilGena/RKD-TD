@@ -227,7 +227,7 @@ internal sealed class GamingScene : Scene
         {
             flash.Draw(sb);
         }
-        
+
         _userResources.Draw(sb);
         _enemySpawner.Draw(sb);
         _fpsMeter.Draw(sb);

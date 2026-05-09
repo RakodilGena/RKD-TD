@@ -10,7 +10,7 @@ internal static class ParseHelper
     {
         return ParseToFloatArr(element.Attribute(attributeName)!.Value, separator);
     }
-    
+
     public static float[] ParseToFloatArr(string value, char separator)
     {
         return value

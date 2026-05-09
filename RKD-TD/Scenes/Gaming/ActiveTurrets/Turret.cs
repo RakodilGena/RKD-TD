@@ -72,16 +72,12 @@ internal sealed class Turret
         float reloadTimeInSec,
         float fixateDistanceSquared,
         float firingDistanceSquared,
-        
         TurretFiringPoint[] firingPoints,
-        TurretFiringMode firingMode, 
+        TurretFiringMode firingMode,
         Vector2[] gunFlashPoints,
-        
         string projectileAlias,
-        string flashAlias, 
-        
+        string flashAlias,
         BuildCell occupiedCell,
-        
         ProjectileFactory projectileFactory,
         GunShotFlashFactory gunShotFlashFactory)
     {
@@ -95,12 +91,12 @@ internal sealed class Turret
         _carriageSprite = carriageSprite;
 
         _turretBarrel = new TurretBarrel(
-            firingPoints, 
-            firingMode, 
-            gunFlashPoints, 
+            firingPoints,
+            firingMode,
+            gunFlashPoints,
             projectileAlias,
-            flashAlias, 
-            projectileFactory, 
+            flashAlias,
+            projectileFactory,
             gunShotFlashFactory);
     }
 
@@ -125,7 +121,7 @@ internal sealed class Turret
                 return;
             }
 
-            var vectorToEnemy = _fixatedEnemy.Center - _position;
+            var vectorToEnemy = _fixatedEnemy.Target - _position;
             var distanceToEnemySquared = vectorToEnemy.LengthSquared();
             if (distanceToEnemySquared > _fixateDistanceSquared)
             {
@@ -202,7 +198,7 @@ internal sealed class Turret
             if (enemy.State is not EnemyState.Vulnerable)
                 continue;
 
-            var distanceToEnemy = (enemy.Center - _position).LengthSquared();
+            var distanceToEnemy = (enemy.Target - _position).LengthSquared();
 
             if (minDistance < distanceToEnemy)
                 continue;
@@ -232,7 +228,7 @@ internal sealed class Turret
             return;
 
         var (projectiles, flashes) = _turretBarrel.Fire(_position, CurrentRotation);
-        
+
         ProjectilesFired?.Invoke(this, new TurretShotEventArgs(projectiles, flashes));
 
         _currentReloadTime += _reloadTimeInSec;

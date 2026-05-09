@@ -51,7 +51,7 @@
         <Region name="flash_mg2" x="1235" y="700" width="200" height="200"/>
         <Region name="flash_mg3" x="1440" y="700" width="200" height="200"/>
         <Region name="flash_mg4" x="1645" y="700" width="200" height="200"/>
-        
+
         <Region name="flash_mg1_alt" x="1030" y="900" width="200" height="200"/>
         <Region name="flash_mg2_alt" x="1235" y="900" width="200" height="200"/>
         <Region name="flash_mg3_alt" x="1440" y="900" width="200" height="200"/>
@@ -61,7 +61,7 @@
 
         200x200
         origin: 0;100
-            
+
     </Regions>
     <Animations>
         <!--enemies-->
@@ -100,14 +100,14 @@
             <Frame region="flash_mg3"/>
             <Frame region="flash_mg4"/>
         </Animation>
-        
-        <Animation name="flash-mg-animation-alt" delay="20">
+
+        <Animation name="flash-mg-animation-alt" delay="15">
             <Frame region="flash_mg1_alt"/>
             <Frame region="flash_mg2_alt"/>
             <Frame region="flash_mg3_alt"/>
         </Animation>
-        
-        
+
+
         <!--explosions-->
     </Animations>
 </TextureAtlas>

@@ -21,7 +21,7 @@ internal sealed class TurretFactory
 
     public TurretFactory(
         FrozenDictionary<TurretType, TurretTemplate> turrets,
-        ProjectileFactory projectileFactory, 
+        ProjectileFactory projectileFactory,
         GunShotFlashFactory gunshotFlashFactory)
     {
         _turrets = turrets;
@@ -66,15 +66,12 @@ internal sealed class TurretFactory
             template.ReloadTimeInSec,
             template.FixateDistanceSquared,
             template.FiringDistanceSquared,
-            
             template.FiringPoints,
             template.FiringMode,
             template.GunFlashPoints,
-            
             template.ProjectileAlias,
             template.FlashAlias,
             destination,
-            
             _projectileFactory,
             _gunshotFlashFactory);
     }
@@ -164,13 +161,13 @@ internal sealed class TurretFactory
             "rotation" => TurretFiringMode.Rotation,
             _ => TurretFiringMode.Single
         };
-        
+
         var flashPoints = turretElement.Attribute("flashPoints")!.Value
             .Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Select(point => ParseHelper.ParseToFloatArr(point, ','))
             .Select(pointValues => new Vector2(
-                    x: pointValues[0] * barrelScale.X,
-                    y: pointValues[1] * barrelScale.Y))
+                x: pointValues[0] * barrelScale.X,
+                y: pointValues[1] * barrelScale.Y))
             .ToArray();
 
         return new TurretTemplate(
@@ -185,11 +182,9 @@ internal sealed class TurretFactory
             reloadTime,
             FixateDistanceSquared: fixateDistance * fixateDistance,
             FiringDistanceSquared: firingDistance * firingDistance,
-            
             firingPoints,
             firingMode,
             flashPoints,
-            
             projectileAlias,
             flashAlias);
     }

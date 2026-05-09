@@ -11,7 +11,7 @@ internal sealed class GunShotFlash
     private readonly Vector2 _position;
     private readonly AnimatedSprite _sprite;
     private readonly float _playTimeSec;
-    
+
     private float _elapsedTimeSec;
 
     public ICamera? Camera

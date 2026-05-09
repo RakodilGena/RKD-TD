@@ -10,7 +10,7 @@ internal readonly ref struct TurretShotEventArgs
     public readonly ReadOnlySpan<GunShotFlash> Flashes;
 
     public TurretShotEventArgs(
-        ReadOnlySpan<Projectile> projectiles, 
+        ReadOnlySpan<Projectile> projectiles,
         ReadOnlySpan<GunShotFlash> flashes)
     {
         Projectiles = projectiles;

@@ -20,8 +20,8 @@
                 firingPoints="270,-20,-5; 270,-10,-3; 270,0,0; 270,10,3; 270,20,5"
                 firingMode="random"
                 flashPoints="260,-15; 260,-8; 260,0; 260,8; 260,15"
-                
-                
+
+
                 projectileAlias="mg_bullet"
                 flashAlias="mg_flash"/>
     </Turrets>
@@ -41,14 +41,14 @@
                 hitCircleRadius="5"
         />
     </Projectiles>
-    
+
     <Flashes>
-        <Flash 
+        <Flash
                 alias="mg_flash"
                 animationAlias="flash-mg-animation-alt"
                 size="50;50"
                 origin="0;100"
         />
-        
+
     </Flashes>
 </Root>

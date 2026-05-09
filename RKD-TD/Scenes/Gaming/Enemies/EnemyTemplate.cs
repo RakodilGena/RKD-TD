@@ -17,7 +17,8 @@ internal sealed record EnemyTemplate(
     TextureRegion? Texture,
     Animation? Animation,
     Vector2 Origin,
-    int HitCircleRadius);
+    int HitCircleRadius,
+    Vector2 HitCircleOffset);
 
 public enum EnemyType
 {

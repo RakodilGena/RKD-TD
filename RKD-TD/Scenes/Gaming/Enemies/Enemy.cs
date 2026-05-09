@@ -22,10 +22,15 @@ internal class Enemy
     private int _currentWaypointIndex;
     private readonly WaypointPath _path;
     private readonly Vector2 _origin;
+
     private readonly int _hitCircleRadius;
+    private readonly Vector2 _hitCircleOffset;
+    private bool _facesRight = true;
 
     private Vector2 _positionForMovement;
-    public Vector2 Center { get; private set; }
+
+    private Vector2 _positionOnScreen;
+    public Vector2 Target { get; private set; }
 
     private readonly float _appearDistance;
     private float _pathTraveled;
@@ -56,14 +61,13 @@ internal class Enemy
         Vector2 positionInTile,
         Vector2 origin,
         float appearDistance,
-        int hitCircleRadius)
+        int hitCircleRadius,
+        Vector2 hitCircleOffset)
     {
         _maxHealth = _currentHealth = maxHealth;
         _speed = speed;
         _reward = reward;
-        // _textureScale = textureScale;
-        // _texture = texture;
-        // _animation = animation;
+
         _sprite = sprite;
         _initialScale = sprite.Scale;
         sprite.Scale = Vector2.Zero; //to correctly show enemy appearing from portal
@@ -73,10 +77,12 @@ internal class Enemy
         _origin = origin;
         _appearDistance = appearDistance;
         _hitCircleRadius = hitCircleRadius;
+        _hitCircleOffset = hitCircleOffset;
         _damage = damage;
 
         _positionForMovement = path.Start;
         _currentWaypointIndex = 1; // start moving toward waypoint 1
+
         SetFaceDirection();
     }
 
@@ -93,10 +99,12 @@ internal class Enemy
         {
             case < 0:
                 _sprite.Effects = SpriteEffects.FlipHorizontally;
+                _facesRight = false;
                 break;
 
             case > 0:
                 _sprite.Effects = SpriteEffects.None;
+                _facesRight = true;
                 break;
         }
     }
@@ -232,13 +240,28 @@ internal class Enemy
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        _sprite.Draw(spriteBatch, Center);
+        _sprite.Draw(spriteBatch, _positionOnScreen);
     }
 
     private void CalculateCenter()
     {
-        Center = _positionForMovement + _positionInTile + _origin * _initialScale;
+        _positionOnScreen = _positionForMovement + _positionInTile + _origin * _initialScale;
+
+        if (_hitCircleOffset == Vector2.Zero)
+        {
+            Target = _positionOnScreen;
+            return;
+        }
+
+        if (_facesRight)
+        {
+            Target = _positionOnScreen + _hitCircleOffset;
+        }
+        else
+        {
+            Target = _positionOnScreen + new Vector2(-_hitCircleOffset.X, _hitCircleOffset.Y);
+        }
     }
 
-    public Circle HitCircle => new(Center, _hitCircleRadius);
+    public Circle HitCircle => new(Target, _hitCircleRadius);
 }

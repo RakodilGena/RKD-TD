@@ -10,7 +10,8 @@
            animationAlias="soldier-animation"
 
            size="140;140"
-           hitCircleRadius="52"
+           hitCircleRadius="45"
+           hitCircleOffset="-5;-10"
 
            appearDistance="120"/> <!--textureAlias="soldier"-->
 
@@ -21,9 +22,10 @@
            reward="200"
            damage="3"
            animationAlias="tank-animation"
-           
+
            size="160;160"
-           hitCircleRadius="60"
+           hitCircleRadius="55"
+           hitCircleOffset="15;0"
 
            appearDistance="80"/>
 
@@ -37,7 +39,8 @@
            animationAlias="soldier-animation"
 
            size="80;80"
-           hitCircleRadius="30"
+           hitCircleRadius="25"
+           hitCircleOffset="-3;-5"
 
            customType="swarm"
            appearDistance="100"/>
