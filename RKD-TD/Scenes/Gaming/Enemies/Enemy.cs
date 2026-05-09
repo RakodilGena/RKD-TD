@@ -241,6 +241,11 @@ internal class Enemy
     public void Draw(SpriteBatch spriteBatch)
     {
         _sprite.Draw(spriteBatch, _positionOnScreen);
+
+        if (GameCore.DRAW_HIT_BOX)
+        {
+            Circle.DrawHitCircle(spriteBatch, Camera, Target, _hitCircleRadius, Color.Red);
+        }
     }
 
     private void CalculateCenter()

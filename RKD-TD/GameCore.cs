@@ -8,6 +8,8 @@ namespace RKD_TD;
 
 internal sealed class GameCore : Core
 {
+    public const bool DRAW_HIT_BOX = true;
+
     public GameCore() : base(
         title: "RKD Tower Defense",
         width: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, //1280

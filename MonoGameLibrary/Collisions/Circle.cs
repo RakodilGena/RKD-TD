@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGameLibrary.Cameras;
 
 namespace MonoGameLibrary.Collisions;
 
@@ -42,6 +44,7 @@ public readonly struct Circle
 
     public Vector2 Location => new(X, Y);
 
+    private static Texture2D _circleTexture = CreateCircleTexture(64, Color.White);
 
     /// <summary>
     /// Creates a new circle with the specified position and radius.
@@ -71,5 +74,51 @@ public readonly struct Circle
         int radiiSquared = radii * radii;
         float distanceSquared = Vector2.DistanceSquared(Location, other.Location);
         return distanceSquared < radiiSquared;
+    }
+
+
+    private static Texture2D CreateCircleTexture(int radius, Color color)
+    {
+        int diameter = radius * 2;
+        Texture2D texture = new Texture2D(Core.GraphicsDevice, diameter, diameter);
+        Color[] data = new Color[diameter * diameter];
+
+        Vector2 center = new Vector2(radius, radius);
+
+        for (int y = 0; y < diameter; y++)
+        for (int x = 0; x < diameter; x++)
+        {
+            float dist = Vector2.Distance(new Vector2(x, y), center);
+            data[y * diameter + x] = dist <= radius ? color : Color.Transparent;
+        }
+
+        texture.SetData(data);
+        return texture;
+    }
+
+    public static void DrawHitCircle(
+        SpriteBatch sb,
+        ICamera? camera,
+        Vector2 worldPos,
+        float radius,
+        Color color)
+    {
+        float scale = radius / (_circleTexture.Width / 2f);
+
+        var (screenScale, screenPos) = camera.WorldToScreen(new Vector2(scale), worldPos);
+
+        var origin = new Vector2(_circleTexture.Width / 2f, _circleTexture.Height / 2f);
+
+        sb.Draw(
+            _circleTexture,
+            screenPos,
+            null,
+            color * 0.4f, // semi-transparent
+            0f,
+            origin,
+            screenScale,
+            SpriteEffects.None,
+            0f
+        );
     }
 }
