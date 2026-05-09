@@ -58,9 +58,13 @@
 
 
         <!--explosions-->
+        <Region name="explosion_mg_bullet1" x="1640" y="910" width="40" height="40"/>
+        <Region name="explosion_mg_bullet2" x="1680" y="910" width="40" height="40"/>
+        <Region name="explosion_mg_bullet3" x="1720" y="910" width="40" height="40"/>
+        <Region name="explosion_mg_bullet4" x="1760" y="910" width="40" height="40"/>
+        <Region name="explosion_mg_bullet5" x="1800" y="910" width="40" height="40"/>
+        <Region name="explosion_mg_bullet6" x="1840" y="910" width="40" height="40"/>
 
-        200x200
-        origin: 0;100
 
     </Regions>
     <Animations>
@@ -107,7 +111,17 @@
             <Frame region="flash_mg3_alt"/>
         </Animation>
 
+        <Animation name="explosion-mg-billet-animation" delay="15">
+            <Frame region="explosion_mg_bullet1"/>
+            <Frame region="explosion_mg_bullet2"/>
+            <Frame region="explosion_mg_bullet3"/>
+            <Frame region="explosion_mg_bullet4"/>
+            <Frame region="explosion_mg_bullet5"/>
+            <Frame region="explosion_mg_bullet6"/>
+        </Animation>
+
 
         <!--explosions-->
+
     </Animations>
 </TextureAtlas>

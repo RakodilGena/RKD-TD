@@ -6,12 +6,16 @@ using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Collisions;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies;
+using RKD_TD.Scenes.Gaming.Explosions;
 
 namespace RKD_TD.Scenes.Gaming.Projectiles;
 
 internal class Projectile
 {
     private readonly Sprite _sprite;
+
+    private readonly string _explosionAlias;
+    private readonly ExplosionFactory _explosionFactory;
 
     protected float Rotation
     {
@@ -25,10 +29,9 @@ internal class Projectile
 
     private readonly float
         _speed,
-        _flightRange,
-        _aoeRange;
+        _flightRange;
 
-    private readonly int _directDamage, _aoeDamage, _hitCircleRadius;
+    private readonly int _directDamage, _aoeRange, _aoeDamage, _hitCircleRadius;
 
     private Vector2 _position;
 
@@ -46,7 +49,7 @@ internal class Projectile
     }
 
     public event EventHandler? Exhausted;
-    public event EventHandler? Exploded;
+    public event EventHandler<Explosion>? Collided;
 
     public Projectile(
         Sprite sprite,
@@ -55,9 +58,11 @@ internal class Projectile
         int hitCircleRadius,
         int directDamage,
         int aoeDamage,
-        float aoeRange,
+        int aoeRange,
         Vector2 position,
-        float rotation)
+        float rotation,
+        string explosionAlias,
+        ExplosionFactory explosionFactory)
     {
         _sprite = sprite;
         _speed = speed;
@@ -66,6 +71,8 @@ internal class Projectile
         _aoeDamage = aoeDamage;
         _aoeRange = aoeRange;
         Rotation = rotation;
+        _explosionAlias = explosionAlias;
+        _explosionFactory = explosionFactory;
         _hitCircleRadius = hitCircleRadius;
         _position = position;
     }
@@ -75,9 +82,11 @@ internal class Projectile
         _sprite.Draw(spriteBatch, _position);
 
         if (GameCore.DRAW_HIT_BOX)
+#pragma warning disable CS0162 // Unreachable code detected
         {
             Circle.DrawHitCircle(spriteBatch, Camera, _position, _hitCircleRadius, Color.BlueViolet);
         }
+#pragma warning restore CS0162 // Unreachable code detected
     }
 
     public void Update(
@@ -118,11 +127,17 @@ internal class Projectile
 
             if (enemyCircle.Intersects(circle))
             {
+                var explosion = _explosionFactory.Create(
+                    _explosionAlias,
+                    _position,
+                    _aoeRange,
+                    _aoeDamage);
+                Collided?.Invoke(this, explosion);
+
+
                 enemy.ReceiveDamage(_directDamage);
-                Exploded?.Invoke(this, EventArgs.Empty);
                 _dead = true;
                 return true;
-                //todo: put explosion into event args (from factory)
             }
         }
 

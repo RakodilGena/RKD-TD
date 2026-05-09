@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using RKD_TD.Helpers;
-using RKD_TD.Scenes.Gaming.Animations;
+using RKD_TD.Scenes.Gaming.Flashes;
 using RKD_TD.Scenes.Gaming.Projectiles;
 
 namespace RKD_TD.Scenes.Gaming.ActiveTurrets;

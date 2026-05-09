@@ -13,6 +13,7 @@ internal sealed record ProjectileTemplate(
     float Speed,
     float FlightRange,
     int DirectDamage,
-    float AoeRange,
+    int AoeRange,
     int AoeDamage,
-    int HitCircleRadius);
+    int HitCircleRadius,
+    string ExplosionAlias);

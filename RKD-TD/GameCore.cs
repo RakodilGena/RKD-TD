@@ -8,7 +8,7 @@ namespace RKD_TD;
 
 internal sealed class GameCore : Core
 {
-    public const bool DRAW_HIT_BOX = true;
+    public const bool DRAW_HIT_BOX = false;
 
     public GameCore() : base(
         title: "RKD Tower Defense",

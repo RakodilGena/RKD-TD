@@ -10,8 +10,9 @@ using MonoGameLibrary.Graphics.Tiles;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.Scenes;
 using RKD_TD.Scenes.Gaming.ActiveTurrets;
-using RKD_TD.Scenes.Gaming.Animations;
 using RKD_TD.Scenes.Gaming.Enemies;
+using RKD_TD.Scenes.Gaming.Explosions;
+using RKD_TD.Scenes.Gaming.Flashes;
 using RKD_TD.Scenes.Gaming.Misc;
 using RKD_TD.Scenes.Gaming.Projectiles;
 using RKD_TD.Scenes.Gaming.PurchaseTurrets;
@@ -55,6 +56,7 @@ internal sealed class GamingScene : Scene
     private readonly HashSet<Turret> _turrets = [];
     private readonly HashSet<Projectile> _projectiles = [];
     private readonly HashSet<Flash> _flashes = [];
+    private readonly HashSet<Explosion> _explosions = [];
 
     private event EventHandler<Enemy>? EnemyRemoved;
 
@@ -228,6 +230,11 @@ internal sealed class GamingScene : Scene
             flash.Draw(sb);
         }
 
+        foreach (var explosion in _explosions)
+        {
+            explosion.Draw(sb);
+        }
+
         _userResources.Draw(sb);
         _enemySpawner.Draw(sb);
         _fpsMeter.Draw(sb);
@@ -281,6 +288,11 @@ internal sealed class GamingScene : Scene
         foreach (var flash in _flashes)
         {
             flash.Update(clockDelta);
+        }
+
+        foreach (var explosion in _explosions)
+        {
+            explosion.Update(clockDelta, _enemies);
         }
 
         foreach (var projectile in _projectiles)
@@ -454,7 +466,7 @@ internal sealed class GamingScene : Scene
         foreach (var projectile in e.Projectiles)
         {
             projectile.Exhausted += OnProjectileExhausted;
-            projectile.Exploded += OnProjectileExploded;
+            projectile.Collided += OnProjectileCollided;
             projectile.Camera = _camera;
             _projectiles.Add(projectile);
         }
@@ -467,20 +479,28 @@ internal sealed class GamingScene : Scene
         }
     }
 
+    private void OnFlashFinished(object? sender, EventArgs e)
+    {
+        _flashes.Remove((Flash)sender!);
+    }
+
     private void OnProjectileExhausted(object? sender, EventArgs e)
     {
         RemoveProjectile((Projectile)sender!);
     }
 
-    private void OnProjectileExploded(object? sender, EventArgs e)
+    private void OnProjectileCollided(object? sender, Explosion explosion)
     {
         RemoveProjectile((Projectile)sender!);
-        //todo: put explosion here
+
+        explosion.Finished += OnExplosionFinished;
+        explosion.Camera = _camera;
+        _explosions.Add(explosion);
     }
 
-    private void OnFlashFinished(object? sender, EventArgs e)
+    private void OnExplosionFinished(object? sender, EventArgs e)
     {
-        _flashes.Remove((Flash)sender!);
+        _explosions.Remove((Explosion)sender!);
     }
 
     private void RemoveProjectile(Projectile projectile)

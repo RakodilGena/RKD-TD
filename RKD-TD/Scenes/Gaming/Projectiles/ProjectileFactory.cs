@@ -6,16 +6,21 @@ using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Helpers;
+using RKD_TD.Scenes.Gaming.Explosions;
 
 namespace RKD_TD.Scenes.Gaming.Projectiles;
 
 internal sealed class ProjectileFactory
 {
-    private readonly FrozenDictionary<string, ProjectileTemplate> _projectiles;
+    private readonly FrozenDictionary<string, ProjectileTemplate> _projectileTemplates;
+    private readonly ExplosionFactory _explosionFactory;
 
-    public ProjectileFactory(FrozenDictionary<string, ProjectileTemplate> projectiles)
+    public ProjectileFactory(
+        FrozenDictionary<string, ProjectileTemplate> projectileTemplates,
+        ExplosionFactory explosionFactory)
     {
-        _projectiles = projectiles;
+        _projectileTemplates = projectileTemplates;
+        _explosionFactory = explosionFactory;
     }
 
     public Projectile Create(
@@ -23,7 +28,7 @@ internal sealed class ProjectileFactory
         Vector2 position,
         float angle)
     {
-        var template = _projectiles[projectileAlias];
+        var template = _projectileTemplates[projectileAlias];
 
         Sprite sprite;
         if (template.Texture != null)
@@ -47,7 +52,9 @@ internal sealed class ProjectileFactory
             template.AoeDamage,
             template.AoeRange,
             position,
-            rotation: angle);
+            rotation: angle,
+            template.ExplosionAlias,
+            _explosionFactory);
     }
 
     public static ProjectileFactory FromFile(
@@ -89,7 +96,7 @@ internal sealed class ProjectileFactory
 
             var aoeRangeValue = projElement.Attribute("aoeRange")?.Value;
             var aoeRange = !string.IsNullOrEmpty(aoeRangeValue)
-                ? float.Parse(aoeRangeValue)
+                ? int.Parse(aoeRangeValue)
                 : 0;
 
             var aoeDamageValue = projElement.Attribute("aoeDamage")?.Value;
@@ -98,6 +105,8 @@ internal sealed class ProjectileFactory
                 : 0;
 
             var hitCircleRadius = int.Parse(projElement.Attribute("hitCircleRadius")!.Value);
+
+            var explosionAlias = projElement.Attribute("explosionAlias")!.Value;
 
             templates.Add(
                 new ProjectileTemplate(
@@ -111,10 +120,14 @@ internal sealed class ProjectileFactory
                     directDamage,
                     aoeRange,
                     aoeDamage,
-                    hitCircleRadius));
+                    hitCircleRadius,
+                    explosionAlias));
         }
 
+        var explosionFactory = ExplosionFactory.FromFile(turretConfig, gameObjectTextures);
+
         return new ProjectileFactory(
-            templates.ToFrozenDictionary(t => t.Alias));
+            templates.ToFrozenDictionary(t => t.Alias),
+            explosionFactory);
     }
 }

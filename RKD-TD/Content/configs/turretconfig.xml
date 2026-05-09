@@ -12,8 +12,9 @@
                 carriageSize="120;120"
                 carriageOrigin="100;100"
 
+                reloadTimeMs="100"
+
                 rotationSpeed="120"
-                reloadTime="0.1"
                 fixateDistance="500"
                 firingDistance="400"
 
@@ -39,6 +40,8 @@
                 flightRange="500"
                 directDamage="2"
                 hitCircleRadius="5"
+
+                explosionAlias="mg_bullet_explosion"
         />
     </Projectiles>
 
@@ -51,4 +54,14 @@
         />
 
     </Flashes>
+
+    <!--damageDelayMs="xx" (>0)-->
+    <Explosions>
+        <Explosion
+                alias="mg_bullet_explosion"
+                animationAlias="explosion-mg-billet-animation"
+                size="20;20"
+                origin="20;20"/>
+        
+    </Explosions>
 </Root>

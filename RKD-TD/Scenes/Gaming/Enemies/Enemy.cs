@@ -243,9 +243,11 @@ internal class Enemy
         _sprite.Draw(spriteBatch, _positionOnScreen);
 
         if (GameCore.DRAW_HIT_BOX)
+#pragma warning disable CS0162 // Unreachable code detected
         {
             Circle.DrawHitCircle(spriteBatch, Camera, Target, _hitCircleRadius, Color.Red);
         }
+#pragma warning restore CS0162 // Unreachable code detected
     }
 
     private void CalculateCenter()

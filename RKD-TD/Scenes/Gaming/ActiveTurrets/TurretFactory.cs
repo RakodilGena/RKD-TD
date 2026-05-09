@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Helpers;
-using RKD_TD.Scenes.Gaming.Animations;
+using RKD_TD.Scenes.Gaming.Flashes;
 using RKD_TD.Scenes.Gaming.Projectiles;
 using RKD_TD.Scenes.Gaming.PurchaseTurrets;
 
@@ -137,7 +137,8 @@ internal sealed class TurretFactory
         var carriageScale = TextureHelper.CalculateScale(carriageSize, carriageTexture, null);
 
         var rotationSpeed = float.Parse(turretElement.Attribute("rotationSpeed")!.Value);
-        var reloadTime = float.Parse(turretElement.Attribute("reloadTime")!.Value);
+        var reloadTimeMs = float.Parse(turretElement.Attribute("reloadTimeMs")!.Value);
+        var reloadTimeSec = reloadTimeMs / 1000f;
         var fixateDistance = float.Parse(turretElement.Attribute("fixateDistance")!.Value);
         var firingDistance = float.Parse(turretElement.Attribute("firingDistance")!.Value);
         var projectileAlias = turretElement.Attribute("projectileAlias")!.Value;
@@ -179,7 +180,7 @@ internal sealed class TurretFactory
             carriageScale,
             CarriageOrigin: new Vector2(carriageOrigin[0], carriageOrigin[1]),
             RotationSpeedRadianInSec: MathHelper.ToRadians(rotationSpeed),
-            reloadTime,
+            reloadTimeSec,
             FixateDistanceSquared: fixateDistance * fixateDistance,
             FiringDistanceSquared: firingDistance * firingDistance,
             firingPoints,
