@@ -79,9 +79,8 @@ internal sealed class TurretBarrel
         Vector2 firingPoint,
         float rotation)
     {
-        const float halfPi = MathF.PI * 0.5f;
         float currentAngle = MathF.Atan2(firingPoint.Y, firingPoint.X);
-        float newAngle = currentAngle + rotation - halfPi;
+        float newAngle = currentAngle + rotation;
         return new Vector2(MathF.Cos(newAngle), MathF.Sin(newAngle)) * firingPoint.Length();
     }
 }
