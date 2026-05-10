@@ -27,6 +27,7 @@ internal sealed class GamingScene : Scene
     private const string
         GAME_OBJECTS_ATLAS_NAME = "images/game/game-objects-atlas-definition.xml",
         ENEMY_CONFIG_NAME = "configs/enemyconfig.xml",
+        HEALTH_BAR_CONFIG_NAME = "configs/healthbarconfig.xml",
         TURRET_CONFIG_NAME = "configs/turretconfig.xml";
 
 
@@ -83,8 +84,7 @@ internal sealed class GamingScene : Scene
     private void InitCamera()
     {
         _camera = new Camera(
-            initialZoom: 1,
-            maxZoom: 2,
+            maxZoom: 1,
             zoomSpeed: 2f,
             cameraMoveSpeed: 400,
             _map,
@@ -172,10 +172,12 @@ internal sealed class GamingScene : Scene
     private void LoadEnemySpawner(XDocument mapDoc)
     {
         var enemyConfigDoc = XmlLoader.Load(Content, ENEMY_CONFIG_NAME);
+        var healthBarConfigDoc = XmlLoader.Load(Content, HEALTH_BAR_CONFIG_NAME);
 
         _enemySpawner = EnemySpawner.FromFile(
             mapDoc,
             enemyConfigDoc,
+            healthBarConfigDoc,
             _gameObjectsTextures,
             new Vector2(600, 30));
 

@@ -153,12 +153,14 @@ internal sealed class EnemySpawner
     public static EnemySpawner FromFile(
         XDocument mapDoc,
         XDocument enemyConfigDoc,
+        XDocument healthBarConfigDoc,
         TextureAtlas gameObjectsTextures,
         Vector2 labelPosition)
     {
         var factory = EnemyFactory.FromFile(
             mapDoc,
             enemyConfigDoc,
+            healthBarConfigDoc,
             gameObjectsTextures);
 
         var root = mapDoc.Root!;

@@ -16,6 +16,9 @@
 #begin configs/enemyconfig.xml
 /copy:configs/enemyconfig.xml
 
+#begin configs/healthbarconfig.xml
+/copy:configs/healthbarconfig.xml
+
 #begin configs/turretconfig.xml
 /copy:configs/turretconfig.xml
 

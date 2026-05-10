@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--widthMultiplier - on enemy size-->
+<!--heightMultiplier - on width-->
+<HealthBar
+        bordersTextureAlias="health_bar"
+        backgroundTextureAlias="health_bar"
+        fillerTextureAlias="health_bar"
+
+        yOffsetMultiplier="0.5"
+
+        bordersSize="2;2"
+
+        widthMultiplier="0.5"
+        heightMultiplier="0.15"
+/> 

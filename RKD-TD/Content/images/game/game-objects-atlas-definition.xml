@@ -29,6 +29,9 @@
         <Region name="tank6" x="204" y="600" width="200" height="200"/>
         <Region name="tank7" x="408" y="600" width="200" height="200"/>
 
+        <!--enemy health bars-->
+        <Region name="health_bar" x="850" y="620" width="64" height="64"/>
+
         <!--turret purchase panel-->
         <Region name="turret_panel_1000_250" x="1030" y="0" width="1000" height="250"/>
         <Region name="turret_icon_mg_240" x="1030" y="255" width="240" height="240"/>

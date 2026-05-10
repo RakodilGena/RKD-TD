@@ -5,13 +5,13 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Collisions;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Scenes.Gaming.Enemies.HealthBars;
 
 namespace RKD_TD.Scenes.Gaming.Enemies;
 
 internal class Enemy
 {
-    private readonly int _maxHealth;
-    private int _currentHealth;
+    private readonly HealthBar _healthBar;
     private readonly float _speed;
     private readonly int _reward;
     private readonly int _damage;
@@ -43,16 +43,16 @@ internal class Enemy
         set
         {
             _sprite.Camera = value;
-            CalculateCenter();
+            _healthBar.Camera = value;
+            CalculateSecondaryPositions();
         }
     }
 
-    //todo: subscribe and shit.
+
     public event EventHandler<int>? Destroyed;
     public event EventHandler<int>? ReachedPortal;
 
     public Enemy(
-        int maxHealth,
         float speed,
         int reward,
         int damage,
@@ -62,9 +62,9 @@ internal class Enemy
         Vector2 origin,
         float appearDistance,
         int hitCircleRadius,
-        Vector2 hitCircleOffset)
+        Vector2 hitCircleOffset,
+        HealthBarTemplate healthBarTemplate)
     {
-        _maxHealth = _currentHealth = maxHealth;
         _speed = speed;
         _reward = reward;
 
@@ -84,6 +84,9 @@ internal class Enemy
         _currentWaypointIndex = 1; // start moving toward waypoint 1
 
         SetFaceDirection();
+
+        _healthBar = new HealthBar(
+            healthBarTemplate);
     }
 
     private void SetFaceDirection()
@@ -128,7 +131,7 @@ internal class Enemy
 
         HandleState();
 
-        CalculateCenter();
+        CalculateSecondaryPositions();
     }
 
     private bool HandleReachedEnd()
@@ -141,14 +144,11 @@ internal class Enemy
         return true;
     }
 
-    public void ReceiveDamage(int damage)
-    {
-        _currentHealth -= damage;
-    }
+    public void ReceiveDamage(int damage) => _healthBar.ReceiveDamage(damage);
 
     private bool HandleDestroyed()
     {
-        if (_currentHealth > 0)
+        if (_healthBar.CurrentHealth > 0)
             return false;
 
         Destroyed?.Invoke(this, _reward);
@@ -241,6 +241,7 @@ internal class Enemy
     public void Draw(SpriteBatch spriteBatch)
     {
         _sprite.Draw(spriteBatch, _positionOnScreen);
+        _healthBar.Draw(spriteBatch);
 
         if (GameCore.DRAW_HIT_BOX)
 #pragma warning disable CS0162 // Unreachable code detected
@@ -250,9 +251,10 @@ internal class Enemy
 #pragma warning restore CS0162 // Unreachable code detected
     }
 
-    private void CalculateCenter()
+    private void CalculateSecondaryPositions()
     {
         _positionOnScreen = _positionForMovement + _positionInTile + _origin * _initialScale;
+        _healthBar.SetPosition(_positionOnScreen);
 
         if (_hitCircleOffset == Vector2.Zero)
         {

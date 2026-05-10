@@ -67,7 +67,7 @@ public sealed class Camera : ICamera
 
 
     public Camera(
-        float initialZoom,
+        //float initialZoom,
         float maxZoom,
         float zoomSpeed,
         float cameraMoveSpeed,
@@ -96,7 +96,7 @@ public sealed class Camera : ICamera
         _cameraMoveSpeed = cameraMoveSpeed;
         _mapBordersMargin = mapBordersMargin;
 
-        Zoom = initialZoom;
+        Zoom = _minZoom;
 
 
         if (putToCenter)

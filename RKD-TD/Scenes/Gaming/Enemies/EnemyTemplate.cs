@@ -1,12 +1,12 @@
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Scenes.Gaming.Enemies.HealthBars;
 
 namespace RKD_TD.Scenes.Gaming.Enemies;
 
 internal sealed record EnemyTemplate(
     string Alias,
-    int Health,
     float Speed,
     int Cost,
     int Reward,
@@ -18,7 +18,8 @@ internal sealed record EnemyTemplate(
     Animation? Animation,
     Vector2 Origin,
     int HitCircleRadius,
-    Vector2 HitCircleOffset);
+    Vector2 HitCircleOffset,
+    HealthBarTemplate HealthBarTemplate);
 
 public enum EnemyType
 {

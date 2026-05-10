@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Helpers;
+using RKD_TD.Scenes.Gaming.Enemies.HealthBars;
 
 namespace RKD_TD.Scenes.Gaming.Enemies;
 
@@ -49,7 +50,6 @@ internal sealed class EnemyFactory
                 sprite);
 
             var enemy = new Enemy(
-                template.Health,
                 template.Speed,
                 template.Reward,
                 template.Damage,
@@ -59,7 +59,8 @@ internal sealed class EnemyFactory
                 template.Origin,
                 template.AppearDistance,
                 template.HitCircleRadius,
-                template.HitCircleOffset);
+                template.HitCircleOffset,
+                template.HealthBarTemplate);
 
             return [enemy];
         }
@@ -79,7 +80,6 @@ internal sealed class EnemyFactory
                         sprite);
 
                 var enemy = new Enemy(
-                    template.Health,
                     template.Speed,
                     template.Reward,
                     template.Damage,
@@ -89,7 +89,8 @@ internal sealed class EnemyFactory
                     template.Origin,
                     template.AppearDistance,
                     template.HitCircleRadius,
-                    template.HitCircleOffset);
+                    template.HitCircleOffset,
+                    template.HealthBarTemplate);
 
                 enemies[i] = enemy;
             }
@@ -145,6 +146,7 @@ internal sealed class EnemyFactory
     public static EnemyFactory FromFile(
         XDocument mapDoc,
         XDocument enemyConfigDoc,
+        XDocument healthBarConfigDoc,
         TextureAtlas gameObjectsTextures)
     {
         var tileSet = mapDoc.Root!.Element("Tileset")!;
@@ -157,6 +159,10 @@ internal sealed class EnemyFactory
         var enemies = enemyConfigDoc.Root!.Elements("Enemy");
 
         Dictionary<string, EnemyTemplate> templates = [];
+
+        var healthBarConfig = HealthBarConfig.FromFile(
+            healthBarConfigDoc,
+            gameObjectsTextures);
 
         foreach (var enemy in enemies)
         {
@@ -211,10 +217,10 @@ internal sealed class EnemyFactory
                 hitCircleOffset = Vector2.Zero;
             }
 
+            var healthBarTemplate = CreateHealthBarTemplate(health, size, healthBarConfig);
 
             var template = new EnemyTemplate(
                 alias,
-                health,
                 speed,
                 cost,
                 reward,
@@ -226,7 +232,8 @@ internal sealed class EnemyFactory
                 animation,
                 origin,
                 hitCircleRadius,
-                hitCircleOffset);
+                hitCircleOffset,
+                healthBarTemplate);
 
             templates[alias] = template;
         }
@@ -235,5 +242,83 @@ internal sealed class EnemyFactory
             templates.ToFrozenDictionary(),
             waypointPath,
             tileSize);
+
+
+        static HealthBarTemplate CreateHealthBarTemplate(int health, float[] enemySize, HealthBarConfig cfg)
+        {
+            var (enemyWidth, enemyHeight) = (enemySize[0], enemySize[1]);
+
+            var width = enemyWidth * cfg.WidthMultiplier;
+            var height = width * cfg.HeightMultiplier;
+
+            var enemyOffset = new Vector2(
+                -width / 2,
+                -enemyHeight * cfg.YOffsetMultiplier);
+
+            var bordersScale = TextureHelper.CalculateScale(
+                size: [width, height],
+                cfg.BordersTexture,
+                animation: null);
+
+            var fillerScale = TextureHelper.CalculateScale(
+                size: [width - cfg.Borders.X * 2, height - cfg.Borders.Y * 2],
+                cfg.BordersTexture,
+                animation: null);
+
+            return new HealthBarTemplate(
+                health,
+                enemyOffset,
+                cfg.Borders,
+                cfg.BordersTexture,
+                bordersScale,
+                BordersColor: Color.Black,
+                cfg.BackgroundTexture,
+                BackgroundColor: Color.Red,
+                cfg.FillerTexture,
+                FillerColor: Color.LawnGreen,
+                fillerScale);
+        }
+    }
+
+    private sealed record HealthBarConfig(
+        TextureRegion BordersTexture,
+        TextureRegion BackgroundTexture,
+        TextureRegion FillerTexture,
+        float YOffsetMultiplier,
+        Vector2 Borders,
+        float WidthMultiplier,
+        float HeightMultiplier)
+    {
+        public static HealthBarConfig FromFile(
+            XDocument healthBarCfg,
+            TextureAtlas gameObjectsTextures)
+        {
+            var element = healthBarCfg.Root!;
+
+            var bordersTextureAlias = element.Attribute("bordersTextureAlias")!.Value;
+            var bordersTexture = gameObjectsTextures.GetRegion(bordersTextureAlias);
+
+            var backgroundTextureAlias = element.Attribute("backgroundTextureAlias")!.Value;
+            var backgroundTexture = gameObjectsTextures.GetRegion(backgroundTextureAlias);
+
+
+            var fillerTextureAlias = element.Attribute("fillerTextureAlias")!.Value;
+            var fillerTexture = gameObjectsTextures.GetRegion(fillerTextureAlias);
+
+            var yOffsetMultiplier = float.Parse(element.Attribute("yOffsetMultiplier")!.Value);
+            var widthMultiplier = float.Parse(element.Attribute("widthMultiplier")!.Value);
+            var heightMultiplier = float.Parse(element.Attribute("heightMultiplier")!.Value);
+
+            var bordersSize = ParseHelper.ParseToFloatArr(element, "bordersSize", ';');
+
+            return new HealthBarConfig(
+                bordersTexture,
+                backgroundTexture,
+                fillerTexture,
+                yOffsetMultiplier,
+                Borders: new Vector2(bordersSize[0], bordersSize[1]),
+                widthMultiplier,
+                heightMultiplier);
+        }
     }
 }
