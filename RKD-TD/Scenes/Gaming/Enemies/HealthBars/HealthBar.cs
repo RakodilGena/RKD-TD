@@ -72,9 +72,9 @@ internal sealed class HealthBar
         _position = enemyPosition + _enemyOffset;
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw(SpriteBatch spriteBatch, EnemyState state)
     {
-        if (CurrentHealth == _maxHealth || CurrentHealth <= 0)
+        if (CurrentHealth == _maxHealth || state is not EnemyState.Vulnerable)
             return;
 
         var fillerPos = _position + _borders;

@@ -241,7 +241,7 @@ internal class Enemy
     public void Draw(SpriteBatch spriteBatch)
     {
         _sprite.Draw(spriteBatch, _positionOnScreen);
-        _healthBar.Draw(spriteBatch);
+        _healthBar.Draw(spriteBatch, State);
 
         if (GameCore.DRAW_HIT_BOX)
 #pragma warning disable CS0162 // Unreachable code detected
