@@ -48,6 +48,11 @@ internal class Enemy
         }
     }
 
+    private readonly Color _dyingColor = Color.DarkGray;
+    private readonly float _dyingTimeSec = 1f;
+    private float _dyingTimer, _dyingAngle;
+    private Vector2 _dyingShrink;
+
 
     public event EventHandler<int>? Destroyed;
     public event EventHandler<int>? ReachedPortal;
@@ -117,9 +122,10 @@ internal class Enemy
         if (State is EnemyState.Finished)
             return;
 
-        _sprite.Update(deltaSeconds);
+        if (HandleDying(deltaSeconds))
+            return;
 
-        //todo: handle dying here
+        _sprite.Update(deltaSeconds);
 
         if (HandleReachedEnd())
             return;
@@ -151,11 +157,43 @@ internal class Enemy
         if (_healthBar.CurrentHealth > 0)
             return false;
 
-        Destroyed?.Invoke(this, _reward);
-        State = EnemyState.Finished;
-        return true;
+        State = EnemyState.Dying;
 
-        //todo: if any dying animation then it starts here. 
+        _sprite.Color = _dyingColor;
+        _dyingAngle = MathF.PI / _dyingTimeSec;
+        _dyingShrink = _sprite.Scale / _dyingTimeSec;
+        return true;
+    }
+
+    private bool HandleDying(float deltaSeconds)
+    {
+        if (State is not EnemyState.Dying)
+            return false;
+
+        //handle dying finished
+        if (_dyingTimer > _dyingTimeSec)
+        {
+            State = EnemyState.Finished;
+            Destroyed?.Invoke(this, _reward);
+            return true;
+        }
+
+        _dyingTimer += deltaSeconds;
+
+        var angleDelta = _dyingAngle * deltaSeconds;
+        if (_facesRight)
+        {
+            _sprite.Rotation -= angleDelta;
+        }
+        else
+        {
+            _sprite.Rotation += angleDelta;
+        }
+
+        var shrinkDelta = _dyingShrink * deltaSeconds;
+        _sprite.Scale -= shrinkDelta;
+
+        return true;
     }
 
     private void MoveTowardsPath(float deltaSeconds)

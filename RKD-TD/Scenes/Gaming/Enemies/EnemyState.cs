@@ -4,6 +4,7 @@ internal enum EnemyState
 {
     Appearing,
     Vulnerable,
+    Dying,
     Disappearing,
     Finished
 }
