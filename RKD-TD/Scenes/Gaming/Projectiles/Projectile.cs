@@ -4,9 +4,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Collisions;
+using MonoGameLibrary.Extensions;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Explosions;
+using RKD_TD.Scenes.Gaming.Flashes;
 
 namespace RKD_TD.Scenes.Gaming.Projectiles;
 
@@ -16,6 +18,10 @@ internal class Projectile
 
     private readonly string _explosionAlias;
     private readonly ExplosionFactory _explosionFactory;
+
+    private readonly string? _trailFlashAlias;
+    private readonly FlashFactory _flashFactory;
+    private readonly Vector2 _trailFlashSpawnOffset;
 
     protected float Rotation
     {
@@ -27,13 +33,15 @@ internal class Projectile
         }
     }
 
+    private readonly float _speed;
+
     private readonly float
-        _speed,
-        _flightRange;
+        _flightRange,
+        _trailFlashSpawnPause;
 
     private readonly int _directDamage, _aoeRange, _aoeDamage, _hitCircleRadius;
 
-    private Vector2 _position;
+    protected Vector2 Position { get; private set; }
 
     private float _pathTraveled;
     private bool _dead;
@@ -62,7 +70,11 @@ internal class Projectile
         Vector2 position,
         float rotation,
         string explosionAlias,
-        ExplosionFactory explosionFactory)
+        string? trailFlashAlias,
+        float trailFlashSpawnPause,
+        Vector2 trailFlashSpawnOffset,
+        ExplosionFactory explosionFactory,
+        FlashFactory flashFactory)
     {
         _sprite = sprite;
         _speed = speed;
@@ -73,18 +85,22 @@ internal class Projectile
         Rotation = rotation;
         _explosionAlias = explosionAlias;
         _explosionFactory = explosionFactory;
+        _flashFactory = flashFactory;
+        _trailFlashSpawnOffset = trailFlashSpawnOffset;
+        _trailFlashAlias = trailFlashAlias;
+        _trailFlashSpawnPause = trailFlashSpawnPause;
         _hitCircleRadius = hitCircleRadius;
-        _position = position;
+        Position = position;
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        _sprite.Draw(spriteBatch, _position);
+        _sprite.Draw(spriteBatch, Position);
 
         if (GameCore.DRAW_HIT_BOX)
 #pragma warning disable CS0162 // Unreachable code detected
         {
-            Circle.DrawHitCircle(spriteBatch, Camera, _position, _hitCircleRadius, Color.BlueViolet);
+            Circle.DrawHitCircle(spriteBatch, Camera, Position, _hitCircleRadius, Color.BlueViolet);
         }
 #pragma warning restore CS0162 // Unreachable code detected
     }
@@ -123,34 +139,38 @@ internal class Projectile
                 continue;
 
             var enemyCircle = enemy.HitCircle;
-            var circle = new Circle(_position, _hitCircleRadius);
+            var circle = new Circle(Position, _hitCircleRadius);
 
-            if (enemyCircle.Intersects(circle))
-            {
-                var explosion = _explosionFactory.Create(
-                    _explosionAlias,
-                    _position,
-                    _aoeRange,
-                    _aoeDamage);
-                Collided?.Invoke(this, explosion);
+            if (!enemyCircle.Intersects(circle))
+                continue;
 
+            Explode(enemy);
 
-                enemy.ReceiveDamage(_directDamage);
-                _dead = true;
-                return true;
-            }
+            return true;
         }
 
         return false;
     }
 
-    private void HandleMove(float deltaSeconds)
+    private void Explode(Enemy? enemy = null)
+    {
+        var explosion = _explosionFactory.Create(
+            _explosionAlias,
+            Position,
+            _aoeRange,
+            _aoeDamage);
+        Collided?.Invoke(this, explosion);
+
+        enemy?.ReceiveDamage(_directDamage);
+
+        _dead = true;
+    }
+
+    protected virtual void HandleMove(float deltaSeconds)
     {
         var momentSpeed = _speed * deltaSeconds;
 
-        _position += new Vector2(
-            MathF.Cos(Rotation),
-            MathF.Sin(Rotation)) * momentSpeed;
+        Position += Rotation.ToUnitVector2() * momentSpeed;
 
         _pathTraveled += momentSpeed;
     }

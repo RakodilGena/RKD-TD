@@ -31,6 +31,8 @@
         <!--animationAlias XOR textureAlias-->
         <!--customType [homing,..]-->
         <!--aoeRange, aoeDamage-->
+        <!--        type="homing"-->
+        
         <Projectile
                 alias="mg_bullet"
                 textureAlias="projectile_bullet"

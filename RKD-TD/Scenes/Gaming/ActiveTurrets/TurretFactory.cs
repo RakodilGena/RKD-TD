@@ -92,13 +92,17 @@ internal sealed class TurretFactory
             { TurretType.MachineGun, mgTemplate }
         };
 
-        var projectileFactory = ProjectileFactory.FromFile(turretConfigDoc, gameObjectTextures);
-        var gunShotFlashFactory = FlashFactory.FromFile(turretConfigDoc, gameObjectTextures);
+        var flashFactory = FlashFactory.FromFile(turretConfigDoc, gameObjectTextures);
+
+        var projectileFactory = ProjectileFactory.FromFile(
+            turretConfigDoc,
+            gameObjectTextures,
+            flashFactory);
 
         return new TurretFactory(
             turrets: templates.ToFrozenDictionary(),
             projectileFactory,
-            gunShotFlashFactory);
+            flashFactory);
     }
 
     private static TurretTemplate CreateTurretTemplate(

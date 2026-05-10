@@ -33,8 +33,9 @@ internal sealed class Turret
         get;
         set
         {
-            field = value;
-            _barrelSprite.Rotation = value;
+            var wrapped = value.WrapAngle();
+            field = wrapped;
+            _barrelSprite.Rotation = wrapped;
         }
     }
 
@@ -140,7 +141,7 @@ internal sealed class Turret
                 }
                 else
                 {
-                    var desiredAngle = MathF.Atan2(vectorToEnemy.Y, vectorToEnemy.X);
+                    var desiredAngle = vectorToEnemy.ToAngle();
                     RotateTowards(
                         desiredAngle,
                         deltaSeconds,
@@ -151,7 +152,7 @@ internal sealed class Turret
             }
 
             //can shoot, try it.
-            var desiredAngle1 = MathF.Atan2(vectorToEnemy.Y, vectorToEnemy.X);
+            var desiredAngle1 = vectorToEnemy.ToAngle();
             RotateTowards(
                 desiredAngle1,
                 deltaSeconds,
@@ -217,7 +218,7 @@ internal sealed class Turret
             _rotationSpeedRadianInSec,
             deltaSeconds,
             out reached);
-        CurrentRotation = newAngle.WrapAngle();
+        CurrentRotation = newAngle;
     }
 
     private void Fire(float deltaSeconds)
@@ -228,6 +229,12 @@ internal sealed class Turret
             return;
 
         var (projectiles, flashes) = _turretBarrel.Fire(_position, CurrentRotation);
+
+        foreach (var projectile in projectiles)
+        {
+            if (projectile is HomingMissile homingMissile)
+                homingMissile.SetTarget(_fixatedEnemy!);
+        }
 
         ProjectilesFired?.Invoke(this, new TurretShotEventArgs(projectiles, flashes));
 

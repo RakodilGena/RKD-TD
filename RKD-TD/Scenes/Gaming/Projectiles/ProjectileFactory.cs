@@ -7,20 +7,24 @@ using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Helpers;
 using RKD_TD.Scenes.Gaming.Explosions;
+using RKD_TD.Scenes.Gaming.Flashes;
 
 namespace RKD_TD.Scenes.Gaming.Projectiles;
 
 internal sealed class ProjectileFactory
 {
     private readonly FrozenDictionary<string, ProjectileTemplate> _projectileTemplates;
+    private readonly FlashFactory _flashFactory;
     private readonly ExplosionFactory _explosionFactory;
 
     public ProjectileFactory(
         FrozenDictionary<string, ProjectileTemplate> projectileTemplates,
+        FlashFactory flashFactory,
         ExplosionFactory explosionFactory)
     {
         _projectileTemplates = projectileTemplates;
         _explosionFactory = explosionFactory;
+        _flashFactory = flashFactory;
     }
 
     public Projectile Create(
@@ -43,6 +47,26 @@ internal sealed class ProjectileFactory
         sprite.Scale = template.Scale;
         sprite.Origin = template.Origin;
 
+        if (template.Type is ProjectileType.Homing)
+        {
+            return new HomingMissile(
+                sprite,
+                template.Speed,
+                template.FlightRange,
+                template.HitCircleRadius,
+                template.DirectDamage,
+                template.AoeDamage,
+                template.AoeRange,
+                position,
+                rotation: angle,
+                template.ExplosionAlias,
+                template.TrailFlashAlias,
+                template.TrailFlashSpawnPause,
+                template.TrailFlashSpawnOffset,
+                _explosionFactory,
+                _flashFactory);
+        }
+
         return new Projectile(
             sprite,
             template.Speed,
@@ -54,12 +78,17 @@ internal sealed class ProjectileFactory
             position,
             rotation: angle,
             template.ExplosionAlias,
-            _explosionFactory);
+            template.TrailFlashAlias,
+            template.TrailFlashSpawnPause,
+            template.TrailFlashSpawnOffset,
+            _explosionFactory,
+            _flashFactory);
     }
 
     public static ProjectileFactory FromFile(
         XDocument turretConfig,
-        TextureAtlas gameObjectTextures)
+        TextureAtlas gameObjectTextures,
+        FlashFactory flashFactory)
     {
         var projElements = turretConfig.Root!
             .Element("Projectiles")!
@@ -108,6 +137,30 @@ internal sealed class ProjectileFactory
 
             var explosionAlias = projElement.Attribute("explosionAlias")!.Value;
 
+            var typeValue = projElement.Attribute("type")?.Value;
+            ProjectileType projType = typeValue switch
+            {
+                "homing" => ProjectileType.Homing,
+                _ => ProjectileType.Standard
+            };
+
+            var trailFlashAlias = projElement.Attribute("trailFlashAlias")?.Value;
+            float trailFlashSpawnPause;
+            Vector2 trailFlashSpawnOffset;
+
+            if (!string.IsNullOrEmpty(trailFlashAlias))
+            {
+                trailFlashSpawnPause = float.Parse(projElement.Attribute("trailFlashSpawnPause")!.Value);
+                var trailFlashSpawnOffsetArr = ParseHelper.ParseToFloatArr(projElement, "trailFlashSpawnOffset", ';');
+                trailFlashSpawnOffset = new Vector2(trailFlashSpawnOffsetArr[0], trailFlashSpawnOffsetArr[1]);
+            }
+            else
+            {
+                trailFlashSpawnPause = -1f;
+                trailFlashSpawnOffset = Vector2.Zero;
+            }
+
+
             templates.Add(
                 new ProjectileTemplate(
                     alias,
@@ -121,13 +174,19 @@ internal sealed class ProjectileFactory
                     aoeRange,
                     aoeDamage,
                     hitCircleRadius,
-                    explosionAlias));
+                    projType,
+                    explosionAlias,
+                    trailFlashAlias,
+                    trailFlashSpawnPause,
+                    trailFlashSpawnOffset
+                ));
         }
 
         var explosionFactory = ExplosionFactory.FromFile(turretConfig, gameObjectTextures);
 
         return new ProjectileFactory(
             templates.ToFrozenDictionary(t => t.Alias),
+            flashFactory,
             explosionFactory);
     }
 }

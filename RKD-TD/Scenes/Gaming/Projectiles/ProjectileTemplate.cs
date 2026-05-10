@@ -16,4 +16,14 @@ internal sealed record ProjectileTemplate(
     int AoeRange,
     int AoeDamage,
     int HitCircleRadius,
-    string ExplosionAlias);
+    ProjectileType Type,
+    string ExplosionAlias,
+    string? TrailFlashAlias,
+    float TrailFlashSpawnPause,
+    Vector2 TrailFlashSpawnOffset);
+
+public enum ProjectileType
+{
+    Standard,
+    Homing
+}

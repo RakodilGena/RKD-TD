@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using RKD_TD.Helpers;
+using MonoGameLibrary.Extensions;
 using RKD_TD.Scenes.Gaming.Flashes;
 using RKD_TD.Scenes.Gaming.Projectiles;
 
@@ -105,9 +105,7 @@ internal sealed class TurretBarrel
     {
         var firingPoint = _firingPoints[pointIdx];
 
-        var firingPointAbsolutePosition = turretCenter + Vector2Helper.GetRotatedVector(
-            firingPoint.Position,
-            rotation);
+        var firingPointAbsolutePosition = turretCenter + firingPoint.Position.GetRotatedVector(rotation);
         var bulletRotation = rotation + firingPoint.BulletExtraAngleInRadians;
 
         var projectile = _projectileFactory.Create(
@@ -115,9 +113,7 @@ internal sealed class TurretBarrel
             firingPointAbsolutePosition,
             bulletRotation);
 
-        var flashPointAbsolutePosition = turretCenter + Vector2Helper.GetRotatedVector(
-            _gunFlashPoints[pointIdx],
-            rotation);
+        var flashPointAbsolutePosition = _gunFlashPoints[pointIdx].GetRotatedVector(rotation);
 
         var flash = _flashFactory.Create(
             _flashAlias,
