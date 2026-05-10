@@ -32,7 +32,7 @@
         <!--customType [homing,..]-->
         <!--aoeRange, aoeDamage-->
         <!--        type="homing"-->
-        
+        <!--        trailFlashAlias, trailFlashSpawnPauseMs, trailFlashSpawnOffset-->
         <Projectile
                 alias="mg_bullet"
                 textureAlias="projectile_bullet"

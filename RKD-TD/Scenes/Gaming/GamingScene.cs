@@ -469,16 +469,22 @@ internal sealed class GamingScene : Scene
         {
             projectile.Exhausted += OnProjectileExhausted;
             projectile.Collided += OnProjectileCollided;
+            projectile.TrailFlashEmitted += (_, flash) => AddFlash(flash);
             projectile.Camera = _camera;
             _projectiles.Add(projectile);
         }
 
         foreach (var flash in e.Flashes)
         {
-            flash.Finished += OnFlashFinished;
-            flash.Camera = _camera;
-            _flashes.Add(flash);
+            AddFlash(flash);
         }
+    }
+
+    private void AddFlash(Flash flash)
+    {
+        flash.Finished += OnFlashFinished;
+        flash.Camera = _camera;
+        _flashes.Add(flash);
     }
 
     private void OnFlashFinished(object? sender, EventArgs e)

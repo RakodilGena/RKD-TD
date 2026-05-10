@@ -22,6 +22,7 @@ internal class Projectile
     private readonly string? _trailFlashAlias;
     private readonly FlashFactory _flashFactory;
     private readonly Vector2 _trailFlashSpawnOffset;
+    private float _trailFlashSpawnTimer;
 
     protected float Rotation
     {
@@ -37,7 +38,7 @@ internal class Projectile
 
     private readonly float
         _flightRange,
-        _trailFlashSpawnPause;
+        _trailFlashSpawnPauseSec;
 
     private readonly int _directDamage, _aoeRange, _aoeDamage, _hitCircleRadius;
 
@@ -59,6 +60,8 @@ internal class Projectile
     public event EventHandler? Exhausted;
     public event EventHandler<Explosion>? Collided;
 
+    public event EventHandler<Flash>? TrailFlashEmitted;
+
     public Projectile(
         Sprite sprite,
         float speed,
@@ -71,7 +74,7 @@ internal class Projectile
         float rotation,
         string explosionAlias,
         string? trailFlashAlias,
-        float trailFlashSpawnPause,
+        float trailFlashSpawnPauseSec,
         Vector2 trailFlashSpawnOffset,
         ExplosionFactory explosionFactory,
         FlashFactory flashFactory)
@@ -88,7 +91,10 @@ internal class Projectile
         _flashFactory = flashFactory;
         _trailFlashSpawnOffset = trailFlashSpawnOffset;
         _trailFlashAlias = trailFlashAlias;
-        _trailFlashSpawnPause = trailFlashSpawnPause;
+
+        _trailFlashSpawnTimer = trailFlashSpawnPauseSec;
+        _trailFlashSpawnPauseSec = trailFlashSpawnPauseSec;
+
         _hitCircleRadius = hitCircleRadius;
         Position = position;
     }
@@ -119,6 +125,8 @@ internal class Projectile
             return;
 
         HandleMove(deltaSeconds);
+
+        HandleTrailFlashing(deltaSeconds);
     }
 
     private bool HandleExhausted()
@@ -173,5 +181,26 @@ internal class Projectile
         Position += Rotation.ToUnitVector2() * momentSpeed;
 
         _pathTraveled += momentSpeed;
+    }
+
+    private void HandleTrailFlashing(float deltaSeconds)
+    {
+        if (_trailFlashAlias is null)
+            return;
+
+        if (_trailFlashSpawnTimer > _trailFlashSpawnPauseSec)
+        {
+            _trailFlashSpawnTimer -= _trailFlashSpawnPauseSec;
+
+            var position = Position + _trailFlashSpawnOffset;
+            var flash = _flashFactory.Create(
+                _trailFlashAlias,
+                position,
+                angle: 0f);
+            TrailFlashEmitted?.Invoke(this, flash);
+            return;
+        }
+
+        _trailFlashSpawnTimer += deltaSeconds;
     }
 }

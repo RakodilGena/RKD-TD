@@ -2,9 +2,9 @@
 
 TODOs:
 
-1. develop damaging system (including aoe)
-2. develop enemy health bars
-3. develop homing missile
+1. develop damaging system (including aoe) DONE
+2. develop enemy health bars DONE
+3. develop homing missile DONE
 4. finish other tower types
 5. finish enemy types
 6. finish auto-spawner

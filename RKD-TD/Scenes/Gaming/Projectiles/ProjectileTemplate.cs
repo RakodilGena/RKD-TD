@@ -19,7 +19,7 @@ internal sealed record ProjectileTemplate(
     ProjectileType Type,
     string ExplosionAlias,
     string? TrailFlashAlias,
-    float TrailFlashSpawnPause,
+    float TrailFlashSpawnPauseSec,
     Vector2 TrailFlashSpawnOffset);
 
 public enum ProjectileType

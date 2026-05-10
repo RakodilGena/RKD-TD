@@ -23,12 +23,12 @@ internal sealed class HomingMissile : Projectile
         float rotation,
         string explosionAlias,
         string? trailFlashAlias,
-        float trailFlashSpawnPause,
+        float trailFlashSpawnPauseSec,
         Vector2 trailFlashSpawnOffset,
         ExplosionFactory explosionFactory,
         FlashFactory flashFactory)
         : base(sprite, speed, flightRange, hitCircleRadius, directDamage, aoeDamage, aoeRange,
-            position, rotation, explosionAlias, trailFlashAlias, trailFlashSpawnPause,
+            position, rotation, explosionAlias, trailFlashAlias, trailFlashSpawnPauseSec,
             trailFlashSpawnOffset, explosionFactory, flashFactory)
     {
     }

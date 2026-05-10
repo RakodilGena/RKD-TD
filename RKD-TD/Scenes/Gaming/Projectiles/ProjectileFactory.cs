@@ -61,7 +61,7 @@ internal sealed class ProjectileFactory
                 rotation: angle,
                 template.ExplosionAlias,
                 template.TrailFlashAlias,
-                template.TrailFlashSpawnPause,
+                template.TrailFlashSpawnPauseSec,
                 template.TrailFlashSpawnOffset,
                 _explosionFactory,
                 _flashFactory);
@@ -79,7 +79,7 @@ internal sealed class ProjectileFactory
             rotation: angle,
             template.ExplosionAlias,
             template.TrailFlashAlias,
-            template.TrailFlashSpawnPause,
+            template.TrailFlashSpawnPauseSec,
             template.TrailFlashSpawnOffset,
             _explosionFactory,
             _flashFactory);
@@ -145,18 +145,19 @@ internal sealed class ProjectileFactory
             };
 
             var trailFlashAlias = projElement.Attribute("trailFlashAlias")?.Value;
-            float trailFlashSpawnPause;
+            float trailFlashSpawnPauseSec;
             Vector2 trailFlashSpawnOffset;
 
             if (!string.IsNullOrEmpty(trailFlashAlias))
             {
-                trailFlashSpawnPause = float.Parse(projElement.Attribute("trailFlashSpawnPause")!.Value);
-                var trailFlashSpawnOffsetArr = ParseHelper.ParseToFloatArr(projElement, "trailFlashSpawnOffset", ';');
+                trailFlashSpawnPauseSec = float.Parse(projElement.Attribute("trailFlashSpawnPauseMs")!.Value) / 1000f;
+                var trailFlashSpawnOffsetArr = ParseHelper.ParseToFloatArr(
+                    projElement, "trailFlashSpawnOffset", ';');
                 trailFlashSpawnOffset = new Vector2(trailFlashSpawnOffsetArr[0], trailFlashSpawnOffsetArr[1]);
             }
             else
             {
-                trailFlashSpawnPause = -1f;
+                trailFlashSpawnPauseSec = -1f;
                 trailFlashSpawnOffset = Vector2.Zero;
             }
 
@@ -177,7 +178,7 @@ internal sealed class ProjectileFactory
                     projType,
                     explosionAlias,
                     trailFlashAlias,
-                    trailFlashSpawnPause,
+                    trailFlashSpawnPauseSec,
                     trailFlashSpawnOffset
                 ));
         }
