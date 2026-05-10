@@ -5,6 +5,7 @@ using MonoGameLibrary.Graphics.Sprites;
 namespace RKD_TD.Scenes.Gaming.ActiveTurrets;
 
 internal sealed record TurretTemplate(
+    int Price,
     TextureRegion? BarrelTexture,
     Animation? BarrelAnimation,
     Vector2 BarrelScale,

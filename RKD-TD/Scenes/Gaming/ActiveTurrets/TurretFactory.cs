@@ -78,7 +78,8 @@ internal sealed class TurretFactory
 
     public static TurretFactory FromFile(
         XDocument turretConfigDoc,
-        TextureAtlas gameObjectTextures)
+        TextureAtlas gameObjectTextures,
+        out PendingTurretStash pendingTurretStash)
     {
         var turretsElement = turretConfigDoc.Root!.Element("Turrets")!;
 
@@ -116,6 +117,10 @@ internal sealed class TurretFactory
             turretConfigDoc,
             gameObjectTextures,
             flashFactory);
+
+        var pendingTurrets = templates.Select(p =>
+            new PendingTurret(p.Key, p.Value.Price));
+        pendingTurretStash = new PendingTurretStash(pendingTurrets);
 
         return new TurretFactory(
             turrets: templates.ToFrozenDictionary(),
@@ -192,8 +197,12 @@ internal sealed class TurretFactory
                 x: pointValues[0] * barrelScale.X,
                 y: pointValues[1] * barrelScale.Y))
             .ToArray();
+        
+        
+        var price = int.Parse(turretElement.Attribute("price")!.Value);
 
         return new TurretTemplate(
+            price,
             barrelTexture,
             barrelAnimation,
             barrelScale,

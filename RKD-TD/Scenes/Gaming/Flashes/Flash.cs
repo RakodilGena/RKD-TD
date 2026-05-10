@@ -31,14 +31,13 @@ internal class Flash
 
     public void Update(float deltaSeconds)
     {
-        if (ElapsedTimeSec > _playTimeSec)
-        {
-            Finished?.Invoke(this, EventArgs.Empty);
-            return;
-        }
-
         ElapsedTimeSec += deltaSeconds;
         _sprite.Update(deltaSeconds);
+
+        if (ElapsedTimeSec < _playTimeSec)
+            return;
+
+        Finished?.Invoke(this, EventArgs.Empty);
     }
 
     public void Draw(SpriteBatch spriteBatch)

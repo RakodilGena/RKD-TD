@@ -117,7 +117,7 @@
             <Frame region="flash_mg3"/>
         </Animation>
 
-        <Animation name="flash-shotgun-animation" delay="30">
+        <Animation name="flash-shotgun-animation" delay="80">
             <Frame region="flash_shotgun1"/>
             <Frame region="flash_shotgun2"/>
             <Frame region="flash_shotgun3"/>

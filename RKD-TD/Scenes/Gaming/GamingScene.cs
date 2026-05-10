@@ -45,6 +45,7 @@ internal sealed class GamingScene : Scene
     private UserResources _userResources = null!;
 
     private TurretPurchasePanel _turretPurchasePanel = null!;
+    private PendingTurretStash _pendingTurretStash = null!;
     private BuildGrid _buildGrid = null!;
     private BuildCell? _hoveredCell;
     private TurretFactory _turretFactory = null!;
@@ -114,8 +115,6 @@ internal sealed class GamingScene : Scene
             panelLayerDepth: 0.9f,
             buttonLayerDepth: 0.91f);
         _turretPurchasePanel.TurretPicked += BeginTurretPlacing;
-
-        PendingTurretStash.InitPendingTurrets(_camera);
     }
 
     public override void LoadContent()
@@ -196,7 +195,10 @@ internal sealed class GamingScene : Scene
     private void LoadTurretFactory()
     {
         var turretCfg = XmlLoader.Load(Content, TURRET_CONFIG_NAME);
-        _turretFactory = TurretFactory.FromFile(turretCfg, _gameObjectsTextures);
+        _turretFactory = TurretFactory.FromFile(
+            turretCfg, 
+            _gameObjectsTextures, 
+            out _pendingTurretStash);
     }
 
     public override void Draw(GameTime gameTime)
@@ -416,7 +418,7 @@ internal sealed class GamingScene : Scene
 
     private void BeginTurretPlacing(object? sender, TurretType turretType)
     {
-        var pendingTurret = PendingTurretStash.GetPendingTurret(turretType);
+        var pendingTurret = _pendingTurretStash.GetPendingTurret(turretType);
 
         if (pendingTurret.Price > _userResources.Coins)
             return;

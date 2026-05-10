@@ -191,14 +191,6 @@ internal sealed class TurretPurchasePanel
             buttonLayerDepth);
         mgButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.MachineGun);
 
-        var cannonButton = CreateTurretPurchaseButton(
-            textureAlias: Textures.Game.TURRET_ICON_CANNON_240,
-            position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
-            gameObjects,
-            scale,
-            buttonLayerDepth);
-        cannonButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Cannon);
-
         var shotgunButton = CreateTurretPurchaseButton(
             textureAlias: Textures.Game.TURRET_ICON_SHOTGUN_240,
             position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
@@ -206,6 +198,14 @@ internal sealed class TurretPurchasePanel
             scale,
             buttonLayerDepth);
         shotgunButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Shotgun);
+
+        var cannonButton = CreateTurretPurchaseButton(
+            textureAlias: Textures.Game.TURRET_ICON_CANNON_240,
+            position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
+            gameObjects,
+            scale,
+            buttonLayerDepth);
+        cannonButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Cannon);
 
         var missileButton = CreateTurretPurchaseButton(
             textureAlias: Textures.Game.TURRET_ICON_MISSILE_240,

@@ -4,6 +4,8 @@
         <!-- barrelTextureAlias XOR barrelAnimationAlias-->
         <!-- firingMode - single (1st fp), random (one of fps at random), rotation (one by one), all-->
         <MachineGun
+                price="100"
+                
                 barrelAnimationAlias="turret-mg-animation"
                 barrelSize="180;90"
                 barrelOrigin="135;125"
@@ -25,7 +27,31 @@
                 projectileAlias="mg_bullet"
                 flashAlias="mg_flash"/>
 
+        <Shotgun
+                price="150"
+                barrelTextureAlias="turret_shotgun"
+                barrelSize="180;90"
+                barrelOrigin="140;94"
+
+                carriageTextureAlias="turret_carriage"
+                carriageSize="130;130"
+                carriageOrigin="100;100"
+
+                reloadTimeMs="800"
+
+                rotationSpeed="140"
+                fixateDistance="1450"
+                firingDistance="1400"
+
+                firingPoints="275,-5,-10;  275,-3,-5;  275,0,0;  275,3,5;  275,5,10"
+                firingMode="all"
+                flashPoints="270,0; 270,0; 270,0; 270,0; 270,0"
+
+                projectileAlias="shotgun_bullet"
+                flashAlias="shotgun_flash"/>
+
         <Cannon
+                price="400"
                 barrelTextureAlias="turret_cannon"
                 barrelSize="180;90"
                 barrelOrigin="150;100"
@@ -47,29 +73,8 @@
                 projectileAlias="shell"
                 flashAlias="cannon_flash"/>
 
-        <Shotgun
-                barrelTextureAlias="turret_shotgun"
-                barrelSize="180;90"
-                barrelOrigin="150;94"
-
-                carriageTextureAlias="turret_carriage"
-                carriageSize="130;130"
-                carriageOrigin="100;100"
-
-                reloadTimeMs="800"
-
-                rotationSpeed="140"
-                fixateDistance="450"
-                firingDistance="400"
-
-                firingPoints="265,-5,-10;  265,-3,-5;  265,0,0;  265,3,5;  265,5,10"
-                firingMode="all"
-                flashPoints="260,0;260,0;260,0;260,0;260,0"
-
-                projectileAlias="shotgun_bullet"
-                flashAlias="shotgun_flash"/>
-
         <Missile
+                price="300"
                 barrelTextureAlias="turret_missile"
                 barrelSize="160;140"
                 barrelOrigin="130;100"
