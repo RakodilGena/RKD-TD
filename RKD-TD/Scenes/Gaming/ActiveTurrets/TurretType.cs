@@ -5,5 +5,5 @@ internal enum TurretType
     MachineGun,
     Cannon,
     Shotgun,
-    Rocket
+    Missile
 }

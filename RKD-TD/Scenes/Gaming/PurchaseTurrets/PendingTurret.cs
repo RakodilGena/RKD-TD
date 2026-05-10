@@ -13,7 +13,7 @@ internal sealed class PendingTurret
 
     public int Price { get; }
 
-    public ICamera Camera { get; }
+    public ICamera Camera { get; } //todo remove if not needed.
 
     public PendingTurret(
         TurretType type,

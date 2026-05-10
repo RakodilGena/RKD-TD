@@ -207,13 +207,13 @@ internal sealed class TurretPurchasePanel
             buttonLayerDepth);
         shotgunButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Shotgun);
 
-        var rocketButton = CreateTurretPurchaseButton(
-            textureAlias: Textures.Game.TURRET_ICON_ROCKET_240,
+        var missileButton = CreateTurretPurchaseButton(
+            textureAlias: Textures.Game.TURRET_ICON_MISSILE_240,
             position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
             gameObjects,
             scale,
             buttonLayerDepth);
-        rocketButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Rocket);
+        missileButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Missile);
 
 
         return
@@ -221,7 +221,7 @@ internal sealed class TurretPurchasePanel
             mgButton,
             cannonButton,
             shotgunButton,
-            rocketButton
+            missileButton
         ];
     }
 

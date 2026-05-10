@@ -87,9 +87,27 @@ internal sealed class TurretFactory
             gameObjectTextures,
             "MachineGun");
 
+        var cannonTemplate = CreateTurretTemplate(
+            turretsElement,
+            gameObjectTextures,
+            "Cannon");
+
+        var shotgunTemplate = CreateTurretTemplate(
+            turretsElement,
+            gameObjectTextures,
+            "Shotgun");
+
+        var missileTemplate = CreateTurretTemplate(
+            turretsElement,
+            gameObjectTextures,
+            "Missile");
+
         Dictionary<TurretType, TurretTemplate> templates = new Dictionary<TurretType, TurretTemplate>(4)
         {
-            { TurretType.MachineGun, mgTemplate }
+            { TurretType.MachineGun, mgTemplate },
+            { TurretType.Cannon, cannonTemplate },
+            { TurretType.Shotgun, shotgunTemplate },
+            { TurretType.Missile, missileTemplate },
         };
 
         var flashFactory = FlashFactory.FromFile(turretConfigDoc, gameObjectTextures);

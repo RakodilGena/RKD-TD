@@ -14,22 +14,86 @@
 
                 reloadTimeMs="100"
 
-                rotationSpeed="120"
-                fixateDistance="500"
-                firingDistance="400"
+                rotationSpeed="180"
+                fixateDistance="650"
+                firingDistance="600"
 
                 firingPoints="270,-20,-5; 270,-10,-3; 270,0,0; 270,10,3; 270,20,5"
                 firingMode="random"
                 flashPoints="260,-15; 260,-8; 260,0; 260,8; 260,15"
 
-
                 projectileAlias="mg_bullet"
-                flashAlias="mg_flash_alt"/>
+                flashAlias="mg_flash"/>
+
+        <Cannon
+                barrelTextureAlias="turret_cannon"
+                barrelSize="180;90"
+                barrelOrigin="150;100"
+
+                carriageTextureAlias="turret_carriage"
+                carriageSize="140;140"
+                carriageOrigin="100;100"
+
+                reloadTimeMs="2500"
+
+                rotationSpeed="100"
+                fixateDistance="850"
+                firingDistance="800"
+
+                firingPoints="260,0,0"
+                firingMode="single"
+                flashPoints="255,0"
+
+                projectileAlias="shell"
+                flashAlias="cannon_flash"/>
+
+        <Shotgun
+                barrelTextureAlias="turret_shotgun"
+                barrelSize="180;90"
+                barrelOrigin="150;94"
+
+                carriageTextureAlias="turret_carriage"
+                carriageSize="130;130"
+                carriageOrigin="100;100"
+
+                reloadTimeMs="800"
+
+                rotationSpeed="140"
+                fixateDistance="450"
+                firingDistance="400"
+
+                firingPoints="265,-5,-10;  265,-3,-5;  265,0,0;  265,3,5;  265,5,10"
+                firingMode="all"
+                flashPoints="260,0;260,0;260,0;260,0;260,0"
+
+                projectileAlias="shotgun_bullet"
+                flashAlias="shotgun_flash"/>
+
+        <Missile
+                barrelTextureAlias="turret_missile"
+                barrelSize="160;140"
+                barrelOrigin="130;100"
+
+                carriageTextureAlias="turret_carriage"
+                carriageSize="175;175"
+                carriageOrigin="100;100"
+
+                reloadTimeMs="1300"
+
+                rotationSpeed="125"
+                fixateDistance="1200"
+                firingDistance="1100"
+
+                firingPoints="120,-55,0; 120,0,0; 120,53,0;"
+                firingMode="rotation"
+                flashPoints="140,-55; 140,0; 140,53;"
+
+                projectileAlias="missile"
+                flashAlias="missile_launch_flash"/>
     </Turrets>
 
     <Projectiles>
         <!--animationAlias XOR textureAlias-->
-        <!--customType [homing,..]-->
         <!--aoeRange, aoeDamage-->
         <!--        type="homing"-->
         <!--        trailFlashAlias, trailFlashSpawnPauseMs, trailFlashSpawnOffset-->
@@ -39,11 +103,63 @@
                 size="20;6"
                 origin="50;15"
                 speed="500"
-                flightRange="500"
+                flightRange="700"
                 directDamage="2"
                 hitCircleRadius="5"
 
                 explosionAlias="mg_bullet_explosion"
+        />
+
+        <Projectile
+                alias="shotgun_bullet"
+                textureAlias="projectile_bullet"
+                size="24;8"
+                origin="50;15"
+                speed="450"
+                flightRange="450"
+                directDamage="5"
+                hitCircleRadius="6"
+
+                explosionAlias="shotgun_bullet_explosion"
+        />
+
+        <Projectile
+                alias="shell"
+                textureAlias="projectile_shell"
+                size="50;25"
+                origin="115;48"
+                speed="700"
+                flightRange="900"
+
+                hitCircleRadius="20"
+
+                directDamage="40"
+                aoeRange="75"
+                aoeDamage="25"
+
+                explosionAlias="shell_explosion"
+        />
+
+        <Projectile
+                alias="missile"
+                textureAlias="projectile_missile"
+                size="75;32"
+                origin="195;67"
+                speed="630"
+                flightRange="900"
+
+                hitCircleRadius="16"
+
+                directDamage="10"
+                aoeRange="50"
+                aoeDamage="35"
+                type="homing"
+
+                explosionAlias="missile_explosion"
+
+                trailFlashAlias="missile_fly_flash"
+                trailFlashSpawnPauseMs="50"
+                trailFlashSpawnOffset="0;0"
         />
     </Projectiles>
 
@@ -52,14 +168,31 @@
                 alias="mg_flash"
                 animationAlias="flash-mg-animation"
                 size="50;50"
-                origin="0;100"
-        />
+                origin="0;100"/>
+
         <Flash
-                alias="mg_flash_alt"
-                animationAlias="flash-mg-animation-alt"
+                alias="shotgun_flash"
+                animationAlias="flash-shotgun-animation"
+                size="50;80"
+                origin="0;100"/>
+
+        <Flash
+                alias="cannon_flash"
+                animationAlias="flash-shotgun-animation"
+                size="50;80"
+                origin="0;100"/>
+
+        <Flash
+                alias="missile_launch_flash"
+                animationAlias="flash-shotgun-animation"
+                size="80;80"
+                origin="100;100"/>
+
+        <Flash
+                alias="missile_fly_flash"
+                animationAlias="flash-mg-animation"
                 size="50;50"
-                origin="0;100"
-        />
+                origin="100;100"/>
 
     </Flashes>
 
@@ -67,9 +200,37 @@
     <Explosions>
         <Explosion
                 alias="mg_bullet_explosion"
-                animationAlias="explosion-mg-billet-animation"
-                size="20;20"
-                origin="20;20"/>
+
+                animationAlias="explosion-bullet-animation"
+                origin="20;20"
+
+                size="20;20"/>
+
+        <Explosion
+                alias="shotgun_bullet_explosion"
+
+                animationAlias="explosion-bullet-animation"
+                origin="20;20"
+
+                size="23;23"/>
+
+        <Explosion
+                alias="shell_explosion"
+
+                animationAlias="explosion-bullet-animation"
+                origin="20;20"
+
+                size="170;170"
+                damageDelayMs="70"/>
+
+        <Explosion
+                alias="missile_explosion"
+
+                animationAlias="explosion-bullet-animation"
+                origin="20;20"
+
+                size="120;120"
+                damageDelayMs="50"/>
 
     </Explosions>
 </Root>

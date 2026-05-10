@@ -20,7 +20,7 @@ internal static class PendingTurretStash
             new(TurretType.MachineGun, camera, 100),
             new(TurretType.Cannon, camera, 200),
             new(TurretType.Shotgun, camera, 250),
-            new(TurretType.Rocket, camera, 300)
+            new(TurretType.Missile, camera, 300)
         ];
 
         _turrets = turrets.ToFrozenDictionary(t => t.Type);

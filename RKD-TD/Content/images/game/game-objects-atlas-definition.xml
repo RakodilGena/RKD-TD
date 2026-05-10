@@ -37,7 +37,7 @@
         <Region name="turret_icon_mg_240" x="1030" y="255" width="240" height="240"/>
         <Region name="turret_icon_cannon_240" x="1280" y="255" width="240" height="240"/>
         <Region name="turret_icon_shotgun_240" x="1530" y="255" width="240" height="240"/>
-        <Region name="turret_icon_rocket_240" x="1780" y="255" width="240" height="240"/>
+        <Region name="turret_icon_missile_240" x="1780" y="255" width="240" height="240"/>
         <Region name="turret_panel_hide_btn_125_250" x="1890" y="500" width="125" height="250"/>
 
         <!--turrets-->
@@ -46,27 +46,37 @@
         <Region name="turret_mg1" x="1030" y="500" width="400" height="200"/>
         <Region name="turret_mg2" x="1450" y="500" width="400" height="200"/>
 
+        <Region name="turret_shotgun" x="1030" y="705" width="400" height="200"/>
+
+        <Region name="turret_cannon" x="1030" y="910" width="400" height="200"/>
+
+        <Region name="turret_missile" x="1030" y="1115" width="260" height="210"/>
+
         <!--projectiles-->
         <Region name="projectile_bullet" x="1920" y="760" width="100" height="30"/>
 
-        <!--flashes-->
-        <Region name="flash_mg1" x="1030" y="1330" width="200" height="200"/>
-        <Region name="flash_mg2" x="1235" y="1330" width="200" height="200"/>
-        <Region name="flash_mg3" x="1440" y="1330" width="200" height="200"/>
-        <Region name="flash_mg4" x="1645" y="1330" width="200" height="200"/>
+        <Region name="projectile_shell" x="1840" y="800" width="200" height="100"/>
 
-        <Region name="flash_mg1_alt" x="1030" y="1530" width="200" height="200"/>
-        <Region name="flash_mg2_alt" x="1235" y="1530" width="200" height="200"/>
-        <Region name="flash_mg3_alt" x="1440" y="1530" width="200" height="200"/>
+        <Region name="projectile_missile" x="1740" y="910" width="300" height="130"/>
+
+        <!--flashes-->
+        <Region name="flash_mg1" x="1030" y="1530" width="200" height="200"/>
+        <Region name="flash_mg2" x="1235" y="1530" width="200" height="200"/>
+        <Region name="flash_mg3" x="1440" y="1530" width="200" height="200"/>
+
+        <Region name="flash_shotgun1" x="1030" y="1330" width="200" height="200"/>
+        <Region name="flash_shotgun2" x="1235" y="1330" width="200" height="200"/>
+        <Region name="flash_shotgun3" x="1440" y="1330" width="200" height="200"/>
+        <Region name="flash_shotgun4" x="1645" y="1330" width="200" height="200"/>
 
 
         <!--explosions-->
-        <Region name="explosion_mg_bullet1" x="1640" y="1540" width="40" height="40"/>
-        <Region name="explosion_mg_bullet2" x="1680" y="1540" width="40" height="40"/>
-        <Region name="explosion_mg_bullet3" x="1720" y="1540" width="40" height="40"/>
-        <Region name="explosion_mg_bullet4" x="1760" y="1540" width="40" height="40"/>
-        <Region name="explosion_mg_bullet5" x="1800" y="1540" width="40" height="40"/>
-        <Region name="explosion_mg_bullet6" x="1840" y="1540" width="40" height="40"/>
+        <Region name="explosion_bullet1" x="1640" y="1540" width="40" height="40"/>
+        <Region name="explosion_bullet2" x="1680" y="1540" width="40" height="40"/>
+        <Region name="explosion_bullet3" x="1720" y="1540" width="40" height="40"/>
+        <Region name="explosion_bullet4" x="1760" y="1540" width="40" height="40"/>
+        <Region name="explosion_bullet5" x="1800" y="1540" width="40" height="40"/>
+        <Region name="explosion_bullet6" x="1840" y="1540" width="40" height="40"/>
 
 
     </Regions>
@@ -101,26 +111,27 @@
 
 
         <!--flashes-->
-        <Animation name="flash-mg-animation" delay="35">
+        <Animation name="flash-mg-animation" delay="15">
             <Frame region="flash_mg1"/>
             <Frame region="flash_mg2"/>
             <Frame region="flash_mg3"/>
-            <Frame region="flash_mg4"/>
         </Animation>
 
-        <Animation name="flash-mg-animation-alt" delay="15">
-            <Frame region="flash_mg1_alt"/>
-            <Frame region="flash_mg2_alt"/>
-            <Frame region="flash_mg3_alt"/>
+        <Animation name="flash-shotgun-animation" delay="30">
+            <Frame region="flash_shotgun1"/>
+            <Frame region="flash_shotgun2"/>
+            <Frame region="flash_shotgun3"/>
+            <Frame region="flash_shotgun4"/>
         </Animation>
 
-        <Animation name="explosion-mg-billet-animation" delay="15">
-            <Frame region="explosion_mg_bullet1"/>
-            <Frame region="explosion_mg_bullet2"/>
-            <Frame region="explosion_mg_bullet3"/>
-            <Frame region="explosion_mg_bullet4"/>
-            <Frame region="explosion_mg_bullet5"/>
-            <Frame region="explosion_mg_bullet6"/>
+
+        <Animation name="explosion-bullet-animation" delay="15">
+            <Frame region="explosion_bullet1"/>
+            <Frame region="explosion_bullet2"/>
+            <Frame region="explosion_bullet3"/>
+            <Frame region="explosion_bullet4"/>
+            <Frame region="explosion_bullet5"/>
+            <Frame region="explosion_bullet6"/>
         </Animation>
 
 
