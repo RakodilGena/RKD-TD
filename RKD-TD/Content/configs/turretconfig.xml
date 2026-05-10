@@ -24,7 +24,7 @@
 
 
                 projectileAlias="mg_bullet"
-                flashAlias="mg_flash"/>
+                flashAlias="mg_flash_alt"/>
     </Turrets>
 
     <Projectiles>
@@ -50,6 +50,12 @@
     <Flashes>
         <Flash
                 alias="mg_flash"
+                animationAlias="flash-mg-animation"
+                size="50;50"
+                origin="0;100"
+        />
+        <Flash
+                alias="mg_flash_alt"
                 animationAlias="flash-mg-animation-alt"
                 size="50;50"
                 origin="0;100"

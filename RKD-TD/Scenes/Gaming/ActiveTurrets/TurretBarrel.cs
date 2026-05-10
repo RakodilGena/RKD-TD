@@ -113,7 +113,7 @@ internal sealed class TurretBarrel
             firingPointAbsolutePosition,
             bulletRotation);
 
-        var flashPointAbsolutePosition = _gunFlashPoints[pointIdx].GetRotatedVector(rotation);
+        var flashPointAbsolutePosition = turretCenter + _gunFlashPoints[pointIdx].GetRotatedVector(rotation);
 
         var flash = _flashFactory.Create(
             _flashAlias,
