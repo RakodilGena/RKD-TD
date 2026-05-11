@@ -21,6 +21,7 @@ internal sealed class Turret
         _rotationSpeedRadianInSec,
         _reloadTimeInSec,
         _fixateDistanceSquared,
+        _firingDistance,
         _firingDistanceSquared;
 
     private readonly TurretBarrel _turretBarrel;
@@ -78,6 +79,7 @@ internal sealed class Turret
         float rotationSpeedRadianInSec,
         float reloadTimeInSec,
         float fixateDistanceSquared,
+        float firingDistance,
         float firingDistanceSquared,
         TurretFiringPoint[] firingPoints,
         TurretFiringMode firingMode,
@@ -97,6 +99,7 @@ internal sealed class Turret
         _fixateDistanceSquared = fixateDistanceSquared;
         _firingDistanceSquared = firingDistanceSquared;
         OccupiedCell = occupiedCell;
+        _firingDistance = firingDistance;
         _carriageSprite = carriageSprite;
 
         var projectileTemplate = projectileFactory.GetTemplate(projectileAlias);

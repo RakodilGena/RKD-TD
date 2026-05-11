@@ -44,7 +44,7 @@ public readonly struct Circle
 
     public Vector2 Location => new(X, Y);
 
-    private static Texture2D _circleTexture = CreateCircleTexture(64, Color.White);
+    private static Texture2D _circleTexture = CreateCircleTexture(512, Color.White);
 
     /// <summary>
     /// Creates a new circle with the specified position and radius.

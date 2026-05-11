@@ -73,7 +73,6 @@ public sealed class Camera : ICamera
         float cameraMoveSpeed,
         Tilemap tilemap,
         bool putToCenter,
-        
         float mapBordersMargin,
         float extraBottomMargin)
     {

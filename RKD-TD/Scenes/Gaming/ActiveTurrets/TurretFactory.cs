@@ -65,6 +65,7 @@ internal sealed class TurretFactory
             template.RotationSpeedRadianInSec,
             template.ReloadTimeInSec,
             template.FixateDistanceSquared,
+            template.FiringDistance,
             template.FiringDistanceSquared,
             template.FiringPoints,
             template.FiringMode,
@@ -121,7 +122,7 @@ internal sealed class TurretFactory
             flashFactory);
 
         var pendingTurrets = templates.Select(p =>
-            new PendingTurret(p.Key, p.Value.Price));
+            new PendingTurret(p.Key, p.Value.Price, p.Value.FiringDistance));
         pendingTurretStash = new PendingTurretStash(pendingTurrets);
 
         return new TurretFactory(
@@ -226,6 +227,7 @@ internal sealed class TurretFactory
             RotationSpeedRadianInSec: MathHelper.ToRadians(rotationSpeed),
             reloadTimeSec,
             FixateDistanceSquared: fixateDistance * fixateDistance,
+            firingDistance,
             FiringDistanceSquared: firingDistance * firingDistance,
             firingPoints,
             firingMode,

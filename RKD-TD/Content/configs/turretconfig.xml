@@ -19,8 +19,8 @@
                 reloadTimeMs="100"
 
                 rotationSpeed="180"
-                fixateDistance="650"
-                firingDistance="600"
+                fixateDistance="750"
+                firingDistance="700"
 
                 firingPoints="275,-20,-5; 275,-10,-3; 275,0,0; 275,10,3; 275,20,5"
                 firingMode="random"
@@ -45,8 +45,8 @@
                 reloadTimeMs="800"
 
                 rotationSpeed="140"
-                fixateDistance="1450"
-                firingDistance="1400"
+                fixateDistance="550"
+                firingDistance="500"
 
                 firingPoints="275,-5,-10;  275,-3,-5;  275,0,0;  275,3,5;  275,5,10"
                 firingMode="all"
@@ -97,8 +97,8 @@
                 reloadTimeMs="1300"
 
                 rotationSpeed="125"
-                fixateDistance="1200"
-                firingDistance="1100"
+                fixateDistance="1000"
+                firingDistance="950"
 
                 firingPoints="190,-55,0; 190,0,0; 190,53,0;"
                 firingMode="rotation"
@@ -119,7 +119,7 @@
                 size="20;6"
                 origin="50;15"
                 speed="500"
-                flightRange="700"
+                flightRange="750"
 
                 hitCircleRadius="5"
 
@@ -133,7 +133,7 @@
                 textureAlias="projectile_bullet"
                 size="24;8"
                 origin="50;15"
-                speed="450"
+                speed="500"
                 flightRange="450"
                 directDamage="5"
                 hitCircleRadius="6"
@@ -147,7 +147,7 @@
                 size="50;25"
                 origin="115;48"
                 speed="650"
-                flightRange="900"
+                flightRange="850"
 
                 hitCircleRadius="20"
 
@@ -164,7 +164,7 @@
                 size="75;32"
                 origin="195;67"
                 speed="630"
-                flightRange="900"
+                flightRange="1100"
 
                 hitCircleRadius="16"
 

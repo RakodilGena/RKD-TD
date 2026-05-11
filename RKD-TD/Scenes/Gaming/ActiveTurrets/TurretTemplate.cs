@@ -16,6 +16,7 @@ internal sealed record TurretTemplate(
     float RotationSpeedRadianInSec,
     float ReloadTimeInSec,
     float FixateDistanceSquared,
+    float FiringDistance,
     float FiringDistanceSquared,
     TurretFiringPoint[] FiringPoints,
     TurretFiringMode FiringMode,
