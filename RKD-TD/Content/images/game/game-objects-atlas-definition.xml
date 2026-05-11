@@ -74,11 +74,15 @@
         <Region name="flash_cannon3" x="1440" y="1730" width="200" height="200"/>
         <Region name="flash_cannon4" x="1645" y="1730" width="200" height="200"/>
 
-        <Region name="flash_missile1" x="1300" y="1115" width="185" height="200"/>
-        <Region name="flash_missile2" x="1485" y="1115" width="185" height="200"/>
-        <Region name="flash_missile3" x="1670" y="1115" width="185" height="200"/>
-        <Region name="flash_missile4" x="1855" y="1115" width="185" height="200"/>
+        <Region name="flash_missile_launch1" x="1300" y="1115" width="185" height="200"/>
+        <Region name="flash_missile_launch2" x="1485" y="1115" width="185" height="200"/>
+        <Region name="flash_missile_launch3" x="1670" y="1115" width="185" height="200"/>
+        <Region name="flash_missile_launch4" x="1855" y="1115" width="185" height="200"/>
 
+        <Region name="flash_missile_fly1" x="1645" y="1600" width="100" height="100"/>
+        <Region name="flash_missile_fly2" x="1745" y="1600" width="100" height="100"/>
+        <Region name="flash_missile_fly3" x="1845" y="1600" width="100" height="100"/>
+        <Region name="flash_missile_fly4" x="1945" y="1600" width="100" height="100"/>
 
         <!--explosions-->
         <Region name="explosion_bullet1" x="1640" y="1540" width="40" height="40"/>
@@ -141,11 +145,18 @@
             <Frame region="flash_cannon4"/>
         </Animation>
 
-        <Animation name="flash-missile-animation" delay="130">
-            <Frame region="flash_missile1"/>
-            <Frame region="flash_missile2"/>
-            <Frame region="flash_missile3"/>
-            <Frame region="flash_missile4"/>
+        <Animation name="flash-missile-launch-animation" delay="130">
+            <Frame region="flash_missile_launch1"/>
+            <Frame region="flash_missile_launch2"/>
+            <Frame region="flash_missile_launch3"/>
+            <Frame region="flash_missile_launch4"/>
+        </Animation>
+
+        <Animation name="flash-missile-fly-animation" delay="100">
+            <Frame region="flash_missile_fly1"/>
+            <Frame region="flash_missile_fly2"/>
+            <Frame region="flash_missile_fly3"/>
+            <Frame region="flash_missile_fly4"/>
         </Animation>
 
 

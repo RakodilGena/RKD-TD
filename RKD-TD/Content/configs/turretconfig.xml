@@ -100,7 +100,7 @@
                 fixateDistance="1200"
                 firingDistance="1100"
 
-                firingPoints="180,-55,0; 180,0,0; 180,53,0;"
+                firingPoints="190,-55,0; 190,0,0; 190,53,0;"
                 firingMode="rotation"
                 flashPoints="160,-55; 160,0; 160,53;"
 
@@ -176,8 +176,8 @@
                 explosionAlias="missile_explosion"
 
                 trailFlashAlias="missile_fly_flash"
-                trailFlashSpawnPauseMs="50"
-                trailFlashSpawnOffset="0;0"
+                trailFlashSpawnPauseMs="30"
+                trailFlashSpawnOffset="-50;0"
         />
     </Projectiles>
 
@@ -202,15 +202,15 @@
 
         <Flash
                 alias="missile_launch_flash"
-                animationAlias="flash-missile-animation"
+                animationAlias="flash-missile-launch-animation"
                 size="70;70"
                 origin="92;100"/>
 
         <Flash
                 alias="missile_fly_flash"
-                animationAlias="flash-mg-animation"
-                size="50;50"
-                origin="100;100"/>
+                animationAlias="flash-missile-fly-animation"
+                size="30;30"
+                origin="50;50"/>
 
     </Flashes>
 

@@ -192,11 +192,17 @@ internal class Projectile
         {
             _trailFlashSpawnTimer -= _trailFlashSpawnPauseSec;
 
-            var position = Position + _trailFlashSpawnOffset;
+            var offset = _trailFlashSpawnOffset.GetRotatedVector(Rotation);
+
+            var position = Position + offset;
+
+            var angle = MathHelper.ToRadians(Random.Shared.Next(0, 360));
+
             var flash = _flashFactory.Create(
                 _trailFlashAlias,
                 position,
-                angle: 0f);
+                angle);
+
             TrailFlashEmitted?.Invoke(this, flash);
             return;
         }
