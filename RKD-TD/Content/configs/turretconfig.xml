@@ -236,7 +236,7 @@
                 alias="shell_explosion"
 
                 animationAlias="explosion-bullet-animation"
-                origin="20;20"
+                origin="18;18"
 
                 size="120;120"
                 damageDelayMs="70"/>
@@ -245,7 +245,7 @@
                 alias="missile_explosion"
 
                 animationAlias="explosion-bullet-animation"
-                origin="20;20"
+                origin="19;19"
 
                 size="160;160"
                 damageDelayMs="50"/>

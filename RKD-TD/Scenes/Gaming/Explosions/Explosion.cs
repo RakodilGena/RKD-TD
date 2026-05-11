@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Collisions;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies;
@@ -65,5 +66,17 @@ internal sealed class Explosion : Flash
                 enemy.ReceiveDamage(_aoeDamage);
             }
         }
+    }
+
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+        base.Draw(spriteBatch);
+        
+#pragma warning disable CS0162 // Unreachable code detected
+        if (GameCore.DRAW_HIT_BOX && _explosionCanHappen)
+        {
+            Circle.DrawHitCircle(spriteBatch, Camera, Position, _damageCircle.Radius, Color.White);
+        }
+#pragma warning restore CS0162 // Unreachable code detected
     }
 }

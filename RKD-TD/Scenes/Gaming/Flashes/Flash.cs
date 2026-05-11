@@ -8,7 +8,7 @@ namespace RKD_TD.Scenes.Gaming.Flashes;
 
 internal class Flash
 {
-    private readonly Vector2 _position;
+    protected Vector2 Position { get; }
     private readonly AnimatedSprite _sprite;
     private readonly float _playTimeSec;
 
@@ -25,7 +25,7 @@ internal class Flash
     public Flash(AnimatedSprite sprite, Vector2 position)
     {
         _sprite = sprite;
-        _position = position;
+        Position = position;
         _playTimeSec = (float)(sprite.Animation.Frames.Count * sprite.Animation.Delay.TotalSeconds);
     }
 
@@ -40,8 +40,8 @@ internal class Flash
         Finished?.Invoke(this, EventArgs.Empty);
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public virtual void Draw(SpriteBatch spriteBatch)
     {
-        _sprite.Draw(spriteBatch, _position);
+        _sprite.Draw(spriteBatch, Position);
     }
 }
