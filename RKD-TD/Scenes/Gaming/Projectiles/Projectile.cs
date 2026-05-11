@@ -117,6 +117,8 @@ internal class Projectile
     {
         if (_dead)
             return;
+        
+        _sprite.Update(deltaSeconds);
 
         if (HandleExhausted())
             return;

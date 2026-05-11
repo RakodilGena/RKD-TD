@@ -42,7 +42,7 @@
                 carriageSize="130;130"
                 carriageOrigin="100;100"
 
-                reloadTimeMs="800"
+                reloadTimeMs="1500"
 
                 rotationSpeed="140"
                 fixateDistance="550"
@@ -160,7 +160,7 @@
 
         <Projectile
                 alias="missile"
-                textureAlias="projectile_missile"
+                animationAlias="projectile-missile-animation"
                 size="75;32"
                 origin="195;67"
                 speed="630"
@@ -177,7 +177,7 @@
 
                 trailFlashAlias="missile_fly_flash"
                 trailFlashSpawnPauseMs="30"
-                trailFlashSpawnOffset="-50;0"
+                trailFlashSpawnOffset="-70;0"
         />
     </Projectiles>
 
