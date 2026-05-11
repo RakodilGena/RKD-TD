@@ -196,8 +196,8 @@ internal sealed class GamingScene : Scene
     {
         var turretCfg = XmlLoader.Load(Content, TURRET_CONFIG_NAME);
         _turretFactory = TurretFactory.FromFile(
-            turretCfg, 
-            _gameObjectsTextures, 
+            turretCfg,
+            _gameObjectsTextures,
             out _pendingTurretStash);
     }
 

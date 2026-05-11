@@ -25,6 +25,11 @@ internal sealed class Turret
 
     private readonly TurretBarrel _turretBarrel;
 
+    private readonly TurretAimingMode _aimingMode;
+    //these three values required for 'predictive' aiming mode
+    private readonly float _projectileFlightSpeed;
+    private readonly int _barrelLenght;
+
 
     private float _currentReloadTime;
 
@@ -76,6 +81,8 @@ internal sealed class Turret
         TurretFiringPoint[] firingPoints,
         TurretFiringMode firingMode,
         Vector2[] gunFlashPoints,
+        TurretAimingMode aimingMode,
+        int barrelLenght,
         string projectileAlias,
         string flashAlias,
         BuildCell occupiedCell,
@@ -91,14 +98,21 @@ internal sealed class Turret
         OccupiedCell = occupiedCell;
         _carriageSprite = carriageSprite;
 
+        var projectileTemplate = projectileFactory.GetTemplate(projectileAlias);
+
         _turretBarrel = new TurretBarrel(
             firingPoints,
             firingMode,
             gunFlashPoints,
-            projectileAlias,
+            projectileTemplate,
             flashAlias,
             projectileFactory,
             flashFactory);
+
+        
+        _aimingMode = aimingMode;
+        _barrelLenght = barrelLenght;
+        _projectileFlightSpeed = projectileTemplate.Speed;
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -122,7 +136,7 @@ internal sealed class Turret
                 return;
             }
 
-            var vectorToEnemy = _fixatedEnemy.Target - _position;
+            var vectorToEnemy = CalculateEnemyTarget(_fixatedEnemy) - _position;
             var distanceToEnemySquared = vectorToEnemy.LengthSquared();
             if (distanceToEnemySquared > _fixateDistanceSquared)
             {
@@ -172,6 +186,26 @@ internal sealed class Turret
         }
 
         HandleIdleRotation(deltaSeconds);
+    }
+
+    private Vector2 CalculateEnemyTarget(Enemy enemy)
+    {
+        if (_aimingMode is TurretAimingMode.Predictive)
+        {
+            var distance = (enemy.Target - _position).Length() - _barrelLenght;
+
+            if (distance < 0)
+                return enemy.Target;
+
+            var secondsToEnemy = distance / _projectileFlightSpeed;
+
+            var unitVector = enemy.GetDirectionUnitVector();
+            var enemyPositionWhenHit = enemy.Target + enemy.Speed * unitVector * secondsToEnemy;
+
+            return enemyPositionWhenHit;
+        }
+
+        return enemy.Target;
     }
 
     private void HandleReload(float deltaSeconds)

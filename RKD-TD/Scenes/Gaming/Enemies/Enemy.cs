@@ -12,7 +12,7 @@ namespace RKD_TD.Scenes.Gaming.Enemies;
 internal class Enemy
 {
     private readonly HealthBar _healthBar;
-    private readonly float _speed;
+    public float Speed { get; }
     private readonly int _reward;
     private readonly int _damage;
     private readonly Vector2 _positionInTile, _initialScale;
@@ -70,7 +70,7 @@ internal class Enemy
         Vector2 hitCircleOffset,
         HealthBarTemplate healthBarTemplate)
     {
-        _speed = speed;
+        Speed = speed;
         _reward = reward;
 
         _sprite = sprite;
@@ -203,7 +203,7 @@ internal class Enemy
         Vector2 direction = target - _positionForMovement;
         float distanceToWaypoint = direction.Length();
 
-        var distanceAtStep = _speed * deltaSeconds;
+        var distanceAtStep = Speed * deltaSeconds;
 
         if (distanceToWaypoint <= distanceAtStep)
         {
@@ -308,6 +308,25 @@ internal class Enemy
         {
             Target = _positionOnScreen + new Vector2(-_hitCircleOffset.X, _hitCircleOffset.Y);
         }
+    }
+
+    public Vector2 GetDirectionUnitVector()
+    {
+        Vector2 target = _path.Waypoints[_currentWaypointIndex];
+        if (target == _positionForMovement)
+        {
+            //overflow control
+            if (_currentWaypointIndex >= _path.Waypoints.Length - 1)
+                return Vector2.Zero;
+
+            //this is here because sometimes float inaccuracies can lead to target being the same as positon,
+            //but _currentWaypointIndex will change only the next frame
+            target = _path.Waypoints[_currentWaypointIndex + 1];
+        }
+
+        Vector2 direction = target - _positionForMovement;
+        direction.Normalize();
+        return direction;
     }
 
     public Circle HitCircle => new(Target, _hitCircleRadius);

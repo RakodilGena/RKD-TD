@@ -69,6 +69,8 @@ internal sealed class TurretFactory
             template.FiringPoints,
             template.FiringMode,
             template.GunFlashPoints,
+            template.AimingMode,
+            template.BarrelLenght,
             template.ProjectileAlias,
             template.FlashAlias,
             destination,
@@ -197,9 +199,20 @@ internal sealed class TurretFactory
                 x: pointValues[0] * barrelScale.X,
                 y: pointValues[1] * barrelScale.Y))
             .ToArray();
-        
-        
+
         var price = int.Parse(turretElement.Attribute("price")!.Value);
+
+        var aimingModeValue = turretElement.Attribute("aimingMode")?.Value;
+        var aimingMode = aimingModeValue switch
+        {
+            "predictive" => TurretAimingMode.Predictive,
+            _ => TurretAimingMode.StrictEnemy
+        };
+
+        var barrelLenghtValue = turretElement.Attribute("barrelLenght")?.Value;
+        var barrelLenght = !string.IsNullOrEmpty(barrelLenghtValue)
+            ? (int)(int.Parse(barrelLenghtValue) * barrelScale.X)
+            : 0;
 
         return new TurretTemplate(
             price,
@@ -217,6 +230,8 @@ internal sealed class TurretFactory
             firingPoints,
             firingMode,
             flashPoints,
+            aimingMode,
+            barrelLenght,
             projectileAlias,
             flashAlias);
     }

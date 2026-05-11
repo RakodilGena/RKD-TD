@@ -27,13 +27,16 @@ internal sealed class ProjectileFactory
         _flashFactory = flashFactory;
     }
 
+    public ProjectileTemplate GetTemplate(string projectileAlias)
+    {
+        return _projectileTemplates[projectileAlias];
+    }
+
     public Projectile Create(
-        string projectileAlias,
+        ProjectileTemplate template,
         Vector2 position,
         float angle)
     {
-        var template = _projectileTemplates[projectileAlias];
-
         Sprite sprite;
         if (template.Texture != null)
         {
@@ -83,6 +86,16 @@ internal sealed class ProjectileFactory
             template.TrailFlashSpawnOffset,
             _explosionFactory,
             _flashFactory);
+    }
+
+    public Projectile Create(
+        string projectileAlias,
+        Vector2 position,
+        float angle)
+    {
+        var template = GetTemplate(projectileAlias);
+
+        return Create(template, position, angle);
     }
 
     public static ProjectileFactory FromFile(

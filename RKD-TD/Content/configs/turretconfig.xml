@@ -3,9 +3,11 @@
     <Turrets>
         <!-- barrelTextureAlias XOR barrelAnimationAlias-->
         <!-- firingMode - single (1st fp), random (one of fps at random), rotation (one by one), all-->
+        <!--aimingMode="predictive" + barrelLenght-->
+
         <MachineGun
                 price="100"
-                
+
                 barrelAnimationAlias="turret-mg-animation"
                 barrelSize="180;90"
                 barrelOrigin="135;125"
@@ -23,6 +25,9 @@
                 firingPoints="270,-20,-5; 270,-10,-3; 270,0,0; 270,10,3; 270,20,5"
                 firingMode="random"
                 flashPoints="260,-15; 260,-8; 260,0; 260,8; 260,15"
+
+                aimingMode="predictive"
+                barrelLenght="270"
 
                 projectileAlias="mg_bullet"
                 flashAlias="mg_flash"/>
@@ -47,6 +52,9 @@
                 firingMode="all"
                 flashPoints="270,0; 270,0; 270,0; 270,0; 270,0"
 
+                aimingMode="predictive"
+                barrelLenght="275"
+
                 projectileAlias="shotgun_bullet"
                 flashAlias="shotgun_flash"/>
 
@@ -69,6 +77,9 @@
                 firingPoints="260,0,0"
                 firingMode="single"
                 flashPoints="255,0"
+
+                aimingMode="predictive"
+                barrelLenght="260"
 
                 projectileAlias="shell"
                 flashAlias="cannon_flash"/>
@@ -109,8 +120,10 @@
                 origin="50;15"
                 speed="500"
                 flightRange="700"
-                directDamage="2"
+
                 hitCircleRadius="5"
+
+                directDamage="2"
 
                 explosionAlias="mg_bullet_explosion"
         />
@@ -133,13 +146,13 @@
                 textureAlias="projectile_shell"
                 size="50;25"
                 origin="115;48"
-                speed="700"
+                speed="600"
                 flightRange="900"
 
                 hitCircleRadius="20"
 
                 directDamage="40"
-                aoeRange="75"
+                aoeRange="50"
                 aoeDamage="25"
 
                 explosionAlias="shell_explosion"
@@ -156,8 +169,8 @@
                 hitCircleRadius="16"
 
                 directDamage="10"
-                aoeRange="50"
-                aoeDamage="35"
+                aoeRange="70"
+                aoeDamage="45"
                 type="homing"
 
                 explosionAlias="missile_explosion"
@@ -225,7 +238,7 @@
                 animationAlias="explosion-bullet-animation"
                 origin="20;20"
 
-                size="170;170"
+                size="120;120"
                 damageDelayMs="70"/>
 
         <Explosion
@@ -234,7 +247,7 @@
                 animationAlias="explosion-bullet-animation"
                 origin="20;20"
 
-                size="120;120"
+                size="160;160"
                 damageDelayMs="50"/>
 
     </Explosions>

@@ -12,7 +12,7 @@ internal sealed class TurretBarrel
     private readonly TurretFiringMode _firingMode;
     private readonly Vector2[] _gunFlashPoints;
 
-    private readonly string _projectileAlias;
+    private readonly ProjectileTemplate _projectileTemplate;
     private readonly string _flashAlias;
 
     private readonly ProjectileFactory _projectileFactory;
@@ -24,7 +24,7 @@ internal sealed class TurretBarrel
         TurretFiringPoint[] firingPoints,
         TurretFiringMode firingMode,
         Vector2[] gunFlashPoints,
-        string projectileAlias,
+        ProjectileTemplate projectileTemplate,
         string flashAlias,
         ProjectileFactory projectileFactory,
         FlashFactory flashFactory)
@@ -32,7 +32,7 @@ internal sealed class TurretBarrel
         _firingPoints = firingPoints;
         _projectileFactory = projectileFactory;
         _firingMode = firingMode;
-        _projectileAlias = projectileAlias;
+        _projectileTemplate = projectileTemplate;
         _flashAlias = flashAlias;
         _flashFactory = flashFactory;
         _gunFlashPoints = gunFlashPoints;
@@ -109,7 +109,7 @@ internal sealed class TurretBarrel
         var bulletRotation = rotation + firingPoint.BulletExtraAngleInRadians;
 
         var projectile = _projectileFactory.Create(
-            _projectileAlias,
+            _projectileTemplate,
             firingPointAbsolutePosition,
             bulletRotation);
 

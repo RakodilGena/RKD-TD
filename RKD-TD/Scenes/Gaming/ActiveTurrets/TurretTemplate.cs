@@ -20,5 +20,7 @@ internal sealed record TurretTemplate(
     TurretFiringPoint[] FiringPoints,
     TurretFiringMode FiringMode,
     Vector2[] GunFlashPoints,
+    TurretAimingMode AimingMode,
+    int BarrelLenght,
     string ProjectileAlias,
     string FlashAlias);

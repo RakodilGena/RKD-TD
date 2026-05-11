@@ -18,7 +18,7 @@ internal sealed class PendingTurret
     {
         Type = type;
         Price = price;
-        
+
         Texture = new Texture2D(Core.GraphicsDevice, 1, 1);
         Texture.SetData([Color.White]);
     }
