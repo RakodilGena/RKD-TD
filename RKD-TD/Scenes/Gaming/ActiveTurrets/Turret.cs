@@ -26,6 +26,7 @@ internal sealed class Turret
     private readonly TurretBarrel _turretBarrel;
 
     private readonly TurretAimingMode _aimingMode;
+
     //these three values required for 'predictive' aiming mode
     private readonly float _projectileFlightSpeed;
     private readonly int _barrelLenght;
@@ -109,7 +110,7 @@ internal sealed class Turret
             projectileFactory,
             flashFactory);
 
-        
+
         _aimingMode = aimingMode;
         _barrelLenght = barrelLenght;
         _projectileFlightSpeed = projectileTemplate.Speed;

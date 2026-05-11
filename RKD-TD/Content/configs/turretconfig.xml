@@ -22,12 +22,12 @@
                 fixateDistance="650"
                 firingDistance="600"
 
-                firingPoints="270,-20,-5; 270,-10,-3; 270,0,0; 270,10,3; 270,20,5"
+                firingPoints="275,-20,-5; 275,-10,-3; 275,0,0; 275,10,3; 275,20,5"
                 firingMode="random"
                 flashPoints="260,-15; 260,-8; 260,0; 260,8; 260,15"
 
                 aimingMode="predictive"
-                barrelLenght="270"
+                barrelLenght="275"
 
                 projectileAlias="mg_bullet"
                 flashAlias="mg_flash"/>
@@ -74,12 +74,12 @@
                 fixateDistance="850"
                 firingDistance="800"
 
-                firingPoints="260,0,0"
+                firingPoints="295,0,0"
                 firingMode="single"
                 flashPoints="255,0"
 
                 aimingMode="predictive"
-                barrelLenght="260"
+                barrelLenght="295"
 
                 projectileAlias="shell"
                 flashAlias="cannon_flash"/>
@@ -100,9 +100,9 @@
                 fixateDistance="1200"
                 firingDistance="1100"
 
-                firingPoints="120,-55,0; 120,0,0; 120,53,0;"
+                firingPoints="180,-55,0; 180,0,0; 180,53,0;"
                 firingMode="rotation"
-                flashPoints="140,-55; 140,0; 140,53;"
+                flashPoints="160,-55; 160,0; 160,53;"
 
                 projectileAlias="missile"
                 flashAlias="missile_launch_flash"/>
@@ -146,7 +146,7 @@
                 textureAlias="projectile_shell"
                 size="50;25"
                 origin="115;48"
-                speed="600"
+                speed="650"
                 flightRange="900"
 
                 hitCircleRadius="20"
@@ -191,20 +191,20 @@
         <Flash
                 alias="shotgun_flash"
                 animationAlias="flash-shotgun-animation"
-                size="50;80"
+                size="60;70"
                 origin="0;100"/>
 
         <Flash
                 alias="cannon_flash"
-                animationAlias="flash-shotgun-animation"
-                size="50;80"
+                animationAlias="flash-cannon-animation"
+                size="140;140"
                 origin="0;100"/>
 
         <Flash
                 alias="missile_launch_flash"
-                animationAlias="flash-shotgun-animation"
-                size="80;80"
-                origin="100;100"/>
+                animationAlias="flash-missile-animation"
+                size="70;70"
+                origin="92;100"/>
 
         <Flash
                 alias="missile_fly_flash"
