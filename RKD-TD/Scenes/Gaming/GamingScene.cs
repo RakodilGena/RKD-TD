@@ -90,7 +90,8 @@ internal sealed class GamingScene : Scene
             cameraMoveSpeed: 400,
             _map,
             putToCenter: true,
-            mapBordersMargin: 150);
+            mapBordersMargin: 150,
+            extraBottomMargin: 130);
 
         _map.Camera = _camera;
         _portals.Camera = _camera;

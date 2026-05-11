@@ -73,14 +73,16 @@ public sealed class Camera : ICamera
         float cameraMoveSpeed,
         Tilemap tilemap,
         bool putToCenter,
-        float mapBordersMargin)
+        
+        float mapBordersMargin,
+        float extraBottomMargin)
     {
         if (mapBordersMargin < 0)
             mapBordersMargin = 0;
         // _sideMarginInPx = sideMarginInPx;
 
         _mapWidth = tilemap.TileWidth * tilemap.Columns + mapBordersMargin * 2;
-        _mapHeight = tilemap.TileHeight * tilemap.Rows + mapBordersMargin * 2;
+        _mapHeight = tilemap.TileHeight * tilemap.Rows + mapBordersMargin * 2 + extraBottomMargin;
 
         _screenWidth = Core.GraphicsDevice.Viewport.Width;
         _screenHeight = Core.GraphicsDevice.Viewport.Height;
