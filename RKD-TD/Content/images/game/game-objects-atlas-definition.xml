@@ -95,6 +95,25 @@
         <Region name="explosion_bullet5" x="1800" y="1540" width="40" height="40"/>
         <Region name="explosion_bullet6" x="1840" y="1540" width="40" height="40"/>
 
+        <Region name="explosion_shell1" x="2050" y="0" width="300" height="300"/>
+        <Region name="explosion_shell2" x="2350" y="0" width="300" height="300"/>
+        <Region name="explosion_shell3" x="2650" y="0" width="300" height="300"/>
+        <Region name="explosion_shell4" x="2950" y="0" width="300" height="300"/>
+        <Region name="explosion_shell5" x="2050" y="300" width="300" height="300"/>
+        <Region name="explosion_shell6" x="2350" y="300" width="300" height="300"/>
+        <Region name="explosion_shell7" x="2650" y="300" width="300" height="300"/>
+        <Region name="explosion_shell8" x="2950" y="300" width="300" height="300"/>
+
+        <Region name="explosion_missile1" x="2050" y="610" width="400" height="400"/>
+        <Region name="explosion_missile2" x="2450" y="610" width="400" height="400"/>
+        <Region name="explosion_missile3" x="2850" y="610" width="400" height="400"/>
+        <Region name="explosion_missile4" x="2050" y="1010" width="400" height="400"/>
+        <Region name="explosion_missile5" x="2450" y="1010" width="400" height="400"/>
+        <Region name="explosion_missile6" x="2850" y="1010" width="400" height="400"/>
+        <Region name="explosion_missile7" x="2050" y="1410" width="400" height="400"/>
+        <Region name="explosion_missile8" x="2450" y="1410" width="400" height="400"/>
+        <Region name="explosion_missile9" x="2850" y="1410" width="400" height="400"/>
+
 
     </Regions>
     <Animations>
@@ -126,14 +145,14 @@
             <Frame region="turret_mg2"/>
         </Animation>
 
-<!--        projectiles-->
+        <!--        projectiles-->
         <Animation name="projectile-missile-animation" delay="200">
             <Frame region="projectile_missile1"/>
             <Frame region="projectile_missile2"/>
             <Frame region="projectile_missile3"/>
             <Frame region="projectile_missile4"/>
         </Animation>
-        
+
 
         <!--flashes-->
         <Animation name="flash-mg-animation" delay="15">
@@ -180,6 +199,27 @@
             <Frame region="explosion_bullet6"/>
         </Animation>
 
+        <Animation name="explosion-shell-animation" delay="100">
+            <Frame region="explosion_shell1"/>
+            <Frame region="explosion_shell2"/>
+            <Frame region="explosion_shell3"/>
+            <Frame region="explosion_shell4"/>
+            <Frame region="explosion_shell5"/>
+            <Frame region="explosion_shell6"/>
+            <Frame region="explosion_shell7"/>
+            <Frame region="explosion_shell8"/>
+        </Animation>
+
+        <Animation name="explosion-missile-animation" delay="90">
+            <Frame region="explosion_missile1"/>
+            <Frame region="explosion_missile2"/>
+            <Frame region="explosion_missile3"/>
+            <Frame region="explosion_missile4"/>
+            <Frame region="explosion_missile5"/>
+            <Frame region="explosion_missile6"/>
+            <Frame region="explosion_missile7"/>
+            <Frame region="explosion_missile8"/>
+        </Animation>
 
         <!--explosions-->
 

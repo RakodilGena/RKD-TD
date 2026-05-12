@@ -71,7 +71,7 @@ internal sealed class Explosion : Flash
     public override void Draw(SpriteBatch spriteBatch)
     {
         base.Draw(spriteBatch);
-        
+
 #pragma warning disable CS0162 // Unreachable code detected
         if (GameCore.DRAW_HIT_BOX && _explosionCanHappen)
         {

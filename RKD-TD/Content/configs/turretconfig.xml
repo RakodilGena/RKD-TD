@@ -235,20 +235,20 @@
         <Explosion
                 alias="shell_explosion"
 
-                animationAlias="explosion-bullet-animation"
-                origin="18;18"
+                animationAlias="explosion-shell-animation"
+                origin="150;150"
 
-                size="120;120"
-                damageDelayMs="70"/>
+                size="170;170"
+                damageDelayMs="150"/>
 
         <Explosion
                 alias="missile_explosion"
 
-                animationAlias="explosion-bullet-animation"
-                origin="19;19"
+                animationAlias="explosion-missile-animation"
+                origin="200;200"
 
-                size="160;160"
-                damageDelayMs="50"/>
+                size="200;200"
+                damageDelayMs="150"/>
 
     </Explosions>
 </Root>
