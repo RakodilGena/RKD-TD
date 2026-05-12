@@ -21,18 +21,22 @@
 
     <GameObjectsAtlas>images/game/game-objects-atlas-definition.xml</GameObjectsAtlas>
 
-    <Health textureAlias="heart_100">15</Health>
+    <Health textureAlias="heart_100">20</Health>
     <Coins textureAlias="coin_100">500</Coins>
     <Portals textureAlias="portal_200">10,2;0,3</Portals>
 
+<!--    <Wave spawnTime="10">-->
+<!--        soldier:5;-->
+<!--        tank:1;-->
+<!--        swarmer:1-->
+<!--    </Wave>-->
+    
     <Spawner totalWaves="20" pauseBetweenWaves="5">
         <Waves basicReward="200" rewardLevelMultiplier="50">
             <!--The waves from here are hardcoded to better introduce them to the player-->
-            <Wave spawnTime="10">
-                soldier:5;
-                tank:1;
-                swarmer:1
-            </Wave>
+           <Wave spawnTime="1">
+               speedster:1
+           </Wave>
         </Waves>
 
         <WavesGenerator

@@ -29,6 +29,20 @@
 
            appearDistance="80"/>
 
+    <Enemy alias="speedster"
+           health="80"
+           speed="120"
+           cost="200"
+           reward="150"
+           damage="1"
+           animationAlias="speedster-animation"
+
+           size="140;140"
+           hitCircleRadius="45"
+           hitCircleOffset="0;0"
+
+           appearDistance="80"/>
+
     <!-- final swarmer created a swarmer-pack.-->
     <Enemy alias="swarmer"
            health="30"
