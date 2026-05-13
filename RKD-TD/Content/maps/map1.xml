@@ -35,7 +35,7 @@
         <Waves basicReward="200" rewardLevelMultiplier="50">
             <!--The waves from here are hardcoded to better introduce them to the player-->
            <Wave spawnTime="1">
-               speedster:1
+               boss:1
            </Wave>
         </Waves>
 

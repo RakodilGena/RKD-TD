@@ -35,6 +35,24 @@
         <Region name="speedster3" x="600" y="810" width="200" height="200"/>
         <Region name="speedster4" x="800" y="810" width="200" height="200"/>
 
+        
+<!--        BOSS!-->
+        <Region name="boss0" x="0" y="1020" width="250" height="250"/>
+        <Region name="boss1" x="255" y="1020" width="250" height="250"/>
+        <Region name="boss2" x="510" y="1020" width="250" height="250"/>
+        <Region name="boss3" x="765" y="1020" width="250" height="250"/>
+        
+        <Region name="boss4" x="0" y="1275" width="250" height="250"/>
+        <Region name="boss5" x="255" y="1275" width="250" height="250"/>
+        <Region name="boss6" x="510" y="1275" width="250" height="250"/>
+        <Region name="boss7" x="765" y="1275" width="250" height="250"/>
+        
+        <Region name="boss8" x="0" y="1530" width="250" height="250"/>
+        <Region name="boss9" x="255" y="1530" width="250" height="250"/>
+        <Region name="boss10" x="510" y="1530" width="250" height="250"/>
+        
+        
+
         <!--enemy health bars-->
         <Region name="health_bar" x="850" y="620" width="64" height="64"/>
 
@@ -155,6 +173,20 @@
             <Frame region="speedster3"/>
             <Frame region="speedster2"/>
             <Frame region="speedster1"/>
+        </Animation>
+
+        <Animation name="boss-animation" delay="80">
+            <Frame region="boss0"/>
+            <Frame region="boss1"/>
+            <Frame region="boss2"/>
+            <Frame region="boss3"/>
+            <Frame region="boss4"/>
+            <Frame region="boss5"/>
+            <Frame region="boss6"/>
+            <Frame region="boss7"/>
+            <Frame region="boss8"/>
+            <Frame region="boss9"/>
+            <Frame region="boss10"/>
         </Animation>
 
         <!--turrets-->

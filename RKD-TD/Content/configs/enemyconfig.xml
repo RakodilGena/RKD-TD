@@ -43,7 +43,6 @@
 
            appearDistance="80"/>
 
-    <!-- final swarmer created a swarmer-pack.-->
     <Enemy alias="swarmer"
            health="30"
            speed="100"
@@ -58,4 +57,19 @@
 
            customType="swarm"
            appearDistance="100"/>
+
+    <Enemy alias="boss"
+           health="1000"
+           speed="60"
+           cost="0"
+           reward="0"
+           damage="9999"
+           animationAlias="boss-animation"
+
+           size="180;180"
+           hitCircleRadius="60"
+           hitCircleOffset="0;10"
+
+           appearDistance="150"/>
 </Enemies>
+        
