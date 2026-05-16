@@ -59,6 +59,7 @@ Console.Clear();
 Console.WriteLine("Final map:");
 Console.WriteLine(mapFinalBuilder.ToString().Trim());
 
+Console.WriteLine();
 Console.WriteLine("Build grid");
 Console.WriteLine(turretsTerrainBuilder.ToString().Trim());
 
