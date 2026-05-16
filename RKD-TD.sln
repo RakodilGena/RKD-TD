@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Linked", "Linked", "{4E03DE
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapGenerator", "MapGenerator\MapGenerator.csproj", "{629CD613-464F-4FED-9806-C20FAE1F10A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,5 +25,9 @@ Global
 		{4A9B4EEB-5101-4580-83DA-5AD03A90AB74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A9B4EEB-5101-4580-83DA-5AD03A90AB74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A9B4EEB-5101-4580-83DA-5AD03A90AB74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{629CD613-464F-4FED-9806-C20FAE1F10A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{629CD613-464F-4FED-9806-C20FAE1F10A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{629CD613-464F-4FED-9806-C20FAE1F10A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{629CD613-464F-4FED-9806-C20FAE1F10A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
