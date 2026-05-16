@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Map>
-    <Tileset region="0 0 2000 800" tileWidth="200" tileHeight="200">images/game/map1-tiles-atlas</Tileset>
+    <Tileset region="0 0 2040 816" tileWidth="200" tileHeight="200" offset="4">images/game/map1-tiles-atlas</Tileset>
     <Tiles> <!-- 15x11 -->
         20 00 00 10 10 10 20 10 10 20 00 20 20 25 10
         10 33 01 11 11 11 01 11 11 01 01 02 00 35 00
@@ -33,7 +33,7 @@
 
     <Health textureAlias="heart_100">20</Health>
     <Coins textureAlias="coin_100">500</Coins>
-    <Portals textureAlias="portal_200">10,2;0,3</Portals>
+    <Portals textureAlias="portal_200">1,2;13,8</Portals>
 
 <!--    <Wave spawnTime="10">-->
 <!--        soldier:5;-->

@@ -1,3 +1,5 @@
+using Microsoft.Xna.Framework;
+
 namespace MonoGameLibrary.Graphics.Tiles;
 
 public class Tileset
@@ -36,12 +38,19 @@ public class Tileset
     /// <param name="textureRegion">The texture region that contains the tiles for the tileset.</param>
     /// <param name="tileWidth">The width of each tile in the tileset.</param>
     /// <param name="tileHeight">The height of each tile in the tileset.</param>
-    public Tileset(TextureRegion textureRegion, int tileWidth, int tileHeight)
+    /// <param name="offset">offset between tiles (X and Y)</param>
+    public Tileset(
+        TextureRegion textureRegion, 
+        int tileWidth, 
+        int tileHeight, 
+        int offset)
     {
         TileWidth = tileWidth;
         TileHeight = tileHeight;
-        Columns = textureRegion.Width / tileWidth;
-        Rows = textureRegion.Height / tileHeight;
+        
+        Columns = textureRegion.Width / (tileWidth + offset);
+        Rows = textureRegion.Height / (tileHeight + offset);
+        
         Count = Columns * Rows;
 
         // Create the texture regions that make up each individual tile
@@ -49,8 +58,11 @@ public class Tileset
 
         for (int i = 0; i < Count; i++)
         {
-            int x = i % Columns * tileWidth;
-            int y = i / Columns * tileHeight;
+            
+            int x = i % Columns * (tileWidth + offset);
+            int y = i / Columns * (tileHeight + offset);
+            
+            
             _tiles[i] = new TextureRegion(
                 textureRegion.Texture,
                 textureRegion.SourceRectangle.X + x,

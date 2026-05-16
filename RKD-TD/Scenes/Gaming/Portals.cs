@@ -36,6 +36,17 @@ internal sealed class Portals
         }
     }
 
+    public Vector2 Scale
+    {
+        get;
+        set
+        {
+            field = value;
+            _startingPortal.Scale = value;
+            _endingPortal.Scale = value;
+        }
+    }
+
     public Portals(
         RotatingSprite startingPortal,
         Vector2 startingPortalPosition,
@@ -89,14 +100,12 @@ internal sealed class Portals
             }).ToArray();
 
         var startingPortal = gameObjectsTextures.CreateRotatingSprite(portalSpriteName);
-        startingPortal.Scale = new Vector2(0.85f);
         startingPortal.Color = Color.LawnGreen;
         startingPortal.RotationDirection = 1;
         startingPortal.RotationSpeedDegreesPerSecond = 10;
         startingPortal.CenterOrigin();
 
         var endingPortal = gameObjectsTextures.CreateRotatingSprite(portalSpriteName);
-        endingPortal.Scale = new Vector2(0.85f);
         endingPortal.Color = Color.Red;
         endingPortal.Effects = SpriteEffects.FlipHorizontally;
         endingPortal.RotationDirection = -1;

@@ -120,11 +120,6 @@ public class Tilemap
     /// <param name="spriteBatch">The sprite batch used to draw this tilemap.</param>
     public void Draw(SpriteBatch spriteBatch)
     {
-        // (float vpScale, Vector2 vpPosition) =
-        //     Camera is not null
-        //         ? (Camera.Zoom, Camera.Position)
-        //         : (1, Vector2.Zero);
-
         for (int i = 0; i < Count; i++)
         {
             int tilesetIndex = _tiles[i];
@@ -138,9 +133,6 @@ public class Tilemap
 
             var (finalScale, finalPosition) = Camera.WorldToScreen(
                 Scale, tilePosition);
-            // var position = new Vector2(
-            //     x * TileWidth * vpScale,
-            //     y * TileHeight * vpScale) - vpPosition;
 
             tile.Draw(
                 spriteBatch,
@@ -207,8 +199,11 @@ public class Tilemap
         // Create the texture region from the texture
         TextureRegion textureRegion = new TextureRegion(texture, x, y, width, height);
 
+
+        int offset = int.Parse(tilesetElement.Attribute("offset")?.Value ?? "0");
+
         // Create the tileset using the texture region
-        Tileset tileset = new Tileset(textureRegion, tileWidth, tileHeight);
+        Tileset tileset = new Tileset(textureRegion, tileWidth, tileHeight, offset);
 
         // The <Tiles> element contains lines of strings where each line
         // represents a row in the tilemap.  Each line is a space
