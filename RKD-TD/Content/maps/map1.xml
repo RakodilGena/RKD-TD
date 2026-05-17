@@ -33,7 +33,7 @@
     <GameObjectsAtlas>images/game/game-objects-atlas-definition.xml</GameObjectsAtlas>
 
     <Health textureAlias="heart_100">20</Health>
-    <Coins textureAlias="coin_100">300</Coins>
+    <Coins textureAlias="coin_100">400</Coins>
     <Portals textureAlias="portal_200">1,2;13,8</Portals>
 
     <!--    <Wave spawnTime="10">-->
@@ -44,8 +44,8 @@
 
     <Spawner
             totalWaves="20"
-            pauseBetweenWaves="10"
-            bossWaves="9; 19,has chaff"
+            pauseBetweenWaves="5"
+            bossWaves="9,has chaff; 19,has chaff"
 
             basicWaveReward="200"
             waveRewardIncrease="50"

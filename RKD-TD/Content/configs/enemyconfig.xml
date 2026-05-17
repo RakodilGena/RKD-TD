@@ -13,8 +13,8 @@
            damage="1"
            animationAlias="soldier-animation"
 
-           size="140;140"
-           hitCircleRadius="45"
+           size="150;150"
+           hitCircleRadius="50"
            hitCircleOffset="-5;-10"
 
            appearDistance="120"/> <!--textureAlias="soldier"-->
@@ -31,8 +31,8 @@
            damage="3"
            animationAlias="tank-animation"
 
-           size="160;160"
-           hitCircleRadius="55"
+           size="175;175"
+           hitCircleRadius="60"
            hitCircleOffset="15;0"
 
            appearDistance="80"/>
@@ -49,8 +49,8 @@
            damage="1"
            animationAlias="speedster-animation"
 
-           size="140;140"
-           hitCircleRadius="45"
+           size="150;150"
+           hitCircleRadius="50"
            hitCircleOffset="0;0"
 
            appearDistance="80"/>
@@ -67,8 +67,8 @@
            damage="1"
            animationAlias="soldier-animation"
 
-           size="80;80"
-           hitCircleRadius="25"
+           size="90;90"
+           hitCircleRadius="30"
            hitCircleOffset="-3;-5"
 
            customType="swarm"
@@ -87,8 +87,8 @@
            damage="9999"
            animationAlias="boss-animation"
 
-           size="180;180"
-           hitCircleRadius="60"
+           size="200;200"
+           hitCircleRadius="75"
            hitCircleOffset="0;10"
 
            appearDistance="150"/>
