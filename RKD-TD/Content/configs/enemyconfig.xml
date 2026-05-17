@@ -3,13 +3,13 @@
 <Enemies> <!-- Soldier, Speedster, Tank, Swarm, BOSS??? -->
     <Enemy alias="soldier"
 
-           health="200"
-           healthIncreasePerWave="10"
-           healthMultiplierPerWave="1.09"
+           health="320"
+           healthIncreasePerWave="12"
+           healthMultiplierPerWave="1.07"
 
-           speed="120"
-           cost="100"
-           reward="20"
+           speed="150"
+           cost="10"
+           reward="8"
            damage="1"
            animationAlias="soldier-animation"
 
@@ -21,13 +21,13 @@
 
     <Enemy alias="tank"
 
-           health="1000"
-           healthIncreasePerWave="30"
-           healthMultiplierPerWave="1.05"
+           health="1800"
+           healthIncreasePerWave="80"
+           healthMultiplierPerWave="1.07"
 
-           speed="80"
-           cost="300"
-           reward="100"
+           speed="70"
+           cost="40"
+           reward="25"
            damage="3"
            animationAlias="tank-animation"
 
@@ -39,13 +39,13 @@
 
     <Enemy alias="speedster"
 
-           health="300"
-           healthIncreasePerWave="15"
-           healthMultiplierPerWave="1.07"
+           health="420"
+           healthIncreasePerWave="18"
+           healthMultiplierPerWave="1.08"
 
-           speed="200"
-           cost="150"
-           reward="50"
+           speed="230"
+           cost="18"
+           reward="12"
            damage="1"
            animationAlias="speedster-animation"
 
@@ -57,13 +57,13 @@
 
     <Enemy alias="swarmer"
 
-           health="80"
+           health="140"
            healthIncreasePerWave="8"
-           healthMultiplierPerWave="1.12"
+           healthMultiplierPerWave="1.1"
 
-           speed="100"
-           cost="200"
-           reward="10"
+           speed="150"
+           cost="30"
+           reward="4"
            damage="1"
            animationAlias="soldier-animation"
 
@@ -77,13 +77,13 @@
     <Enemy alias="boss"
            isBoss="true"
 
-           health="1000"
-           healthIncreasePerWave="50"
-           healthMultiplierPerWave="1.04"
+           health="10000"
+           healthIncreasePerWave="150"
+           healthMultiplierPerWave="1.025"
 
-           speed="60"
-           cost="1000"
-           reward="300"
+           speed="50"
+           cost="300"
+           reward="150 "
            damage="9999"
            animationAlias="boss-animation"
 

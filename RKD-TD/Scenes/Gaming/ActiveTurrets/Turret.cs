@@ -21,7 +21,7 @@ internal sealed class Turret
         _rotationSpeedRadianInSec,
         _reloadTimeInSec,
         _fixateDistanceSquared,
-        _firingDistance,
+        _firingDistance,//todo for radius display on screen
         _firingDistanceSquared;
 
     private readonly TurretBarrel _turretBarrel;

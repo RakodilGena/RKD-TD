@@ -47,27 +47,27 @@
             pauseBetweenWaves="5"
             bossWaves="9,has chaff; 19,has chaff"
 
-            basicWaveReward="200"
-            waveRewardIncrease="50"
+            basicWaveReward="70"
+            waveRewardIncrease="20"
 
-            initialWaveValue="1000"
-            waveValueMultiplier="1.1"
-            waveValueIncrease="100"
+            initialWaveValue="90"
+            waveValueMultiplier="1.11"
+            waveValueIncrease="10"
 
-            basicSpawnInterval="4"
-            spawnIntervalDecrease="0.15"
+            basicSpawnInterval="3"
+            spawnIntervalDecrease="0.12"
     >
 
         <Waves>
             <!--The waves from here are hardcoded to better introduce them to the player-->
             <Wave>
-                soldier:10
+                soldier:9
             </Wave>
 
             <Wave>
-                soldier:3
+                soldier:2
                 tank:1
-                soldier:3
+                soldier:2
                 tank:1
             </Wave>
 
@@ -75,7 +75,6 @@
                 tank:1
                 soldier:2
                 speedster:1
-                soldier:2
                 tank:1
                 soldier:2
                 speedster:1
@@ -83,7 +82,7 @@
 
             <Wave>
                 speedster:1
-                soldier:4
+                soldier:2
                 tank:1
                 swarmer:1
                 soldier:2
