@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,7 +8,7 @@ using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Labels;
 using RKD_TD.Assets;
 
-namespace RKD_TD.Scenes.Gaming.Enemies;
+namespace RKD_TD.Scenes.Gaming.Enemies.Spawns;
 
 internal sealed class EnemySpawner
 {
@@ -121,7 +122,9 @@ internal sealed class EnemySpawner
     {
         var enemyAlias = _currentWave.EnemiesToSpawn[_currentEnemyIndex];
 
-        Enemy[] enemies = _enemyFactory.CreateEnemy(enemyAlias);
+        Enemy[] enemies = _enemyFactory.CreateEnemy(
+            enemyAlias,
+            _currentWaveIndex);
 
         _currentEnemyIndex++;
 
@@ -167,23 +170,43 @@ internal sealed class EnemySpawner
 
         var root = mapDoc.Root!;
         var spawnerElement = root.Element("Spawner")!;
+
+        var basicWaveReward = int.Parse(spawnerElement.Attribute("basicWaveReward")!.Value);
+        var waveRewardIncrease = int.Parse(spawnerElement.Attribute("waveRewardIncrease")!.Value);
+
+        var totalWaves = int.Parse(spawnerElement.Attribute("totalWaves")!.Value);
         var pauseBetweenWaves = float.Parse(spawnerElement.Attribute("pauseBetweenWaves")!.Value);
+        var basicSpawnInterval = float.Parse(spawnerElement.Attribute("basicSpawnInterval")!.Value);
+        var spawnIntervalDecrease = float.Parse(spawnerElement.Attribute("spawnIntervalDecrease")!.Value);
 
-        var wavesElement = spawnerElement.Element("Waves")!;
-        var basicReward = int.Parse(wavesElement.Attribute("basicReward")!.Value);
-        var rewardIncreasePerLevel = int.Parse(wavesElement.Attribute("rewardIncreasePerLevel")!.Value);
+        var initialWaveValue = int.Parse(spawnerElement.Attribute("initialWaveValue")!.Value);
+        var waveValueIncrease = int.Parse(spawnerElement.Attribute("waveValueIncrease")!.Value);
+        var waveValueMultiplier = float.Parse(spawnerElement.Attribute("waveValueMultiplier")!.Value);
 
-        var waveElements = wavesElement.Elements("Wave");
+        var bossWavesValue = spawnerElement.Attribute("bossWaves")!.Value;
+        var bossWaves = bossWavesValue
+            .Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(bossWave =>
+                bossWave.Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            .Select(bossWave =>
+            {
+                int waveIdx = int.Parse(bossWave[0]);
+                bool hasChaff = bossWave.Length > 1 && bossWave[1] is "has chaff";
+
+                return new BossWave(waveIdx, hasChaff);
+            }).ToArray();
+
 
         Queue<EnemyWave> waves = [];
         List<string> enemiesToSpawn = [];
-        var reward = basicReward;
+        var reward = basicWaveReward;
+        int waveNumber = 0;
 
+
+        var waveElements = spawnerElement.Element("Waves")!.Elements("Wave");
         foreach (var waveElement in waveElements)
         {
-            var spawnTime = float.Parse(waveElement.Attribute("spawnTime")!.Value);
-
-            var enemies = waveElement.Value.Split(";",
+            var enemies = waveElement.Value.Split("\n",
                 StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
             foreach (var enemy in enemies)
@@ -199,18 +222,39 @@ internal sealed class EnemySpawner
             }
 
             var wave = new EnemyWave(
-                spawnTime,
                 enemiesToSpawn.ToArray(),
-                reward);
+                reward,
+                waveNumber,
+                basicSpawnInterval,
+                spawnIntervalDecrease);
 
-            reward += rewardIncreasePerLevel;
+            reward += waveRewardIncrease;
+            waveNumber++;
 
             waves.Enqueue(wave);
             enemiesToSpawn.Clear();
         }
 
-        //todo: later use it for generator!
-        //var totalWaves = int.Parse(spawnerElement.Attribute("totalWaves")!.Value);
+        var enemyTemplates = factory.GetEnemyTemplates();
+        var generator = new EnemyWavesGenerator(
+            initialWaveValue,
+            waveValueMultiplier,
+            waveValueIncrease,
+            basicWaveReward,
+            waveRewardIncrease,
+            basicSpawnInterval,
+            spawnIntervalDecrease,
+            enemyTemplates,
+            bossWaves);
+
+        var generatedWaves = generator.GenerateAllWaves(
+            startingWaveIndex: waveNumber,
+            totalWaves);
+
+        foreach (var wave in generatedWaves)
+        {
+            waves.Enqueue(wave);
+        }
 
 
         var font = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES);

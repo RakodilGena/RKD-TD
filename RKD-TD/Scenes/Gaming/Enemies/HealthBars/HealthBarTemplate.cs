@@ -5,6 +5,8 @@ namespace RKD_TD.Scenes.Gaming.Enemies.HealthBars;
 
 internal sealed record HealthBarTemplate(
     int Health,
+    int HealthIncreasePerWave,
+    float HealthMultiplierPerWave,
     Vector2 EnemyOffset,
     Vector2 Borders, //thats in offset for bg and filler
     TextureRegion BordersTexture,

@@ -1,3 +1,5 @@
+using System;
+
 namespace RKD_TD.Scenes.Gaming.Enemies;
 
 internal sealed class EnemyWave
@@ -8,11 +10,13 @@ internal sealed class EnemyWave
     public int Reward { get; }
 
     public EnemyWave(
-        float spawnTime,
         string[] enemiesToSpawn,
-        int reward)
+        int reward,
+        int waveNumber,
+        float basicSpawnInterval,
+        float spawnIntervalDecrease)
     {
-        SpawnInterval = spawnTime / enemiesToSpawn.Length;
+        SpawnInterval = MathF.Max(0.3f, basicSpawnInterval - waveNumber * spawnIntervalDecrease);
         EnemiesToSpawn = enemiesToSpawn;
         Reward = reward;
     }

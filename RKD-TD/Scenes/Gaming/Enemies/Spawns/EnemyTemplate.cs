@@ -3,10 +3,11 @@ using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies.HealthBars;
 
-namespace RKD_TD.Scenes.Gaming.Enemies;
+namespace RKD_TD.Scenes.Gaming.Enemies.Spawns;
 
 internal sealed record EnemyTemplate(
     string Alias,
+    bool IsBoss,
     float Speed,
     int Cost,
     int Reward,

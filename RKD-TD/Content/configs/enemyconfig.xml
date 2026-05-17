@@ -2,10 +2,14 @@
 
 <Enemies> <!-- Soldier, Speedster, Tank, Swarm, BOSS??? -->
     <Enemy alias="soldier"
-           health="100"
+
+           health="200"
+           healthIncreasePerWave="10"
+           healthMultiplierPerWave="1.09"
+
            speed="120"
            cost="100"
-           reward="50"
+           reward="20"
            damage="1"
            animationAlias="soldier-animation"
 
@@ -16,10 +20,14 @@
            appearDistance="120"/> <!--textureAlias="soldier"-->
 
     <Enemy alias="tank"
+
            health="1000"
+           healthIncreasePerWave="30"
+           healthMultiplierPerWave="1.05"
+
            speed="80"
-           cost="500"
-           reward="200"
+           cost="300"
+           reward="100"
            damage="3"
            animationAlias="tank-animation"
 
@@ -30,10 +38,14 @@
            appearDistance="80"/>
 
     <Enemy alias="speedster"
-           health="80"
-           speed="120"
-           cost="200"
-           reward="150"
+
+           health="300"
+           healthIncreasePerWave="15"
+           healthMultiplierPerWave="1.07"
+
+           speed="200"
+           cost="150"
+           reward="50"
            damage="1"
            animationAlias="speedster-animation"
 
@@ -44,10 +56,14 @@
            appearDistance="80"/>
 
     <Enemy alias="swarmer"
-           health="30"
+
+           health="80"
+           healthIncreasePerWave="8"
+           healthMultiplierPerWave="1.12"
+
            speed="100"
-           cost="100"
-           reward="20"
+           cost="200"
+           reward="10"
            damage="1"
            animationAlias="soldier-animation"
 
@@ -59,10 +75,15 @@
            appearDistance="100"/>
 
     <Enemy alias="boss"
+           isBoss="true"
+
            health="1000"
+           healthIncreasePerWave="50"
+           healthMultiplierPerWave="1.04"
+
            speed="60"
-           cost="0"
-           reward="0"
+           cost="1000"
+           reward="300"
            damage="9999"
            animationAlias="boss-animation"
 

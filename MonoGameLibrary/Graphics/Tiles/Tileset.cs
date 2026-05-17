@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework;
-
 namespace MonoGameLibrary.Graphics.Tiles;
 
 public class Tileset

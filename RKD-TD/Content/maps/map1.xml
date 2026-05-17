@@ -33,7 +33,7 @@
     <GameObjectsAtlas>images/game/game-objects-atlas-definition.xml</GameObjectsAtlas>
 
     <Health textureAlias="heart_100">20</Health>
-    <Coins textureAlias="coin_100">500</Coins>
+    <Coins textureAlias="coin_100">300</Coins>
     <Portals textureAlias="portal_200">1,2;13,8</Portals>
 
     <!--    <Wave spawnTime="10">-->
@@ -42,17 +42,59 @@
     <!--        swarmer:1-->
     <!--    </Wave>-->
 
-    <Spawner totalWaves="20" pauseBetweenWaves="5">
-        <Waves basicReward="200" rewardIncreasePerLevel="50">
+    <Spawner
+            totalWaves="20"
+            pauseBetweenWaves="10"
+            bossWaves="9; 19,has chaff"
+
+            basicWaveReward="200"
+            waveRewardIncrease="50"
+
+            initialWaveValue="1000"
+            waveValueMultiplier="1.1"
+            waveValueIncrease="100"
+
+            basicSpawnInterval="4"
+            spawnIntervalDecrease="0.15"
+    >
+
+        <Waves>
             <!--The waves from here are hardcoded to better introduce them to the player-->
-            <Wave spawnTime="1">
+            <Wave>
+                soldier:10
+            </Wave>
+
+            <Wave>
+                soldier:3
+                tank:1
+                soldier:3
+                tank:1
+            </Wave>
+
+            <Wave>
+                tank:1
+                soldier:2
+                speedster:1
+                soldier:2
+                tank:1
+                soldier:2
                 speedster:1
             </Wave>
+
+            <Wave>
+                speedster:1
+                soldier:4
+                tank:1
+                swarmer:1
+                soldier:2
+                speedster:1
+                swarmer:1
+                soldier:2
+            </Wave>
+
         </Waves>
 
-        <WavesGenerator
-                startSpawnTime="50"
-                spawnTimeInc="5">
+        <WavesGenerator>
             <!--After the waves end, generator kicks in and generates waves randomly based on 
              the values of included enemies and the total wave value.-->
         </WavesGenerator>

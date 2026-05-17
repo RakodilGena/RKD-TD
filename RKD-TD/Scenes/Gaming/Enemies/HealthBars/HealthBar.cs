@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics.Sprites;
@@ -32,9 +33,14 @@ internal sealed class HealthBar
     }
 
     public HealthBar(
-        HealthBarTemplate template)
+        HealthBarTemplate template,
+        int waveIndex)
     {
-        _maxHealth = CurrentHealth = template.Health;
+        var currentHealth = template.Health *
+                            MathF.Pow(template.HealthMultiplierPerWave, waveIndex)
+                            + waveIndex * template.HealthIncreasePerWave;
+
+        _maxHealth = CurrentHealth = (int)currentHealth;
 
         _enemyOffset = template.EnemyOffset;
         _borders = template.Borders;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
@@ -8,7 +9,7 @@ using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Helpers;
 using RKD_TD.Scenes.Gaming.Enemies.HealthBars;
 
-namespace RKD_TD.Scenes.Gaming.Enemies;
+namespace RKD_TD.Scenes.Gaming.Enemies.Spawns;
 
 internal sealed class EnemyFactory
 {
@@ -37,7 +38,12 @@ internal sealed class EnemyFactory
         ];
     }
 
-    public Enemy[] CreateEnemy(string alias)
+    public EnemyTemplate[] GetEnemyTemplates()
+    {
+        return _enemyTemplates.Select(t => t.Value).ToArray();
+    }
+
+    public Enemy[] CreateEnemy(string alias, int waveIndex)
     {
         var template = _enemyTemplates[alias];
         if (template.Type is EnemyType.Regular)
@@ -60,7 +66,8 @@ internal sealed class EnemyFactory
                 template.AppearDistance,
                 template.HitCircleRadius,
                 template.HitCircleOffset,
-                template.HealthBarTemplate);
+                template.HealthBarTemplate,
+                waveIndex);
 
             return [enemy];
         }
@@ -90,7 +97,8 @@ internal sealed class EnemyFactory
                     template.AppearDistance,
                     template.HitCircleRadius,
                     template.HitCircleOffset,
-                    template.HealthBarTemplate);
+                    template.HealthBarTemplate,
+                    waveIndex);
 
                 enemies[i] = enemy;
             }
@@ -167,7 +175,6 @@ internal sealed class EnemyFactory
         foreach (var enemy in enemies)
         {
             var alias = enemy.Attribute("alias")!.Value;
-            var health = int.Parse(enemy.Attribute("health")!.Value);
             var speed = float.Parse(enemy.Attribute("speed")!.Value);
             var cost = int.Parse(enemy.Attribute("cost")!.Value);
             var reward = int.Parse(enemy.Attribute("reward")!.Value);
@@ -217,10 +224,22 @@ internal sealed class EnemyFactory
                 hitCircleOffset = Vector2.Zero;
             }
 
-            var healthBarTemplate = CreateHealthBarTemplate(health, size, healthBarConfig);
+            var health = int.Parse(enemy.Attribute("health")!.Value);
+            var healthIncreasePerWave = int.Parse(enemy.Attribute("healthIncreasePerWave")!.Value);
+            var healthMultiplierPerWave = float.Parse(enemy.Attribute("healthMultiplierPerWave")!.Value);
+
+            var healthBarTemplate = CreateHealthBarTemplate(
+                health,
+                healthIncreasePerWave,
+                healthMultiplierPerWave,
+                size,
+                healthBarConfig);
+
+            var isBoss = enemy.Attribute("isBoss")?.Value is "true";
 
             var template = new EnemyTemplate(
                 alias,
+                isBoss,
                 speed,
                 cost,
                 reward,
@@ -244,7 +263,12 @@ internal sealed class EnemyFactory
             tileSize);
 
 
-        static HealthBarTemplate CreateHealthBarTemplate(int health, float[] enemySize, HealthBarConfig cfg)
+        static HealthBarTemplate CreateHealthBarTemplate(
+            int health,
+            int healthIncreasePerWave,
+            float healthMultiplierPerWave,
+            float[] enemySize,
+            HealthBarConfig cfg)
         {
             var (enemyWidth, enemyHeight) = (enemySize[0], enemySize[1]);
 
@@ -267,6 +291,8 @@ internal sealed class EnemyFactory
 
             return new HealthBarTemplate(
                 health,
+                healthIncreasePerWave,
+                healthMultiplierPerWave,
                 enemyOffset,
                 cfg.Borders,
                 cfg.BordersTexture,

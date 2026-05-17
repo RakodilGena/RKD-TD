@@ -68,7 +68,8 @@ internal class Enemy
         float appearDistance,
         int hitCircleRadius,
         Vector2 hitCircleOffset,
-        HealthBarTemplate healthBarTemplate)
+        HealthBarTemplate healthBarTemplate,
+        int waveIndex)
     {
         Speed = speed;
         _reward = reward;
@@ -91,7 +92,8 @@ internal class Enemy
         SetFaceDirection();
 
         _healthBar = new HealthBar(
-            healthBarTemplate);
+            healthBarTemplate,
+            waveIndex);
     }
 
     private void SetFaceDirection()
