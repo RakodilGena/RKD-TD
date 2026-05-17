@@ -106,14 +106,24 @@ internal sealed class EnemyWavesGenerator
         while (remaining > 0)
         {
             // only consider enemies we can still afford
-            var affordable = _regularEnemies.Where(e => e.Cost <= remaining).ToList();
-            if (affordable.Count == 0) break;
+            var affordable = _regularEnemies.Where(e => e.Cost <= remaining).ToArray();
+            if (affordable.Length == 0) break;
 
-            // bias towards enemies that fit the remaining budget most closely
-            // so we waste as little budget as possible
-
-            var enemyIdx = Random.Shared.Next(affordable.Count);
-            var picked = affordable[enemyIdx];
+            // weight is inverted cost - cheaper enemies picked more often
+            float totalWeight = affordable.Sum(e => 1f / e.Cost);
+            float roll = (float)Random.Shared.NextDouble() * totalWeight;
+            
+            EnemyTemplate? picked = null;
+            foreach (var enemy in affordable)
+            {
+                roll -= 1f / enemy.Cost;
+                if (roll <= 0)
+                {
+                    picked = enemy;
+                    break;
+                }
+            }
+            picked ??= affordable[^1]; // fallback for floating point edge case
 
             spawns.Add(picked.Alias);
             remaining -= picked.Cost;
