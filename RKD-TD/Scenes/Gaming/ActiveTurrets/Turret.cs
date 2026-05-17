@@ -96,7 +96,13 @@ internal sealed class Turret
         ProjectileFactory projectileFactory,
         FlashFactory flashFactory)
     {
+        //lvl 0 color = new Color(88, 152, 188)
         _barrelSprite = barrelSprite;
+        _barrelSprite.Color = new Color(88, 152, 188);
+        
+        _carriageSprite = carriageSprite;
+        _carriageSprite.Color = new Color(88, 152, 188);
+        
         _position = position;
         _rotationSpeedRadianInSec = rotationSpeedRadianInSec;
         _reloadTimeInSec = reloadTimeInSec;
@@ -104,7 +110,6 @@ internal sealed class Turret
         _firingDistanceSquared = firingDistanceSquared;
         OccupiedCell = occupiedCell;
         _firingDistance = firingDistance;
-        _carriageSprite = carriageSprite;
 
         var projectileTemplate = projectileFactory.GetTemplate(projectileAlias);
 

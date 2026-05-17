@@ -189,7 +189,7 @@
         </Animation>
 
         <!--turrets-->
-        <Animation name="turret-mg-animation" delay="80">
+        <Animation name="turret-mg-animation" delay="60">
             <Frame region="turret_mg1"/>
             <Frame region="turret_mg2"/>
         </Animation>
