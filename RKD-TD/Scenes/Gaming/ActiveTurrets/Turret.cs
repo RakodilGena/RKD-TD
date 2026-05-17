@@ -84,6 +84,12 @@ internal sealed class Turret
         TurretFiringPoint[] firingPoints,
         TurretFiringMode firingMode,
         Vector2[] gunFlashPoints,
+        
+        float projectileFlightRange,
+        int directDamage,
+        int aoeRange,
+        int aoeDamage,
+        
         TurretAimingMode aimingMode,
         int barrelLenght,
         string projectileAlias,
@@ -109,6 +115,12 @@ internal sealed class Turret
             firingMode,
             gunFlashPoints,
             projectileTemplate,
+            
+            projectileFlightRange, 
+            directDamage, 
+            aoeRange, 
+            aoeDamage, 
+            
             flashAlias,
             projectileFactory,
             flashFactory);

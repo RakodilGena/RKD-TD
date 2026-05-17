@@ -21,6 +21,9 @@
                 rotationSpeed="180"
                 fixateDistance="750"
                 firingDistance="700"
+                projectileFlightRange="750"
+
+                directDamage="2"
 
                 firingPoints="275,-20,-5; 275,-10,-3; 275,0,0; 275,10,3; 275,20,5"
                 firingMode="random"
@@ -47,6 +50,9 @@
                 rotationSpeed="140"
                 fixateDistance="550"
                 firingDistance="500"
+                projectileFlightRange="450"
+                
+                directDamage="5"
 
                 firingPoints="275,-5,-10;  275,-3,-5;  275,0,0;  275,3,5;  275,5,10"
                 firingMode="all"
@@ -68,11 +74,16 @@
                 carriageSize="160;160"
                 carriageOrigin="100;100"
 
-                reloadTimeMs="2500"
+                reloadTimeMs="3000"
 
                 rotationSpeed="100"
                 fixateDistance="850"
                 firingDistance="800"
+                projectileFlightRange="850"
+
+                directDamage="55"
+                aoeRange="58"
+                aoeDamage="20"
 
                 firingPoints="295,0,0"
                 firingMode="single"
@@ -94,11 +105,16 @@
                 carriageSize="145;145"
                 carriageOrigin="100;100"
 
-                reloadTimeMs="1300"
+                reloadTimeMs="2100"
 
                 rotationSpeed="125"
                 fixateDistance="1000"
                 firingDistance="950"
+                projectileFlightRange="1100"
+
+                directDamage="10"
+                aoeRange="80"
+                aoeDamage="45"
 
                 firingPoints="190,-55,0; 190,0,0; 190,53,0;"
                 firingMode="rotation"
@@ -119,11 +135,8 @@
                 size="25;8"
                 origin="50;15"
                 speed="500"
-                flightRange="750"
 
                 hitCircleRadius="6"
-
-                directDamage="2"
 
                 explosionAlias="mg_bullet_explosion"
         />
@@ -134,11 +147,8 @@
                 size="30;9"
                 origin="50;15"
                 speed="500"
-                flightRange="450"
                 
-                hitCircleRadius="8"
-                
-                directDamage="5"
+                hitCircleRadius="8"                
 
                 explosionAlias="shotgun_bullet_explosion"
         />
@@ -149,13 +159,8 @@
                 size="55;28"
                 origin="115;48"
                 speed="650"
-                flightRange="850"
 
                 hitCircleRadius="24"
-
-                directDamage="40"
-                aoeRange="58"
-                aoeDamage="25"
 
                 explosionAlias="shell_explosion"
         />
@@ -166,13 +171,8 @@
                 size="80;35"
                 origin="195;67"
                 speed="630"
-                flightRange="1100"
 
                 hitCircleRadius="20"
-
-                directDamage="10"
-                aoeRange="80"
-                aoeDamage="45"
                 type="homing"
 
                 explosionAlias="missile_explosion"

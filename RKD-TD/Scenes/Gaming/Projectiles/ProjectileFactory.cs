@@ -34,6 +34,7 @@ internal sealed class ProjectileFactory
 
     public Projectile Create(
         ProjectileTemplate template,
+        ProjectileValues projectileValues,
         Vector2 position,
         float angle)
     {
@@ -55,11 +56,11 @@ internal sealed class ProjectileFactory
             return new HomingMissile(
                 sprite,
                 template.Speed,
-                template.FlightRange,
+                projectileValues.FlightRange,
                 template.HitCircleRadius,
-                template.DirectDamage,
-                template.AoeDamage,
-                template.AoeRange,
+                projectileValues.DirectDamage,
+                projectileValues.AoeDamage,
+                projectileValues.AoeRange,
                 position,
                 rotation: angle,
                 template.ExplosionAlias,
@@ -73,11 +74,11 @@ internal sealed class ProjectileFactory
         return new Projectile(
             sprite,
             template.Speed,
-            template.FlightRange,
+            projectileValues.FlightRange,
             template.HitCircleRadius,
-            template.DirectDamage,
-            template.AoeDamage,
-            template.AoeRange,
+            projectileValues.DirectDamage,
+            projectileValues.AoeDamage,
+            projectileValues.AoeRange,
             position,
             rotation: angle,
             template.ExplosionAlias,
@@ -90,12 +91,13 @@ internal sealed class ProjectileFactory
 
     public Projectile Create(
         string projectileAlias,
+        ProjectileValues projectileValues,
         Vector2 position,
         float angle)
     {
         var template = GetTemplate(projectileAlias);
 
-        return Create(template, position, angle);
+        return Create(template, projectileValues, position, angle);
     }
 
     public static ProjectileFactory FromFile(
@@ -133,19 +135,6 @@ internal sealed class ProjectileFactory
             var projScale = TextureHelper.CalculateScale(projSize, projTexture, projAnimation);
 
             var speed = float.Parse(projElement.Attribute("speed")?.Value!);
-            var flightRange = float.Parse(projElement.Attribute("flightRange")?.Value!);
-            var directDamage = int.Parse(projElement.Attribute("directDamage")?.Value!);
-
-            var aoeRangeValue = projElement.Attribute("aoeRange")?.Value;
-            var aoeRange = !string.IsNullOrEmpty(aoeRangeValue)
-                ? int.Parse(aoeRangeValue)
-                : 0;
-
-            var aoeDamageValue = projElement.Attribute("aoeDamage")?.Value;
-            var aoeDamage = !string.IsNullOrEmpty(aoeDamageValue)
-                ? int.Parse(aoeDamageValue)
-                : 0;
-
             var hitCircleRadius = int.Parse(projElement.Attribute("hitCircleRadius")!.Value);
 
             var explosionAlias = projElement.Attribute("explosionAlias")!.Value;
@@ -183,10 +172,6 @@ internal sealed class ProjectileFactory
                     Origin: new Vector2(projOrigin[0], projOrigin[1]),
                     projScale,
                     speed,
-                    flightRange,
-                    directDamage,
-                    aoeRange,
-                    aoeDamage,
                     hitCircleRadius,
                     projType,
                     explosionAlias,

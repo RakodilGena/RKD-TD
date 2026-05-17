@@ -15,9 +15,16 @@ internal sealed record TurretTemplate(
     Vector2 CarriageOrigin,
     float RotationSpeedRadianInSec,
     float ReloadTimeInSec,
+    
     float FixateDistanceSquared,
     float FiringDistance,
     float FiringDistanceSquared,
+    
+    float ProjectileFlightRange,
+    int DirectDamage,
+    int AoeRange,
+    int AoeDamage,
+    
     TurretFiringPoint[] FiringPoints,
     TurretFiringMode FiringMode,
     Vector2[] GunFlashPoints,

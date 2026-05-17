@@ -12,6 +12,11 @@ internal sealed class TurretBarrel
     private readonly TurretFiringMode _firingMode;
     private readonly Vector2[] _gunFlashPoints;
 
+    private readonly float _projectileFlightRange;
+    private readonly int _directDamage;
+    private readonly int _aoeRange;
+    private readonly int _aoeDamage;
+
     private readonly ProjectileTemplate _projectileTemplate;
     private readonly string _flashAlias;
 
@@ -19,12 +24,19 @@ internal sealed class TurretBarrel
     private readonly FlashFactory _flashFactory;
 
     private int _currentFiringPointIdx;
+    
 
     public TurretBarrel(
         TurretFiringPoint[] firingPoints,
         TurretFiringMode firingMode,
         Vector2[] gunFlashPoints,
-        ProjectileTemplate projectileTemplate,
+        ProjectileTemplate projectileTemplate, 
+        
+        float projectileFlightRange, 
+        int directDamage, 
+        int aoeRange, 
+        int aoeDamage,
+        
         string flashAlias,
         ProjectileFactory projectileFactory,
         FlashFactory flashFactory)
@@ -35,6 +47,10 @@ internal sealed class TurretBarrel
         _projectileTemplate = projectileTemplate;
         _flashAlias = flashAlias;
         _flashFactory = flashFactory;
+        _projectileFlightRange = projectileFlightRange;
+        _directDamage = directDamage;
+        _aoeRange = aoeRange;
+        _aoeDamage = aoeDamage;
         _gunFlashPoints = gunFlashPoints;
     }
 
@@ -108,8 +124,15 @@ internal sealed class TurretBarrel
         var firingPointAbsolutePosition = turretCenter + firingPoint.Position.GetRotatedVector(rotation);
         var bulletRotation = rotation + firingPoint.BulletExtraAngleInRadians;
 
+        var projectileValues = new ProjectileValues(
+            _projectileFlightRange,
+            _directDamage,
+            _aoeRange,
+            _aoeDamage);
+
         var projectile = _projectileFactory.Create(
             _projectileTemplate,
+            projectileValues,
             firingPointAbsolutePosition,
             bulletRotation);
 
