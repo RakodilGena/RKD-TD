@@ -24,6 +24,7 @@ internal sealed class TurretPurchasePanel
     public TurretPurchasePanel(
         Vector2 position,
         TextureAtlas gameObjects,
+        PendingTurretStash pendingTurretStash,
         float scale,
         float panelLayerDepth,
         float buttonLayerDepth)
@@ -57,6 +58,7 @@ internal sealed class TurretPurchasePanel
         _turretPurchaseButtons = CreateTurretPurchaseButtons(
             _panelPosition,
             gameObjects,
+            pendingTurretStash,
             absoluteMargin: new Vector2(30, 18),
             scale * turretPurchaseButtonScale,
             buttonLayerDepth);
@@ -169,19 +171,23 @@ internal sealed class TurretPurchasePanel
     private TurretPurchaseButton[] CreateTurretPurchaseButtons(
         Vector2 position,
         TextureAtlas gameObjects,
+        PendingTurretStash pendingTurretStash,
         Vector2 absoluteMargin,
         float scale,
         float buttonLayerDepth)
     {
-        //var margin = new Vector2(260, 0) * scale;
-
         var buttonSize = new Vector2(240, 0) * scale;
         var horizontalMargin = new Vector2(absoluteMargin.X, 0) * scale;
         var verticalMargin = new Vector2(0, absoluteMargin.Y) * scale;
+        var font = GlobalAssets.FontAtlas.GetFont(Fonts.TURRET_PURCHASE_BTN_TEXT);
 
         var index = 0;
 
+        var mgTemplate = pendingTurretStash.GetPendingTurret(TurretType.MachineGun);
         var mgButton = CreateTurretPurchaseButton(
+            mgTemplate.Name,
+            mgTemplate.Price,
+            font,
             textureAlias: Textures.Game.TURRET_ICON_MG_240,
             position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
             gameObjects,
@@ -189,7 +195,11 @@ internal sealed class TurretPurchasePanel
             buttonLayerDepth);
         mgButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.MachineGun);
 
+        var shotgunTemplate = pendingTurretStash.GetPendingTurret(TurretType.Shotgun);
         var shotgunButton = CreateTurretPurchaseButton(
+            shotgunTemplate.Name,
+            shotgunTemplate.Price,
+            font,
             textureAlias: Textures.Game.TURRET_ICON_SHOTGUN_240,
             position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
             gameObjects,
@@ -197,7 +207,11 @@ internal sealed class TurretPurchasePanel
             buttonLayerDepth);
         shotgunButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Shotgun);
 
+        var cannonTemplate = pendingTurretStash.GetPendingTurret(TurretType.Cannon);
         var cannonButton = CreateTurretPurchaseButton(
+            cannonTemplate.Name,
+            cannonTemplate.Price,
+            font,
             textureAlias: Textures.Game.TURRET_ICON_CANNON_240,
             position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
             gameObjects,
@@ -205,7 +219,11 @@ internal sealed class TurretPurchasePanel
             buttonLayerDepth);
         cannonButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Cannon);
 
+        var missileTemplate = pendingTurretStash.GetPendingTurret(TurretType.Missile);
         var missileButton = CreateTurretPurchaseButton(
+            missileTemplate.Name,
+            missileTemplate.Price,
+            font,
             textureAlias: Textures.Game.TURRET_ICON_MISSILE_240,
             position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
             gameObjects,
@@ -224,6 +242,10 @@ internal sealed class TurretPurchasePanel
     }
 
     private static TurretPurchaseButton CreateTurretPurchaseButton(
+        string name, 
+        int price,
+        SpriteFont font,
+        
         string textureAlias,
         Vector2 position,
         TextureAtlas gameObjects,
@@ -236,6 +258,10 @@ internal sealed class TurretPurchasePanel
         hovered.Color = Color.DarkGray;
 
         return new TurretPurchaseButton(
+            name,
+            price,
+            font,
+            
             position,
             origin: Vector2.Zero,
             spriteIdle: idle,

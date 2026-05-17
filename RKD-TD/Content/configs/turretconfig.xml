@@ -6,6 +6,8 @@
         <!--aimingMode="predictive" + barrelLenght-->
 
         <MachineGun
+                name="Gatling"
+                
                 price="100"
 
                 barrelAnimationAlias="turret-mg-animation"
@@ -36,7 +38,10 @@
                 flashAlias="mg_flash"/>
 
         <Shotgun
+                name="Shotgun"
+                
                 price="175"
+                
                 barrelTextureAlias="turret_shotgun"
                 barrelSize="200;100"
                 barrelOrigin="130;94"
@@ -65,7 +70,10 @@
                 flashAlias="shotgun_flash"/>
 
         <Cannon
+                name="Cannon"
+                
                 price="350"
+                
                 barrelTextureAlias="turret_cannon"
                 barrelSize="200;100"
                 barrelOrigin="150;100"
@@ -96,7 +104,10 @@
                 flashAlias="cannon_flash"/>
 
         <Missile
+                name="Missile"
+                
                 price="280"
+                
                 barrelTextureAlias="turret_missile"
                 barrelSize="110;100"
                 barrelOrigin="120;105"

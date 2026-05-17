@@ -7,5 +7,6 @@
         <Font name="regular_btn_text"/>
         <Font name="map_title"/>
         <Font name="user_resources"/>
+        <Font name="turret_purchase_btn_text"/>
     </Fonts>
 </FontAtlas>

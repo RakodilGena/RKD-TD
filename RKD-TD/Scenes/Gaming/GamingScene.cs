@@ -113,6 +113,7 @@ internal sealed class GamingScene : Scene
         _turretPurchasePanel = new TurretPurchasePanel(
             position: new Vector2(10, 915),
             _gameObjectsTextures,
+            _pendingTurretStash,
             scale: 0.6f,
             panelLayerDepth: 0.9f,
             buttonLayerDepth: 0.91f);

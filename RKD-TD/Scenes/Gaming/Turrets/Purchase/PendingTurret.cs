@@ -7,6 +7,7 @@ namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 
 internal sealed class PendingTurret
 {
+    public string Name { get; }
     public float Radius { get; }
     public TurretType Type { get; }
     public Texture2D Texture { get; }
@@ -14,11 +15,13 @@ internal sealed class PendingTurret
     public int Price { get; }
 
     public PendingTurret(
+        string name,
         TurretType type,
         int price,
         float radius)
 
     {
+        Name = name;
         Radius = radius;
         Type = type;
         Price = price;

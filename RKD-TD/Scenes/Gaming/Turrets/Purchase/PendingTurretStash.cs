@@ -6,7 +6,7 @@ namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 
 internal sealed class PendingTurretStash
 {
-    private readonly FrozenDictionary<TurretType, PendingTurret> _turrets = null!;
+    private readonly FrozenDictionary<TurretType, PendingTurret> _turrets;
 
     public PendingTurret GetPendingTurret(TurretType type)
     {

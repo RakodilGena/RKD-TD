@@ -126,7 +126,7 @@ internal sealed class TurretFactory
             flashFactory);
 
         var pendingTurrets = templates.Select(p =>
-            new PendingTurret(p.Key, p.Value.Price, p.Value.FiringDistance));
+            new PendingTurret(p.Value.Name, p.Key, p.Value.Price, p.Value.FiringDistance));
         pendingTurretStash = new PendingTurretStash(pendingTurrets);
 
         return new TurretFactory(
@@ -232,8 +232,10 @@ internal sealed class TurretFactory
             ? int.Parse(aoeDamageValue)
             : 0;
 
+        var name = turretElement.Attribute("name")!.Value;
 
         return new TurretTemplate(
+            name,
             price,
             barrelTexture,
             barrelAnimation,
