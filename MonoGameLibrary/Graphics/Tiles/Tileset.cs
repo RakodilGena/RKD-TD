@@ -40,17 +40,17 @@ public class Tileset
     /// <param name="tileHeight">The height of each tile in the tileset.</param>
     /// <param name="offset">offset between tiles (X and Y)</param>
     public Tileset(
-        TextureRegion textureRegion, 
-        int tileWidth, 
-        int tileHeight, 
+        TextureRegion textureRegion,
+        int tileWidth,
+        int tileHeight,
         int offset)
     {
         TileWidth = tileWidth;
         TileHeight = tileHeight;
-        
+
         Columns = textureRegion.Width / (tileWidth + offset);
         Rows = textureRegion.Height / (tileHeight + offset);
-        
+
         Count = Columns * Rows;
 
         // Create the texture regions that make up each individual tile
@@ -58,11 +58,10 @@ public class Tileset
 
         for (int i = 0; i < Count; i++)
         {
-            
             int x = i % Columns * (tileWidth + offset);
             int y = i / Columns * (tileHeight + offset);
-            
-            
+
+
             _tiles[i] = new TextureRegion(
                 textureRegion.Texture,
                 textureRegion.SourceRectangle.X + x,

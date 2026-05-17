@@ -157,6 +157,7 @@ internal sealed class GamingScene : Scene
     {
         _portals = Portals.FromFile(mapDoc, _gameObjectsTextures);
         _portals.LayerDepth = 0.1f;
+        _portals.Scale = new Vector2(1.2f);
     }
 
     private void LoadUserResources(XDocument mapDoc)

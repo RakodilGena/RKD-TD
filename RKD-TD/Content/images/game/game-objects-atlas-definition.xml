@@ -28,30 +28,29 @@
         <Region name="tank5" x="0" y="600" width="200" height="200"/>
         <Region name="tank6" x="204" y="600" width="200" height="200"/>
         <Region name="tank7" x="408" y="600" width="200" height="200"/>
-        
+
         <Region name="speedster0" x="0" y="810" width="200" height="200"/>
         <Region name="speedster1" x="200" y="810" width="200" height="200"/>
         <Region name="speedster2" x="400" y="810" width="200" height="200"/>
         <Region name="speedster3" x="600" y="810" width="200" height="200"/>
         <Region name="speedster4" x="800" y="810" width="200" height="200"/>
 
-        
-<!--        BOSS!-->
+
+        <!--        BOSS!-->
         <Region name="boss0" x="0" y="1020" width="250" height="250"/>
         <Region name="boss1" x="255" y="1020" width="250" height="250"/>
         <Region name="boss2" x="510" y="1020" width="250" height="250"/>
         <Region name="boss3" x="765" y="1020" width="250" height="250"/>
-        
+
         <Region name="boss4" x="0" y="1275" width="250" height="250"/>
         <Region name="boss5" x="255" y="1275" width="250" height="250"/>
         <Region name="boss6" x="510" y="1275" width="250" height="250"/>
         <Region name="boss7" x="765" y="1275" width="250" height="250"/>
-        
+
         <Region name="boss8" x="0" y="1530" width="250" height="250"/>
         <Region name="boss9" x="255" y="1530" width="250" height="250"/>
         <Region name="boss10" x="510" y="1530" width="250" height="250"/>
-        
-        
+
 
         <!--enemy health bars-->
         <Region name="health_bar" x="850" y="620" width="64" height="64"/>
@@ -152,7 +151,7 @@
             <Frame region="soldier2"/>
             <Frame region="soldier1"/>
         </Animation>
-        
+
         <Animation name="tank-animation" delay="70">
             <Frame region="tank0"/>
             <Frame region="tank1"/>
@@ -163,7 +162,7 @@
             <Frame region="tank6"/>
             <Frame region="tank7"/>
         </Animation>
-        
+
         <Animation name="speedster-animation" delay="120">
             <Frame region="speedster0"/>
             <Frame region="speedster1"/>

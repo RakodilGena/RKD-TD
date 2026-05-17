@@ -98,7 +98,7 @@ internal sealed class EnemySpawner
         _spawnIntervalCounter = _currentWave.SpawnInterval;
         _currentEnemyIndex = 0;
 
-        string labelText = $"Wave {_currentWaveIndex+1} of {_maxWaves}";
+        string labelText = $"Wave {_currentWaveIndex + 1} of {_maxWaves}";
         _waveCounterLabel.Text = labelText;
     }
 
@@ -178,7 +178,7 @@ internal sealed class EnemySpawner
         Queue<EnemyWave> waves = [];
         List<string> enemiesToSpawn = [];
         var reward = basicReward;
-        
+
         foreach (var waveElement in waveElements)
         {
             var spawnTime = float.Parse(waveElement.Attribute("spawnTime")!.Value);

@@ -4,8 +4,9 @@
  * field            f00
  * river   vertical rv0, horizontal rh0, top-right  rtr, top-left rtl, left-bottom rbl, right bottom rbr
  * path    vertical pv0, horizontal ph0, top-right  ptr, top-left ptl, left-bottom pbl, right bottom pbr
+ * path start/finish     top sft, bottom sfb, left sfl, right sfr
  * bridge vertical  bv0, horizontal bh0
- * 
+ *
  */
 
 //15x11
@@ -13,17 +14,17 @@
 using System.Collections.Frozen;
 using System.Text;
 
-string mapRaw = 
+string mapRaw =
     @"
 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 rv0 f00 
 f00 pbr ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 pbl f00 rv0 f00 
-f00 pv0 f00 f00 f00 f00 f00 f00 f00 f00 f00 pv0 f00 rv0 f00 
+f00 sft f00 f00 f00 f00 f00 f00 f00 f00 f00 pv0 f00 rv0 f00 
 f00 f00 f00 pbr ph0 ph0 ph0 pbl f00 f00 f00 pv0 f00 rv0 f00 
 f00 f00 f00 pv0 f00 f00 f00 pv0 f00 rbr rh0 bv0 rh0 rtl f00 
 f00 f00 f00 pv0 f00 rbr rh0 bv0 rh0 rtl f00 pv0 f00 f00 f00 
 f00 rbr rh0 bv0 rh0 rtl f00 pv0 f00 f00 f00 pv0 f00 f00 f00 
 f00 rv0 f00 pv0 f00 f00 f00 ptr ph0 ph0 ph0 ptl f00 f00 f00 
-f00 rv0 f00 pv0 f00 f00 f00 f00 f00 f00 f00 f00 f00 pv0 f00 
+f00 rv0 f00 pv0 f00 f00 f00 f00 f00 f00 f00 f00 f00 sfb f00 
 f00 rv0 f00 ptr ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ptl f00 
 f00 rv0 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 
 ";
@@ -42,7 +43,7 @@ foreach (var row in rows)
     {
         var aliases = cellMap[column];
         var aliasIdx = Random.Shared.Next(0, aliases.Length);
-        
+
         var alias = aliases[aliasIdx];
 
         mapFinalBuilder.Append($"{alias} ");
@@ -50,7 +51,7 @@ foreach (var row in rows)
         var cellState = GetCellTurretState(column);
         turretsTerrainBuilder.Append($"{cellState} ");
     }
-    
+
     mapFinalBuilder.AppendLine();
     turretsTerrainBuilder.AppendLine();
 }
@@ -69,10 +70,10 @@ return;
 static FrozenDictionary<string, string[]> CreateCellsMap()
 {
     Dictionary<string, string[]> mapCells = [];
-    
+
 //fields
     mapCells.Add("f00", ["00", "10", "20"]);
-    
+
     //PATHS-----------------------------------------------
 //path horizontal
     mapCells.Add("ph0", ["01", "11"]);
@@ -92,7 +93,15 @@ static FrozenDictionary<string, string[]> CreateCellsMap()
 //path bottom-right
     mapCells.Add("pbr", ["32", "33"]);
 
-        
+    //paths start finish-----------------------------------------------
+    mapCells.Add("sfl", ["09"]);
+
+    mapCells.Add("sft", ["19"]);
+
+    mapCells.Add("sfr", ["29"]);
+
+    mapCells.Add("sfb", ["39"]);
+
 
     //RIVERS-----------------------------------------------
 //river horizontal
@@ -112,7 +121,7 @@ static FrozenDictionary<string, string[]> CreateCellsMap()
 
 //river bottom-right
     mapCells.Add("rbr", ["36", "37"]);
-    
+
     //bridges-----------------------------------------------
 //bridges horizontal
     mapCells.Add("bh0", ["08", "18"]);
