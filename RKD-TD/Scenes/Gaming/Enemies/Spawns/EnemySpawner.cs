@@ -256,9 +256,9 @@ internal sealed class EnemySpawner
             waves.Enqueue(wave);
         }
 
-        // var enemiesPicked = waves.SelectMany(w => w.EnemiesToSpawn)
-        //     .GroupBy(w => w)
-        //     .Select(w => (w.Key, w.Count())).ToArray();
+        var enemiesPicked = waves.SelectMany(w => w.EnemiesToSpawn)
+            .GroupBy(w => w)
+            .Select(w => (w.Key, w.Count())).ToArray();
 
 
         var font = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES);

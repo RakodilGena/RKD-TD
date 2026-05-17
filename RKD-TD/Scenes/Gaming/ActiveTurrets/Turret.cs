@@ -99,10 +99,10 @@ internal sealed class Turret
         //lvl 0 color = new Color(88, 152, 188)
         _barrelSprite = barrelSprite;
         _barrelSprite.Color = new Color(88, 152, 188);
-        
+
         _carriageSprite = carriageSprite;
         _carriageSprite.Color = new Color(88, 152, 188);
-        
+
         _position = position;
         _rotationSpeedRadianInSec = rotationSpeedRadianInSec;
         _reloadTimeInSec = reloadTimeInSec;

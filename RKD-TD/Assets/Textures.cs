@@ -2,19 +2,16 @@ namespace RKD_TD.Assets;
 
 internal static class Textures
 {
-    public static class Title
+    public static class MainTitle
     {
-        public const string BUTTON_450_130 = "button_450_130";
-        public const string BUTTON_450_130_PRESSED = "button_450_130_pressed";
+        public const string MAIN_MENU_BUTTON = "main_menu_button";
     }
 
     public static class MapSelection
     {
         public const string BUTTON_300_100 = "button_300_100";
-        public const string BUTTON_300_100_PRESSED = "button_300_100_pressed";
 
         public const string MAP_BLANK_500_300 = "map_blank_500_300";
-        public const string MAP_BLANK_500_300_PRESSED = "map_blank_500_300_pressed";
     }
 
     public static class Game

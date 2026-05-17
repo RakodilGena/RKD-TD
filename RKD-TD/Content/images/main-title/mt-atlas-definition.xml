@@ -2,7 +2,6 @@
 <TextureAtlas>
     <Texture>images/main-title/mt-atlas</Texture>
     <Regions>
-        <Region name="button_450_130" x="0" y="0" width="450" height="130"/>
-        <Region name="button_450_130_pressed" x="0" y="130" width="450" height="130"/>
+        <Region name="main_menu_button" x="0" y="0" width="480" height="140"/>
     </Regions>
 </TextureAtlas>

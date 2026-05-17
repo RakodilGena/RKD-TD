@@ -13,8 +13,7 @@ public class Button
 
     private readonly Sprite
         _spriteIdle,
-        _spriteHovered,
-        _spritePressed;
+        _spriteHovered;
 
     private Sprite _current;
 
@@ -28,7 +27,6 @@ public class Button
         Vector2 origin,
         Sprite spriteIdle,
         Sprite spriteHovered,
-        Sprite spritePressed,
         Vector2 scale,
         float layerDepth)
     {
@@ -44,11 +42,6 @@ public class Button
         _spriteHovered.Origin = origin;
         _spriteHovered.Scale = scale;
         _spriteHovered.LayerDepth = layerDepth;
-
-        _spritePressed = spritePressed;
-        _spritePressed.Origin = origin;
-        _spritePressed.Scale = scale;
-        _spritePressed.LayerDepth = layerDepth;
 
 
         _bounds = new Rectangle(
@@ -93,12 +86,7 @@ public class Button
 
     private void SetCurrentSprite()
     {
-        if (_wasPressed)
-            _current = _spritePressed;
-        else if (_hovered)
-            _current = _spriteHovered;
-        else
-            _current = _spriteIdle;
+        _current = _hovered ? _spriteHovered : _spriteIdle;
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)

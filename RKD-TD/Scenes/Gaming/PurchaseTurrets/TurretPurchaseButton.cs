@@ -11,10 +11,9 @@ internal sealed class TurretPurchaseButton : Button
         Vector2 origin,
         Sprite spriteIdle,
         Sprite spriteHovered,
-        Sprite spritePressed,
         Vector2 scale,
         float layerDepth)
-        : base(position, origin, spriteIdle, spriteHovered, spritePressed, scale, layerDepth)
+        : base(position, origin, spriteIdle, spriteHovered, scale, layerDepth)
     {
     }
 }

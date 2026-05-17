@@ -44,8 +44,7 @@ internal sealed class MapSelectionMenu
         string mapFileName,
         int mapIndex,
         Sprite idle,
-        Sprite hovered,
-        Sprite pressed)
+        Sprite hovered)
     {
         var mapPosition = GetMapPosition(menuPosition, mapIndex);
 
@@ -56,7 +55,6 @@ internal sealed class MapSelectionMenu
             origin: Vector2.Zero,
             idle,
             hovered,
-            pressed,
             scale: Vector2.One,
             mapNameFont,
             mapNameScale: Vector2.One,
@@ -72,8 +70,7 @@ internal sealed class MapSelectionMenu
         SpriteFont mapNameFont,
         int mapIndex,
         Sprite idle,
-        Sprite hovered,
-        Sprite pressed)
+        Sprite hovered)
     {
         var mapPosition = GetMapPosition(menuPosition, mapIndex);
 
@@ -84,7 +81,6 @@ internal sealed class MapSelectionMenu
             origin: Vector2.Zero,
             idle,
             hovered,
-            pressed,
             scale: Vector2.One,
             mapNameFont,
             mapNameScale: Vector2.One,
@@ -126,17 +122,14 @@ internal sealed class MapSelectionMenu
         Vector2 menuPosition,
         string mapsFileName)
     {
-        var spriteIdle = textures.CreateSprite(
+        var blankSpriteIdle = textures.CreateSprite(
             Textures.MapSelection.MAP_BLANK_500_300);
-        spriteIdle.Color = Color.Wheat;
+        blankSpriteIdle.Color = Color.Wheat;
 
-        var spriteHovered = textures.CreateSprite(
+        var blankSpriteHovered = textures.CreateSprite(
             Textures.MapSelection.MAP_BLANK_500_300);
-        spriteHovered.Color = Color.Gray;
+        blankSpriteHovered.Color = Color.Gray;
 
-        var spritePressed = textures.CreateSprite(
-            Textures.MapSelection.MAP_BLANK_500_300_PRESSED);
-        spritePressed.Color = Color.Gray;
         var mapNameFont = GlobalAssets.FontAtlas.GetFont(Fonts.MAP_TITLE);
 
         var doc = XmlLoader.Load(content, mapsFileName);
@@ -166,7 +159,7 @@ internal sealed class MapSelectionMenu
             Sprite idle, hovered, pressed;
             if (string.IsNullOrWhiteSpace(textureAlias))
             {
-                (idle, hovered, pressed) = (spriteIdle, spriteHovered, spritePressed);
+                (idle, hovered, pressed) = (blankSpriteIdle, blankSpriteHovered, blankSpriteHovered);
             }
             else
             {
@@ -184,8 +177,7 @@ internal sealed class MapSelectionMenu
                 mapFileName!,
                 mapIndex: maps.Count,
                 idle,
-                hovered,
-                pressed);
+                hovered);
 
             maps.Add(map);
         }
@@ -200,9 +192,8 @@ internal sealed class MapSelectionMenu
                 mapName,
                 mapNameFont,
                 mapIndex,
-                spriteIdle,
-                spriteHovered,
-                spritePressed);
+                blankSpriteIdle,
+                blankSpriteHovered);
 
             maps.Add(map);
         }

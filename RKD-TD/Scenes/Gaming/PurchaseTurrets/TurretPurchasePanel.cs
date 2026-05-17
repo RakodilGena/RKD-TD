@@ -123,7 +123,6 @@ internal sealed class TurretPurchasePanel
             origin: Vector2.Zero,
             spriteIdle: hideButtonIdle,
             spriteHovered: hideButtonHovered,
-            spritePressed: hideButtonHovered,
             scale,
             layerDepth: panelLayerDepth);
     }
@@ -150,7 +149,6 @@ internal sealed class TurretPurchasePanel
             origin: Vector2.Zero,
             spriteIdle: showButtonIdle,
             spriteHovered: showButtonHovered,
-            spritePressed: showButtonHovered,
             scale,
             layerDepth: panelLayerDepth);
     }
@@ -242,7 +240,6 @@ internal sealed class TurretPurchasePanel
             origin: Vector2.Zero,
             spriteIdle: idle,
             spriteHovered: hovered,
-            spritePressed: hovered,
             scale: new Vector2(scale),
             buttonLayerDepth);
     }

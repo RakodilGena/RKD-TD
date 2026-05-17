@@ -28,16 +28,16 @@ public sealed class TitleMenu
         var kwFont90 = GlobalAssets.FontAtlas.GetFont(Fonts.MAIN_MENU_BTN_TEXT);
 
         var spriteIdle = textureAtlas.CreateSprite(
-            Textures.Title.BUTTON_450_130);
+            Textures.MainTitle.MAIN_MENU_BUTTON);
         spriteIdle.Color = Color.DarkGray;
 
         var spriteHovered = textureAtlas.CreateSprite(
-            Textures.Title.BUTTON_450_130);
+            Textures.MainTitle.MAIN_MENU_BUTTON);
         spriteHovered.Color = Color.Gray;
 
-        var spritePressed = textureAtlas.CreateSprite(
-            Textures.Title.BUTTON_450_130_PRESSED);
-        spritePressed.Color = Color.Gray;
+        // var spritePressed = textureAtlas.CreateSprite(
+        //     Textures.Title.BUTTON_450_130_PRESSED);
+        // spritePressed.Color = Color.Gray;
 
 
         var startButton = CreateLabeledButton(
@@ -45,8 +45,7 @@ public sealed class TitleMenu
             label: "Start",
             font: kwFont90,
             spriteIdle,
-            spriteHovered,
-            spritePressed);
+            spriteHovered);
 
         startButton.Clicked += (_, args) =>
             StartClicked?.Invoke(this, args);
@@ -57,8 +56,7 @@ public sealed class TitleMenu
             label: "Settings",
             font: kwFont90,
             spriteIdle,
-            spriteHovered,
-            spritePressed);
+            spriteHovered);
 
         settingsButton.Clicked += (_, args) =>
             SettingsClicked?.Invoke(this, args);
@@ -69,8 +67,7 @@ public sealed class TitleMenu
             label: "Credits",
             font: kwFont90,
             spriteIdle,
-            spriteHovered,
-            spritePressed);
+            spriteHovered);
 
         creditsButton.Clicked += (_, args) =>
             CreditsClicked?.Invoke(this, args);
@@ -81,8 +78,7 @@ public sealed class TitleMenu
             label: "Exit",
             font: kwFont90,
             spriteIdle,
-            spriteHovered,
-            spritePressed);
+            spriteHovered);
 
         exitButton.Clicked += (_, args) =>
             ExitClicked?.Invoke(this, args);
@@ -101,15 +97,13 @@ public sealed class TitleMenu
         string label,
         SpriteFont font,
         Sprite idle,
-        Sprite hovered,
-        Sprite pressed)
+        Sprite hovered)
     {
         return new ButtonLabeled(
             position: position,
             origin: Vector2.Zero,
             idle,
             hovered,
-            pressed,
             scale: Vector2.One,
             text: label,
             font,

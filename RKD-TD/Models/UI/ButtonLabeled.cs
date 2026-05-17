@@ -14,7 +14,6 @@ internal sealed class ButtonLabeled : Button
         Vector2 origin,
         Sprite spriteIdle,
         Sprite spriteHovered,
-        Sprite spritePressed,
         Vector2 scale,
         string text,
         SpriteFont textFont,
@@ -23,9 +22,8 @@ internal sealed class ButtonLabeled : Button
         Color borderColor,
         Vector2 borderWidth,
         float layerDepth)
-        : base(position, origin,
-            spriteIdle, spriteHovered, spritePressed,
-            scale, layerDepth)
+        : base(position, origin, spriteIdle,
+            spriteHovered, scale, layerDepth)
     {
         var buttonCenter = new Vector2(
             spriteIdle.Width * 0.5f,

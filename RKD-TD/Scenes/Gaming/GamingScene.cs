@@ -276,8 +276,7 @@ internal sealed class GamingScene : Scene
 
         if (_gameState is GameState.PlacingTurret)
         {
-            var mousePosition = Core.Input.Mouse.Position.ToVector2();
-            UpdatePlacementMode(mousePosition);
+            UpdatePlacementMode();
         }
         else
         {
@@ -431,9 +430,10 @@ internal sealed class GamingScene : Scene
         Core.IsMouseVisible = false;
     }
 
-    private void UpdatePlacementMode(Vector2 mouseWorld)
+    private void UpdatePlacementMode()
     {
-        _hoveredCell = _buildGrid.GetCellAtWorld(mouseWorld, _camera);
+        var mousePosition = Core.Input.Mouse.Position.ToVector2();
+        _hoveredCell = _buildGrid.GetCellAtWorld(mousePosition, _camera);
     }
 
     private void PlaceTurret(BuildCell cell)
