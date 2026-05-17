@@ -44,6 +44,8 @@ internal sealed class EnemySpawner
 
         _waveCounterLabel = waveCounterLabel;
 
+        _currentWaveIndex = -1;
+
         SetNextWave();
 
         _paused = true;
@@ -96,7 +98,7 @@ internal sealed class EnemySpawner
         _spawnIntervalCounter = _currentWave.SpawnInterval;
         _currentEnemyIndex = 0;
 
-        string labelText = $"Wave {_currentWaveIndex} of {_maxWaves}";
+        string labelText = $"Wave {_currentWaveIndex+1} of {_maxWaves}";
         _waveCounterLabel.Text = labelText;
     }
 
@@ -169,13 +171,14 @@ internal sealed class EnemySpawner
 
         var wavesElement = spawnerElement.Element("Waves")!;
         var basicReward = int.Parse(wavesElement.Attribute("basicReward")!.Value);
-        var rewardLevelMultiplier = int.Parse(wavesElement.Attribute("rewardLevelMultiplier")!.Value);
+        var rewardIncreasePerLevel = int.Parse(wavesElement.Attribute("rewardIncreasePerLevel")!.Value);
 
         var waveElements = wavesElement.Elements("Wave");
 
         Queue<EnemyWave> waves = [];
         List<string> enemiesToSpawn = [];
         var reward = basicReward;
+        
         foreach (var waveElement in waveElements)
         {
             var spawnTime = float.Parse(waveElement.Attribute("spawnTime")!.Value);
@@ -200,7 +203,7 @@ internal sealed class EnemySpawner
                 enemiesToSpawn.ToArray(),
                 reward);
 
-            reward += rewardLevelMultiplier;
+            reward += rewardIncreasePerLevel;
 
             waves.Enqueue(wave);
             enemiesToSpawn.Clear();

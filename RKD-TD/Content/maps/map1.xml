@@ -42,10 +42,10 @@
 <!--    </Wave>-->
     
     <Spawner totalWaves="20" pauseBetweenWaves="5">
-        <Waves basicReward="200" rewardLevelMultiplier="50">
+        <Waves basicReward="200" rewardIncreasePerLevel="50">
             <!--The waves from here are hardcoded to better introduce them to the player-->
            <Wave spawnTime="1">
-               boss:1
+               speedster:1
            </Wave>
         </Waves>
 
@@ -57,18 +57,16 @@
         </WavesGenerator>
 
         <Waypoints>
-            <Waypoint>10;2</Waypoint>
-            <Waypoint>9;2</Waypoint>
-            <Waypoint>9;4</Waypoint>
-            <Waypoint>6;4</Waypoint>
-            <Waypoint>6;5</Waypoint>
-            <Waypoint>3;5</Waypoint>
-            <Waypoint>3;3</Waypoint>
-            <Waypoint>5;3</Waypoint>
-            <Waypoint>5;1</Waypoint>
+            <Waypoint>1;2</Waypoint>
             <Waypoint>1;1</Waypoint>
-            <Waypoint>1;3</Waypoint>
-            <Waypoint>0;3</Waypoint>
+            <Waypoint>11;1</Waypoint>
+            <Waypoint>11;7</Waypoint>
+            <Waypoint>7;7</Waypoint>
+            <Waypoint>7;3</Waypoint>
+            <Waypoint>3;3</Waypoint>
+            <Waypoint>3;9</Waypoint>
+            <Waypoint>13;9</Waypoint>
+            <Waypoint>13;8</Waypoint>
         </Waypoints>
     </Spawner>
 </Map>
