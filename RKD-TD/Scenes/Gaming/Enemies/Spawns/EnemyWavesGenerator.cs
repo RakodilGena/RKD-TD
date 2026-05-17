@@ -103,6 +103,8 @@ internal sealed class EnemyWavesGenerator
         var spawns = new List<string>();
         float remaining = budget;
 
+        const float costPower = 1.1f;
+
         while (remaining > 0)
         {
             // only consider enemies we can still afford
@@ -110,13 +112,13 @@ internal sealed class EnemyWavesGenerator
             if (affordable.Length == 0) break;
 
             // weight is inverted cost - cheaper enemies picked more often
-            float totalWeight = affordable.Sum(e => 1f / e.Cost);
+            float totalWeight = affordable.Sum(e => 1f / MathF.Pow(e.Cost, costPower));
             float roll = (float)Random.Shared.NextDouble() * totalWeight;
             
             EnemyTemplate? picked = null;
             foreach (var enemy in affordable)
             {
-                roll -= 1f / enemy.Cost;
+                roll -= 1f / MathF.Pow(enemy.Cost, costPower);
                 if (roll <= 0)
                 {
                     picked = enemy;
