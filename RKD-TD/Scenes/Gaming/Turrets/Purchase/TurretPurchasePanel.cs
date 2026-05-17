@@ -5,9 +5,9 @@ using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Assets;
 using RKD_TD.Models.UI;
-using RKD_TD.Scenes.Gaming.ActiveTurrets;
+using RKD_TD.Scenes.Gaming.Turrets.Active;
 
-namespace RKD_TD.Scenes.Gaming.PurchaseTurrets;
+namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 
 internal sealed class TurretPurchasePanel
 {

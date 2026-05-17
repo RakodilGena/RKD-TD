@@ -2,7 +2,7 @@
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
 
-namespace RKD_TD.Scenes.Gaming.ActiveTurrets;
+namespace RKD_TD.Scenes.Gaming.Turrets.Active;
 
 internal sealed record TurretTemplate(
     int Price,

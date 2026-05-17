@@ -1,8 +1,8 @@
 ﻿using System.Collections.Frozen;
 using System.Collections.Generic;
-using RKD_TD.Scenes.Gaming.ActiveTurrets;
+using RKD_TD.Scenes.Gaming.Turrets.Active;
 
-namespace RKD_TD.Scenes.Gaming.PurchaseTurrets;
+namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 
 internal sealed class PendingTurretStash
 {

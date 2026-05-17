@@ -2,7 +2,7 @@
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Models.UI;
 
-namespace RKD_TD.Scenes.Gaming.PurchaseTurrets;
+namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 
 internal sealed class TurretPurchaseButton : Button
 {

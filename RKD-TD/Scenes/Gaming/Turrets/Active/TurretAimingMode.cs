@@ -1,4 +1,4 @@
-﻿namespace RKD_TD.Scenes.Gaming.ActiveTurrets;
+﻿namespace RKD_TD.Scenes.Gaming.Turrets.Active;
 
 internal enum TurretAimingMode
 {

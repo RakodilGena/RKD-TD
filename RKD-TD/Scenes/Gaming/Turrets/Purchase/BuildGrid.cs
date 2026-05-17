@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Cameras;
 
-namespace RKD_TD.Scenes.Gaming.PurchaseTurrets;
+namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 
 internal sealed class BuildGrid
 {

@@ -2,7 +2,7 @@
 using RKD_TD.Scenes.Gaming.Flashes;
 using RKD_TD.Scenes.Gaming.Projectiles;
 
-namespace RKD_TD.Scenes.Gaming.ActiveTurrets;
+namespace RKD_TD.Scenes.Gaming.Turrets.Active;
 
 internal readonly ref struct TurretShotEventArgs
 {

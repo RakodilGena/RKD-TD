@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Collisions;
 
-namespace RKD_TD.Scenes.Gaming.PurchaseTurrets;
+namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 
 internal sealed class BuildCell
 {

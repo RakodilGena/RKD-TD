@@ -21,4 +21,7 @@
     <ItemGroup>
         <ProjectReference Include="..\MonoGameLibrary\MonoGameLibrary.csproj"/>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Scenes\Gaming\Turrets\" />
+    </ItemGroup>
 </Project>

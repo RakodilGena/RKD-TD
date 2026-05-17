@@ -9,14 +9,14 @@ using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Tiles;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.Scenes;
-using RKD_TD.Scenes.Gaming.ActiveTurrets;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Enemies.Spawns;
 using RKD_TD.Scenes.Gaming.Explosions;
 using RKD_TD.Scenes.Gaming.Flashes;
 using RKD_TD.Scenes.Gaming.Misc;
 using RKD_TD.Scenes.Gaming.Projectiles;
-using RKD_TD.Scenes.Gaming.PurchaseTurrets;
+using RKD_TD.Scenes.Gaming.Turrets.Active;
+using RKD_TD.Scenes.Gaming.Turrets.Purchase;
 using RKD_TD.Scenes.MapSelection;
 
 namespace RKD_TD.Scenes.Gaming;

@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
-using RKD_TD.Scenes.Gaming.ActiveTurrets;
+using RKD_TD.Scenes.Gaming.Turrets.Active;
 
-namespace RKD_TD.Scenes.Gaming.PurchaseTurrets;
+namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 
 internal sealed class PendingTurret
 {
