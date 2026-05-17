@@ -70,12 +70,10 @@ internal sealed class TurretFactory
             template.FiringPoints,
             template.FiringMode,
             template.GunFlashPoints,
-            
             template.ProjectileFlightRange,
             template.DirectDamage,
             template.AoeRange,
             template.AoeDamage,
-            
             template.AimingMode,
             template.BarrelLenght,
             template.ProjectileAlias,
@@ -220,7 +218,7 @@ internal sealed class TurretFactory
         var barrelLenght = !string.IsNullOrEmpty(barrelLenghtValue)
             ? (int)(int.Parse(barrelLenghtValue) * barrelScale.X)
             : 0;
-            
+
         var projectileFlightRange = float.Parse(turretElement.Attribute("projectileFlightRange")?.Value!);
         var directDamage = int.Parse(turretElement.Attribute("directDamage")?.Value!);
 
@@ -249,12 +247,10 @@ internal sealed class TurretFactory
             FixateDistanceSquared: fixateDistance * fixateDistance,
             firingDistance,
             FiringDistanceSquared: firingDistance * firingDistance,
-            
             projectileFlightRange,
             directDamage,
             aoeRange,
             aoeDamage,
-            
             firingPoints,
             firingMode,
             flashPoints,

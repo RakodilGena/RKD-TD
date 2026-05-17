@@ -24,6 +24,8 @@ internal sealed class MapPreview
         SpriteFont mapNameFont,
         Vector2 mapNameScale,
         Color mapNameColor,
+        Color mapNameBorderColor,
+        Vector2 mapNameBorderWidth,
         float layerDepth)
     {
         Name = mapName;
@@ -40,6 +42,8 @@ internal sealed class MapPreview
             mapNameFont,
             mapNameScale,
             mapNameColor,
+            mapNameBorderColor,
+            mapNameBorderWidth,
             layerDepth);
 
         _mapDisplay.Clicked += (_, args) =>

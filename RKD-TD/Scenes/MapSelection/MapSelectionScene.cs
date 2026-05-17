@@ -39,7 +39,7 @@ internal sealed class MapSelectionScene : Scene
         const string mstText = "CHOOSE A MAP TO PLAY";
         var textCenter = mstFont.MeasureString(mstText) / 2;
 
-        _selectMapLabel = new Label(
+        _selectMapLabel = new BorderedLabel(
             position: new Vector2(
                 screenCenter,
                 40),
@@ -50,7 +50,9 @@ internal sealed class MapSelectionScene : Scene
             mstFont,
             Color.Black,
             scale: Vector2.One,
-            layerDepth: 1);
+            layerDepth: 1,
+            borderWidth: new Vector2(2),
+            borderColor: Color.White);
     }
 
     private void InitBackButton()
@@ -82,6 +84,8 @@ internal sealed class MapSelectionScene : Scene
             btnFont,
             textScale: Vector2.One,
             textColor: Color.Black,
+            borderColor: Color.White,
+            borderWidth: new Vector2(2, 2),
             layerDepth: 1f);
 
         _backButton.Clicked += (_, _) => BackToTitle();

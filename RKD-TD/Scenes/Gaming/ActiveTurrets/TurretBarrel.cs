@@ -24,19 +24,17 @@ internal sealed class TurretBarrel
     private readonly FlashFactory _flashFactory;
 
     private int _currentFiringPointIdx;
-    
+
 
     public TurretBarrel(
         TurretFiringPoint[] firingPoints,
         TurretFiringMode firingMode,
         Vector2[] gunFlashPoints,
-        ProjectileTemplate projectileTemplate, 
-        
-        float projectileFlightRange, 
-        int directDamage, 
-        int aoeRange, 
+        ProjectileTemplate projectileTemplate,
+        float projectileFlightRange,
+        int directDamage,
+        int aoeRange,
         int aoeDamage,
-        
         string flashAlias,
         ProjectileFactory projectileFactory,
         FlashFactory flashFactory)

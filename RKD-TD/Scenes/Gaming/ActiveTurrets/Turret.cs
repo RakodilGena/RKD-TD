@@ -21,7 +21,7 @@ internal sealed class Turret
         _rotationSpeedRadianInSec,
         _reloadTimeInSec,
         _fixateDistanceSquared,
-        _firingDistance,//todo for radius display on screen
+        _firingDistance, //todo for radius display on screen
         _firingDistanceSquared;
 
     private readonly TurretBarrel _turretBarrel;
@@ -84,12 +84,10 @@ internal sealed class Turret
         TurretFiringPoint[] firingPoints,
         TurretFiringMode firingMode,
         Vector2[] gunFlashPoints,
-        
         float projectileFlightRange,
         int directDamage,
         int aoeRange,
         int aoeDamage,
-        
         TurretAimingMode aimingMode,
         int barrelLenght,
         string projectileAlias,
@@ -115,12 +113,10 @@ internal sealed class Turret
             firingMode,
             gunFlashPoints,
             projectileTemplate,
-            
-            projectileFlightRange, 
-            directDamage, 
-            aoeRange, 
-            aoeDamage, 
-            
+            projectileFlightRange,
+            directDamage,
+            aoeRange,
+            aoeDamage,
             flashAlias,
             projectileFactory,
             flashFactory);

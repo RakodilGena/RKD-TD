@@ -61,6 +61,8 @@ internal sealed class MapSelectionMenu
             mapNameFont,
             mapNameScale: Vector2.One,
             mapNameColor: Color.Black,
+            mapNameBorderColor: Color.White,
+            mapNameBorderWidth: new Vector2(2, 2),
             layerDepth: 1);
     }
 
@@ -87,6 +89,8 @@ internal sealed class MapSelectionMenu
             mapNameFont,
             mapNameScale: Vector2.One,
             mapNameColor: Color.Black,
+            mapNameBorderColor: Color.White,
+            mapNameBorderWidth: new Vector2(2, 2),
             layerDepth: 1);
     }
 

@@ -114,7 +114,7 @@ internal sealed class EnemyWavesGenerator
             // weight is inverted cost - cheaper enemies picked more often
             float totalWeight = affordable.Sum(e => 1f / MathF.Pow(e.Cost, costPower));
             float roll = (float)Random.Shared.NextDouble() * totalWeight;
-            
+
             EnemyTemplate? picked = null;
             foreach (var enemy in affordable)
             {
@@ -125,6 +125,7 @@ internal sealed class EnemyWavesGenerator
                     break;
                 }
             }
+
             picked ??= affordable[^1]; // fallback for floating point edge case
 
             spawns.Add(picked.Alias);

@@ -51,7 +51,7 @@
                 fixateDistance="550"
                 firingDistance="480"
                 projectileFlightRange="550"
-                
+
                 directDamage="14"
 
                 firingPoints="285,-5,-10;  285,-3,-5;  285,0,0;  285,3,5;  285,5,10"
@@ -147,8 +147,8 @@
                 size="30;9"
                 origin="50;15"
                 speed="600"
-                
-                hitCircleRadius="8"                
+
+                hitCircleRadius="8"
 
                 explosionAlias="shotgun_bullet_explosion"
         />

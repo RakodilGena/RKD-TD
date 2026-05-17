@@ -115,6 +115,8 @@ public sealed class TitleMenu
             font,
             textScale: Vector2.One,
             textColor: Color.Black,
+            borderColor: Color.White,
+            borderWidth: new Vector2(3, 3),
             layerDepth: 0.5f);
     }
 

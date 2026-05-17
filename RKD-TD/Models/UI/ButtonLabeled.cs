@@ -20,6 +20,8 @@ internal sealed class ButtonLabeled : Button
         SpriteFont textFont,
         Vector2 textScale,
         Color textColor,
+        Color borderColor,
+        Vector2 borderWidth,
         float layerDepth)
         : base(position, origin,
             spriteIdle, spriteHovered, spritePressed,
@@ -31,14 +33,17 @@ internal sealed class ButtonLabeled : Button
 
         var textPosition = position + (-origin + buttonCenter) * scale;
 
-        _btnLabel = new Label(
+        _btnLabel = new BorderedLabel(
             textPosition,
             origin: Vector2.Zero,
             text,
             textFont,
             textColor,
             textScale,
-            layerDepth);
+            layerDepth,
+            borderWidth,
+            borderColor);
+
         _btnLabel.CenterOrigin();
     }
 
