@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Graphics.Sprites;
 using MonoGameLibrary.Graphics.Tiles;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.Scenes;
@@ -26,12 +28,14 @@ internal sealed class GamingScene : Scene
     private readonly string _mapFile;
 
     private const string
+        BACKGROUND_TEXTURE_PATH = "images/game/background",
         GAME_OBJECTS_ATLAS_NAME = "images/game/game-objects-atlas-definition.xml",
         ENEMY_CONFIG_NAME = "configs/enemyconfig.xml",
         HEALTH_BAR_CONFIG_NAME = "configs/healthbarconfig.xml",
         TURRET_CONFIG_NAME = "configs/turretconfig.xml";
 
 
+    private Sprite _backgroundSprite = null!; 
     private TextureAtlas _gameObjectsTextures = null!;
 
     private GameState _gameState = GameState.Normal;
@@ -124,6 +128,8 @@ internal sealed class GamingScene : Scene
     {
         base.LoadContent();
 
+        LoadBackground();
+
         var mapDoc = XmlLoader.Load(Content, _mapFile);
 
         LoadGameObjectsTextures();
@@ -139,6 +145,14 @@ internal sealed class GamingScene : Scene
         LoadBuildGrid(mapDoc);
 
         LoadTurretFactory();
+    }
+
+    private void LoadBackground()
+    {
+        var texture = Content.Load<Texture2D>(BACKGROUND_TEXTURE_PATH);
+        var textureRegion = new TextureRegion(texture, 0, 0, 1920, 1080);
+
+        _backgroundSprite = new Sprite(textureRegion);
     }
 
     private void LoadGameObjectsTextures()
@@ -214,6 +228,8 @@ internal sealed class GamingScene : Scene
         //decided to keep it as is for the time being.
         var sb = Core.SpriteBatch;
         sb.Begin();
+
+        _backgroundSprite.Draw(sb, Vector2.Zero);
 
         _map.Draw(sb);
         _portals.Draw(sb);

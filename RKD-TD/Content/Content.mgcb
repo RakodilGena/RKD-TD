@@ -88,6 +88,18 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/user_resources.spritefont
 
+#begin images/game/background.bmp
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/game/background.bmp;images/game/background
+
 #begin images/game/game-objects-atlas-definition.xml
 /copy:images/game/game-objects-atlas-definition.xml
 
