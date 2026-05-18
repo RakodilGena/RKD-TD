@@ -179,7 +179,8 @@ internal sealed class TurretPurchasePanel
         var buttonSize = new Vector2(240, 0) * scale;
         var horizontalMargin = new Vector2(absoluteMargin.X, 0) * scale;
         var verticalMargin = new Vector2(0, absoluteMargin.Y) * scale;
-        var font = GlobalAssets.FontAtlas.GetFont(Fonts.TURRET_PURCHASE_BTN_TEXT);
+        var nameFont = GlobalAssets.FontAtlas.GetFont(Fonts.TURRET_PURCHASE_BTN_TEXT);
+        var priceFont = GlobalAssets.FontAtlas.GetFont(Fonts.TURRET_PURCHASE_BTN_PRICE_TEXT);
 
         var index = 0;
 
@@ -187,7 +188,8 @@ internal sealed class TurretPurchasePanel
         var mgButton = CreateTurretPurchaseButton(
             mgTemplate.Name,
             mgTemplate.Price,
-            font,
+            nameFont,
+            priceFont,
             textureAlias: Textures.Game.TURRET_ICON_MG_240,
             position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
             gameObjects,
@@ -199,7 +201,8 @@ internal sealed class TurretPurchasePanel
         var shotgunButton = CreateTurretPurchaseButton(
             shotgunTemplate.Name,
             shotgunTemplate.Price,
-            font,
+            nameFont,
+            priceFont,
             textureAlias: Textures.Game.TURRET_ICON_SHOTGUN_240,
             position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
             gameObjects,
@@ -211,7 +214,8 @@ internal sealed class TurretPurchasePanel
         var cannonButton = CreateTurretPurchaseButton(
             cannonTemplate.Name,
             cannonTemplate.Price,
-            font,
+            nameFont,
+            priceFont,
             textureAlias: Textures.Game.TURRET_ICON_CANNON_240,
             position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
             gameObjects,
@@ -223,7 +227,8 @@ internal sealed class TurretPurchasePanel
         var missileButton = CreateTurretPurchaseButton(
             missileTemplate.Name,
             missileTemplate.Price,
-            font,
+            nameFont,
+            priceFont,
             textureAlias: Textures.Game.TURRET_ICON_MISSILE_240,
             position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
             gameObjects,
@@ -244,7 +249,8 @@ internal sealed class TurretPurchasePanel
     private static TurretPurchaseButton CreateTurretPurchaseButton(
         string name, 
         int price,
-        SpriteFont font,
+        SpriteFont nameFont,
+        SpriteFont priceFont,
         
         string textureAlias,
         Vector2 position,
@@ -260,7 +266,8 @@ internal sealed class TurretPurchasePanel
         return new TurretPurchaseButton(
             name,
             price,
-            font,
+            nameFont,
+            priceFont,
             
             position,
             origin: Vector2.Zero,

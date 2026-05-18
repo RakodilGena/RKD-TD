@@ -13,5 +13,5 @@ internal static class Fonts
     public const string USER_RESOURCES = "user_resources";
     
     public const string TURRET_PURCHASE_BTN_TEXT = "turret_purchase_btn_text";
-    
+    public const string TURRET_PURCHASE_BTN_PRICE_TEXT = "turret_purchase_btn_price_text";
 }
