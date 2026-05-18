@@ -74,7 +74,7 @@ internal sealed class GamingScene : Scene
 
         //after base.Initialize() all graphic elements must have been created
 
-        _fpsMeter = new FpsMeter(new Vector2(1600, 30));
+        _fpsMeter = new FpsMeter(new Vector2(1600, 32));
         InitCamera();
         InitGameClockWidget();
         InitTurretPurchasePanel();
@@ -182,7 +182,7 @@ internal sealed class GamingScene : Scene
             enemyConfigDoc,
             healthBarConfigDoc,
             _gameObjectsTextures,
-            new Vector2(600, 30));
+            new Vector2(600, 32));
 
         _enemySpawner.EnemySpawned += OnEnemySpawned;
         _enemySpawner.AllWavesFinished += OnAllWavesFinished;
@@ -207,7 +207,7 @@ internal sealed class GamingScene : Scene
 
     public override void Draw(GameTime gameTime)
     {
-        Core.GraphicsDevice.Clear(Color.PeachPuff);
+        Core.GraphicsDevice.Clear(new Color(30,30,30));
 
         //order of calling draw is important here because apparently by default layerDepth is ignored
         //thus the later draw is called, the higher it is drawn.
@@ -245,7 +245,7 @@ internal sealed class GamingScene : Scene
 
         _userResources.Draw(sb);
         _enemySpawner.Draw(sb);
-        _fpsMeter.Draw(sb);
+        //_fpsMeter.Draw(sb);
         _gameClockWidget.Draw(sb);
 
         if (_gameState is GameState.PlacingTurret)

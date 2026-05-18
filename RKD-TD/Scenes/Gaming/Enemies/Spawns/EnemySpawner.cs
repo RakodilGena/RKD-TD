@@ -23,6 +23,7 @@ internal sealed class EnemySpawner
     private bool _paused, _done;
 
 
+    private readonly Label _waveTextLabel;
     private readonly Label _waveCounterLabel;
 
 
@@ -35,7 +36,10 @@ internal sealed class EnemySpawner
         Queue<EnemyWave> waves,
         float wavesInterval,
         EnemyFactory enemyFactory,
-        Label waveCounterLabel)
+        
+        Vector2 widgetPosition,
+        SpriteFont waveTextFont,
+        SpriteFont waveCounterFont)
     {
         _waves = waves;
         _maxWaves = waves.Count;
@@ -43,7 +47,8 @@ internal sealed class EnemySpawner
         _wavesInterval = wavesInterval;
         _enemyFactory = enemyFactory;
 
-        _waveCounterLabel = waveCounterLabel;
+        _waveTextLabel = CreateTextLabel(widgetPosition, waveTextFont, out var counterLabelPosition);
+        _waveCounterLabel = CreateCounterLabel(counterLabelPosition, waveCounterFont);
 
         _currentWaveIndex = -1;
 
@@ -51,9 +56,48 @@ internal sealed class EnemySpawner
 
         _paused = true;
     }
+    
+    private static Label CreateTextLabel(
+        Vector2 labelPosition,
+        SpriteFont font, 
+        out Vector2 counterLabelPosition)
+    {
+        const string text = "Round";
+        var label = new BorderedLabel(text ,font)
+        {
+            Position = labelPosition,
+            Color = Color.White,
+            BorderColor = Color.Black,
+            BorderWidth = new Vector2(2f)
+        };
+
+        var size = font.MeasureString(text);
+        
+        counterLabelPosition = new Vector2(labelPosition.X + size.X, labelPosition.Y);
+
+        return label;
+    }
+    
+    private static Label CreateCounterLabel(
+        Vector2 labelPosition,
+        SpriteFont font)
+    {
+        labelPosition += new Vector2(20, -2);
+        
+        var label = new BorderedLabel(font)
+        {
+            Position = labelPosition,
+            Color = Color.White,
+            BorderColor = Color.Black,
+            BorderWidth = new Vector2(2f)
+        };
+
+        return label;
+    }
 
     public void Draw(SpriteBatch spriteBatch)
     {
+        _waveTextLabel.Draw(spriteBatch);
         _waveCounterLabel.Draw(spriteBatch);
     }
 
@@ -99,7 +143,7 @@ internal sealed class EnemySpawner
         _spawnIntervalCounter = _currentWave.SpawnInterval;
         _currentEnemyIndex = 0;
 
-        string labelText = $"Wave {_currentWaveIndex + 1} of {_maxWaves}";
+        string labelText = $"{_currentWaveIndex + 1}/{_maxWaves}";
         _waveCounterLabel.Text = labelText;
     }
 
@@ -160,7 +204,7 @@ internal sealed class EnemySpawner
         XDocument enemyConfigDoc,
         XDocument healthBarConfigDoc,
         TextureAtlas gameObjectsTextures,
-        Vector2 labelPosition)
+        Vector2 widgetPosition)
     {
         var factory = EnemyFactory.FromFile(
             mapDoc,
@@ -261,19 +305,16 @@ internal sealed class EnemySpawner
             .Select(w => (w.Key, w.Count())).ToArray();
 
 
-        var font = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES);
-        var label = new BorderedLabel(font)
-        {
-            Position = labelPosition,
-            Color = Color.White,
-            BorderColor = Color.Black,
-            BorderWidth = new Vector2(2f)
-        };
+        var textFont = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES);
+        var counterFont = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES_DIGITS);
 
         return new EnemySpawner(
             waves,
             pauseBetweenWaves,
             factory,
-            label);
+            
+            widgetPosition,
+            textFont,
+            counterFont);
     }
 }

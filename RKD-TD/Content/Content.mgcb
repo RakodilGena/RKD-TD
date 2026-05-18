@@ -74,6 +74,13 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/turret_purchase_btn_text.spritefont
 
+#begin fonts/user_resources_digits.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/user_resources_digits.spritefont
+
 #begin fonts/user_resources.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

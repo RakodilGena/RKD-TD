@@ -152,7 +152,7 @@ internal sealed class UserResources
         var coinsTexture = coinsElement.Attribute("textureAlias")!.Value;
         var coinsSprite = gameObjectsTextures.CreateSprite(coinsTexture);
 
-        var font = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES);
+        var font = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES_DIGITS);
 
         return new UserResources(
             health,
