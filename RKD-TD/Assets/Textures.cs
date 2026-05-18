@@ -27,5 +27,8 @@ internal static class Textures
         public const string TURRET_ICON_SHOTGUN_240 = "turret_icon_shotgun_240";
         public const string TURRET_ICON_MISSILE_240 = "turret_icon_missile_240";
         public const string TURRET_PANEL_HIDE_BTN_125_250 = "turret_panel_hide_btn_125_250";
+
+        public const string PAUSE_MENU = "pause_menu";
+        public const string PAUSE_MENU_BTN = "pause_menu_btn";
     }
 }

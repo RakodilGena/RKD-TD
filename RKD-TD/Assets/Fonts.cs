@@ -12,7 +12,10 @@ internal static class Fonts
 
     public const string USER_RESOURCES = "user_resources";
     public const string USER_RESOURCES_DIGITS = "user_resources_digits";
-    
+
     public const string TURRET_PURCHASE_BTN_TEXT = "turret_purchase_btn_text";
     public const string TURRET_PURCHASE_BTN_PRICE_TEXT = "turret_purchase_btn_price_text";
+
+    public const string PAUSE_MENU_BTN_TEXT = "pause_menu_btn_text";
+    public const string PAUSE_MENU_TITLE_TEXT = "pause_menu_title_text";
 }

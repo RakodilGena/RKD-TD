@@ -247,11 +247,10 @@ internal sealed class TurretPurchasePanel
     }
 
     private static TurretPurchaseButton CreateTurretPurchaseButton(
-        string name, 
+        string name,
         int price,
         SpriteFont nameFont,
         SpriteFont priceFont,
-        
         string textureAlias,
         Vector2 position,
         TextureAtlas gameObjects,
@@ -268,7 +267,6 @@ internal sealed class TurretPurchasePanel
             price,
             nameFont,
             priceFont,
-            
             position,
             origin: Vector2.Zero,
             spriteIdle: idle,

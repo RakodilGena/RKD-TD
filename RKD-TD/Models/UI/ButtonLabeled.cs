@@ -29,7 +29,7 @@ internal sealed class ButtonLabeled : Button
             spriteIdle.Width * 0.5f,
             spriteIdle.Height * 0.5f);
 
-        var textPosition = position + (-origin + buttonCenter) * scale;
+        var textPosition = position + (-origin * scale + buttonCenter);
 
         _btnLabel = new BorderedLabel(
             textPosition,

@@ -16,6 +16,7 @@ using RKD_TD.Scenes.Gaming.Enemies.Spawns;
 using RKD_TD.Scenes.Gaming.Explosions;
 using RKD_TD.Scenes.Gaming.Flashes;
 using RKD_TD.Scenes.Gaming.Misc;
+using RKD_TD.Scenes.Gaming.PauseMenus;
 using RKD_TD.Scenes.Gaming.Projectiles;
 using RKD_TD.Scenes.Gaming.Turrets.Active;
 using RKD_TD.Scenes.Gaming.Turrets.Purchase;
@@ -34,8 +35,9 @@ internal sealed class GamingScene : Scene
         HEALTH_BAR_CONFIG_NAME = "configs/healthbarconfig.xml",
         TURRET_CONFIG_NAME = "configs/turretconfig.xml";
 
+    private PauseMenu _pauseMenu = null!;
 
-    private Sprite _backgroundSprite = null!; 
+    private Sprite _backgroundSprite = null!;
     private TextureAtlas _gameObjectsTextures = null!;
 
     private GameState _gameState = GameState.Normal;
@@ -82,6 +84,7 @@ internal sealed class GamingScene : Scene
         InitCamera();
         InitGameClockWidget();
         InitTurretPurchasePanel();
+        InitPauseMenu();
 
         //free the memory after the atlas no longer needed.
         _gameObjectsTextures = null!;
@@ -122,6 +125,17 @@ internal sealed class GamingScene : Scene
             panelLayerDepth: 0.9f,
             buttonLayerDepth: 0.91f);
         _turretPurchasePanel.TurretPicked += BeginTurretPlacing;
+    }
+
+    private void InitPauseMenu()
+    {
+        _pauseMenu = new PauseMenu(
+            topY: 200,
+            _gameObjectsTextures);
+
+        _pauseMenu.Resumed += (_, _) => ResumeGame();
+        _pauseMenu.ExitedToMainMenu += (_, _) => ToMapSelection();
+        _pauseMenu.ExitedGame += (_, _) => Core.Exit();
     }
 
     public override void LoadContent()
@@ -221,7 +235,7 @@ internal sealed class GamingScene : Scene
 
     public override void Draw(GameTime gameTime)
     {
-        Core.GraphicsDevice.Clear(new Color(30,30,30));
+        Core.GraphicsDevice.Clear(new Color(30, 30, 30));
 
         //order of calling draw is important here because apparently by default layerDepth is ignored
         //thus the later draw is called, the higher it is drawn.
@@ -274,8 +288,12 @@ internal sealed class GamingScene : Scene
         else
         {
             _turretPurchasePanel.Draw(sb);
-        }
 
+            if (_gameState is GameState.InPauseMenu)
+            {
+                _pauseMenu.Draw(sb);
+            }
+        }
 
         sb.End();
         base.Draw(gameTime);
@@ -284,6 +302,12 @@ internal sealed class GamingScene : Scene
     public override void Update(GameTime gameTime)
     {
         HandleInput();
+
+        if (_gameState is GameState.InPauseMenu)
+        {
+            _pauseMenu.Update();
+            return;
+        }
 
         var clockDelta = _gameClockWidget.GetDelta(gameTime);
         var uiDelta = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -338,6 +362,16 @@ internal sealed class GamingScene : Scene
     {
         var kb = Core.Input.Keyboard;
         var mouse = Core.Input.Mouse;
+
+        if (_gameState is GameState.InPauseMenu)
+        {
+            if (kb.WasKeyJustPressed(Keys.Escape))
+            {
+                _gameState = GameState.Normal;
+                return;
+            }
+        }
+
         if (_gameState is GameState.PlacingTurret)
         {
             if (kb.WasKeyJustPressed(Keys.Escape) || mouse.WasButtonJustPressed(MouseButton.Right))
@@ -354,8 +388,8 @@ internal sealed class GamingScene : Scene
 
                 if (cell is { IsBuildable: true, IsOccupied: false })
                 {
-                    PlaceTurret(cell);
-                    CancelTurretPlacing();
+                    if (PlaceTurret(cell))
+                        CancelTurretPlacing();
                 }
             }
         }
@@ -363,7 +397,7 @@ internal sealed class GamingScene : Scene
         {
             if (kb.WasKeyJustPressed(Keys.Escape))
             {
-                Core.ChangeScene(new MapSelectionScene());
+                _gameState = GameState.InPauseMenu;
                 return;
             }
         }
@@ -430,7 +464,7 @@ internal sealed class GamingScene : Scene
             if (_allWavesSpawned && _userResources.Health > 0)
             {
                 Console.WriteLine("All enemies are successfully destroyed, GAME WON");
-                Core.ChangeScene(new MapSelectionScene());
+                ToMapSelection();
             }
         }
     }
@@ -453,10 +487,10 @@ internal sealed class GamingScene : Scene
         _hoveredCell = _buildGrid.GetCellAtWorld(mousePosition, _camera);
     }
 
-    private void PlaceTurret(BuildCell cell)
+    private bool PlaceTurret(BuildCell cell)
     {
         if (_pendingTurret is null)
-            return;
+            return false;
 
         Console.WriteLine($"TURRET {_pendingTurret.Type} placed at [{cell.WorldPosition.X},{cell.WorldPosition.Y}]");
 
@@ -468,6 +502,7 @@ internal sealed class GamingScene : Scene
         _turrets.Add(turret);
 
         _userResources.GainCoins(-_pendingTurret.Price);
+        return true;
     }
 
     private void CancelTurretPlacing()
@@ -542,7 +577,7 @@ internal sealed class GamingScene : Scene
     private void OnCriticalDamageReceived(object? sender, EventArgs e)
     {
         Console.WriteLine("Critical damage");
-        Core.ChangeScene(new MapSelectionScene());
+        ToMapSelection();
     }
 
     private void OnWaveFinished(object? sender, int reward)
@@ -553,5 +588,15 @@ internal sealed class GamingScene : Scene
     private void OnAllWavesFinished(object? sender, EventArgs e)
     {
         _allWavesSpawned = true;
+    }
+
+    private void ResumeGame()
+    {
+        _gameState = GameState.Normal;
+    }
+
+    private static void ToMapSelection()
+    {
+        Core.ChangeScene(new MapSelectionScene());
     }
 }

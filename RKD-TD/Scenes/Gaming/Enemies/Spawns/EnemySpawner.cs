@@ -36,7 +36,6 @@ internal sealed class EnemySpawner
         Queue<EnemyWave> waves,
         float wavesInterval,
         EnemyFactory enemyFactory,
-        
         Vector2 widgetPosition,
         SpriteFont waveTextFont,
         SpriteFont waveCounterFont)
@@ -56,14 +55,14 @@ internal sealed class EnemySpawner
 
         _paused = true;
     }
-    
+
     private static Label CreateTextLabel(
         Vector2 labelPosition,
-        SpriteFont font, 
+        SpriteFont font,
         out Vector2 counterLabelPosition)
     {
         const string text = "Round";
-        var label = new BorderedLabel(text ,font)
+        var label = new BorderedLabel(text, font)
         {
             Position = labelPosition,
             Color = Color.White,
@@ -72,18 +71,18 @@ internal sealed class EnemySpawner
         };
 
         var size = font.MeasureString(text);
-        
+
         counterLabelPosition = new Vector2(labelPosition.X + size.X, labelPosition.Y);
 
         return label;
     }
-    
+
     private static Label CreateCounterLabel(
         Vector2 labelPosition,
         SpriteFont font)
     {
         labelPosition += new Vector2(20, -2);
-        
+
         var label = new BorderedLabel(font)
         {
             Position = labelPosition,
@@ -312,7 +311,6 @@ internal sealed class EnemySpawner
             waves,
             pauseBetweenWaves,
             factory,
-            
             widgetPosition,
             textFont,
             counterFont);

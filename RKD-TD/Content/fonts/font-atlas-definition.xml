@@ -6,11 +6,14 @@
         <Font name="map_selection_title"/>
         <Font name="regular_btn_text"/>
         <Font name="map_title"/>
-        
+
         <Font name="user_resources"/>
         <Font name="user_resources_digits"/>
-        
+
         <Font name="turret_purchase_btn_text"/>
         <Font name="turret_purchase_btn_price_text"/>
+
+        <Font name="pause_menu_btn_text"/>
+        <Font name="pause_menu_title_text"/>
     </Fonts>
 </FontAtlas>
