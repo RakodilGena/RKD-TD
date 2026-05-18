@@ -76,22 +76,7 @@ internal sealed class Turret
         Sprite barrelSprite,
         Sprite carriageSprite,
         Vector2 position,
-        float rotationSpeedRadianInSec,
-        float reloadTimeInSec,
-        float fixateDistanceSquared,
-        float firingDistance,
-        float firingDistanceSquared,
-        TurretFiringPoint[] firingPoints,
-        TurretFiringMode firingMode,
-        Vector2[] gunFlashPoints,
-        float projectileFlightRange,
-        int directDamage,
-        int aoeRange,
-        int aoeDamage,
-        TurretAimingMode aimingMode,
-        int barrelLenght,
-        string projectileAlias,
-        string flashAlias,
+        TurretTemplate turretTemplate,
         BuildCell occupiedCell,
         ProjectileFactory projectileFactory,
         FlashFactory flashFactory)
@@ -104,31 +89,31 @@ internal sealed class Turret
         _carriageSprite.Color = new Color(88, 152, 188);
 
         _position = position;
-        _rotationSpeedRadianInSec = rotationSpeedRadianInSec;
-        _reloadTimeInSec = reloadTimeInSec;
-        _fixateDistanceSquared = fixateDistanceSquared;
-        _firingDistanceSquared = firingDistanceSquared;
+        _rotationSpeedRadianInSec = turretTemplate.RotationSpeedRadianInSec;
+        _reloadTimeInSec = turretTemplate.ReloadTimeInSec;
+        _fixateDistanceSquared = turretTemplate.FixateDistanceSquared;
+        _firingDistanceSquared = turretTemplate.FiringDistanceSquared;
         OccupiedCell = occupiedCell;
-        _firingDistance = firingDistance;
+        _firingDistance = turretTemplate.FiringDistance;
 
-        var projectileTemplate = projectileFactory.GetTemplate(projectileAlias);
+        var projectileTemplate = projectileFactory.GetTemplate(turretTemplate.ProjectileAlias);
 
         _turretBarrel = new TurretBarrel(
-            firingPoints,
-            firingMode,
-            gunFlashPoints,
+            turretTemplate.FiringPoints,
+            turretTemplate.FiringMode,
+            turretTemplate.GunFlashPoints,
             projectileTemplate,
-            projectileFlightRange,
-            directDamage,
-            aoeRange,
-            aoeDamage,
-            flashAlias,
+            turretTemplate.ProjectileFlightRange,
+            turretTemplate.DirectDamage,
+            turretTemplate.AoeRange,
+            turretTemplate.AoeDamage,
+            turretTemplate.FlashAlias,
             projectileFactory,
             flashFactory);
 
 
-        _aimingMode = aimingMode;
-        _barrelLenght = barrelLenght;
+        _aimingMode = turretTemplate.AimingMode;
+        _barrelLenght = turretTemplate.BarrelLenght;
         _projectileFlightSpeed = projectileTemplate.Speed;
     }
 
