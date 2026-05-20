@@ -13,6 +13,12 @@ namespace RKD_TD.Scenes.MapSelection;
 
 internal sealed class MapSelectionMenu
 {
+    private static readonly Color MapIdleColor = Color.White;
+    private static readonly Color MapHoveredColor = Color.DarkGray;
+
+    private static readonly Color BlankMapIdleColor = Color.Wheat;
+    private static readonly Color BlankMapHoveredColor = Color.Gray;
+
     private readonly MapPreview[] _maps;
 
     private const int
@@ -43,8 +49,9 @@ internal sealed class MapSelectionMenu
         SpriteFont mapNameFont,
         string mapFileName,
         int mapIndex,
-        Sprite idle,
-        Sprite hovered)
+        Sprite sprite,
+        Color idle,
+        Color hovered)
     {
         var mapPosition = GetMapPosition(menuPosition, mapIndex);
 
@@ -53,6 +60,7 @@ internal sealed class MapSelectionMenu
             mapFileName,
             mapPosition,
             origin: Vector2.Zero,
+            sprite,
             idle,
             hovered,
             scale: Vector2.One,
@@ -69,8 +77,7 @@ internal sealed class MapSelectionMenu
         string mapName,
         SpriteFont mapNameFont,
         int mapIndex,
-        Sprite idle,
-        Sprite hovered)
+        Sprite sprite)
     {
         var mapPosition = GetMapPosition(menuPosition, mapIndex);
 
@@ -79,8 +86,9 @@ internal sealed class MapSelectionMenu
             mapFileName: "",
             mapPosition,
             origin: Vector2.Zero,
-            idle,
-            hovered,
+            sprite,
+            BlankMapIdleColor,
+            BlankMapHoveredColor,
             scale: Vector2.One,
             mapNameFont,
             mapNameScale: Vector2.One,
@@ -122,14 +130,6 @@ internal sealed class MapSelectionMenu
         Vector2 menuPosition,
         string mapsFileName)
     {
-        var blankSpriteIdle = textures.CreateSprite(
-            Textures.MapSelection.MAP_BLANK_500_300);
-        blankSpriteIdle.Color = Color.Wheat;
-
-        var blankSpriteHovered = textures.CreateSprite(
-            Textures.MapSelection.MAP_BLANK_500_300);
-        blankSpriteHovered.Color = Color.Gray;
-
         var mapNameFont = GlobalAssets.FontAtlas.GetFont(Fonts.MAP_TITLE);
 
         var doc = XmlLoader.Load(content, mapsFileName);
@@ -156,18 +156,17 @@ internal sealed class MapSelectionMenu
                 continue;
 
             var textureAlias = region.Attribute("textureAlias")?.Value;
-            Sprite idle, hovered, pressed;
+            Sprite sprite;
+            Color idle, hovered;
             if (string.IsNullOrWhiteSpace(textureAlias))
             {
-                (idle, hovered, pressed) = (blankSpriteIdle, blankSpriteHovered, blankSpriteHovered);
+                (idle, hovered) = (BlankMapIdleColor, BlankMapHoveredColor);
+                sprite = textures.CreateSprite(Textures.MapSelection.MAP_BLANK_500_300);
             }
             else
             {
-                idle = textures.CreateSprite(textureAlias);
-                idle.Color = Color.White;
-
-                hovered = pressed = textures.CreateSprite(textureAlias);
-                pressed.Color = Color.LightGray;
+                sprite = textures.CreateSprite(textureAlias);
+                (idle, hovered) = (MapIdleColor, MapHoveredColor);
             }
 
             var map = CreateMap(
@@ -176,6 +175,7 @@ internal sealed class MapSelectionMenu
                 mapNameFont,
                 mapFileName!,
                 mapIndex: maps.Count,
+                sprite,
                 idle,
                 hovered);
 
@@ -187,13 +187,15 @@ internal sealed class MapSelectionMenu
             var mapIndex = maps.Count;
 
             var mapName = $"MOCK MAP {mapIndex + 1}";
+
+            var sprite = textures.CreateSprite(Textures.MapSelection.MAP_BLANK_500_300);
+
             var map = CreateMockMap(
                 menuPosition,
                 mapName,
                 mapNameFont,
                 mapIndex,
-                blankSpriteIdle,
-                blankSpriteHovered);
+                sprite);
 
             maps.Add(map);
         }

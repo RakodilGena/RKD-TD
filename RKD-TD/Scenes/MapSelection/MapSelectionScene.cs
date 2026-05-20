@@ -13,6 +13,9 @@ namespace RKD_TD.Scenes.MapSelection;
 
 internal sealed class MapSelectionScene : Scene
 {
+    private static readonly Color ButtonIdleColor = Color.DarkGray;
+    private static readonly Color ButtonHoveredColor = Color.Gray;
+
     private Label _selectMapLabel = null!;
     private MapSelectionMenu _mapSelectionMenu = null!;
     private ButtonLabeled _backButton = null!;
@@ -61,19 +64,15 @@ internal sealed class MapSelectionScene : Scene
 
         const string btnText = "BACK";
 
-        var spriteIdle = _msAtlas.CreateSprite(
+        var sprite = _msAtlas.CreateSprite(
             Textures.MapSelection.BUTTON_300_100);
-        spriteIdle.Color = Color.DarkGray;
-
-        var spriteHovered = _msAtlas.CreateSprite(
-            Textures.MapSelection.BUTTON_300_100);
-        spriteHovered.Color = Color.Gray;
 
         _backButton = new ButtonLabeled(
             position: new Vector2(1570, 930),
             origin: Vector2.Zero,
-            spriteIdle,
-            spriteHovered,
+            sprite,
+            ButtonIdleColor,
+            ButtonHoveredColor,
             scale: Vector2.One,
             btnText,
             btnFont,

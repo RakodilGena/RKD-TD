@@ -21,11 +21,12 @@ internal sealed class TurretPurchaseButton : Button
         SpriteFont priceFont,
         Vector2 position,
         Vector2 origin,
-        Sprite spriteIdle,
-        Sprite spriteHovered,
+        Sprite sprite,
+        Color idleColor,
+        Color hoveredColor,
         Vector2 scale,
         float layerDepth)
-        : base(position, origin, spriteIdle, spriteHovered, scale, layerDepth)
+        : base(position, origin, sprite, idleColor, hoveredColor, scale, layerDepth)
     {
         _nameLabel = CreateNameLabel(name, nameFont, scale, out var textTopY);
         _priceLabel = CreatePriceLabel(price, priceFont, scale, textTopY);

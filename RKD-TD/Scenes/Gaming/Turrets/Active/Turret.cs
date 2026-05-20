@@ -114,8 +114,8 @@ internal sealed class Turret
         _aimingMode = turretTemplate.AimingMode;
         _barrelLenght = turretTemplate.BarrelLenght;
         _projectileFlightSpeed = projectileTemplate.Speed;
-        
-        
+
+
         OccupiedCell = occupiedCell;
         OccupiedCell.IsOccupied = true;
     }

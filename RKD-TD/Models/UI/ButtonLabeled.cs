@@ -12,8 +12,9 @@ internal sealed class ButtonLabeled : Button
     public ButtonLabeled(
         Vector2 position,
         Vector2 origin,
-        Sprite spriteIdle,
-        Sprite spriteHovered,
+        Sprite sprite,
+        Color idleColor,
+        Color hoveredColor,
         Vector2 scale,
         string text,
         SpriteFont textFont,
@@ -22,12 +23,12 @@ internal sealed class ButtonLabeled : Button
         Color borderColor,
         Vector2 borderWidth,
         float layerDepth)
-        : base(position, origin, spriteIdle,
-            spriteHovered, scale, layerDepth)
+        : base(position, origin, sprite,
+            idleColor, hoveredColor, scale, layerDepth)
     {
         var buttonCenter = new Vector2(
-            spriteIdle.Width * 0.5f,
-            spriteIdle.Height * 0.5f);
+            sprite.Width * 0.5f,
+            sprite.Height * 0.5f);
 
         var textPosition = position + (-origin * scale + buttonCenter);
 

@@ -30,7 +30,7 @@ internal static class Textures
 
         public const string PAUSE_MENU = "pause_menu";
         public const string BUTTON = "button";
-        
+
         public const string SELECTED_TURRET_BORDERS = "selected_turret_borders";
     }
 }

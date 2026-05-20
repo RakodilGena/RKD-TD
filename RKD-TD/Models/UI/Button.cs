@@ -11,12 +11,11 @@ public class Button
 {
     private readonly Vector2 _position;
 
-    private readonly Sprite
-        _spriteIdle,
-        _spriteHovered;
-    //todo: keep 1 sprite and idle/hover colors. unify with Btn Toggled
+    private readonly Sprite _sprite;
 
-    private Sprite _current;
+    private readonly Color
+        _idleColor,
+        _hoveredColor;
 
     private bool _wasPressed, _hovered;
     protected Rectangle Bounds { get; }
@@ -26,34 +25,35 @@ public class Button
     public Button(
         Vector2 position,
         Vector2 origin,
-        Sprite spriteIdle,
-        Sprite spriteHovered,
+        Sprite sprite,
+        Color idleColor,
+        Color hoveredColor,
         Vector2 scale,
         float layerDepth)
     {
         _position = position;
-        _current = spriteIdle;
 
-        _spriteIdle = spriteIdle;
-        _spriteIdle.Origin = origin;
-        _spriteIdle.Scale = scale;
-        _spriteIdle.LayerDepth = layerDepth;
+        _sprite = sprite;
+        _sprite.Color = idleColor;
 
-        _spriteHovered = spriteHovered;
-        _spriteHovered.Origin = origin;
-        _spriteHovered.Scale = scale;
-        _spriteHovered.LayerDepth = layerDepth;
+        _idleColor = idleColor;
+        _hoveredColor = hoveredColor;
+        _sprite.Origin = origin;
+        _sprite.Scale = scale;
+        _sprite.LayerDepth = layerDepth;
 
 
         Bounds = new Rectangle(
             (int)(position.X - origin.X * scale.X),
             (int)(position.Y - origin.Y * scale.Y),
-            (int)_spriteIdle.Width,
-            (int)_spriteIdle.Height);
+            (int)_sprite.Width,
+            (int)_sprite.Height);
     }
 
     public void Update()
     {
+        var exHovered = _hovered;
+
         var mouseInfo = Core.Input.Mouse;
         if (Bounds.Contains(mouseInfo.Position))
         {
@@ -82,17 +82,18 @@ public class Button
             _wasPressed = false;
         }
 
-        SetCurrentSprite();
+        if (exHovered != _hovered)
+            SetColor();
     }
 
-    private void SetCurrentSprite()
+    private void SetColor()
     {
-        _current = _hovered ? _spriteHovered : _spriteIdle;
+        _sprite.Color = _hovered ? _hoveredColor : _idleColor;
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
-        _current.Draw(
+        _sprite.Draw(
             spriteBatch,
             _position);
     }

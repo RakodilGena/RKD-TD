@@ -21,6 +21,10 @@ internal sealed class TurretPurchasePanel
 
     public event EventHandler<TurretType>? TurretPicked;
 
+
+    private static readonly Color ButtonIdleColor = Color.White;
+    private static readonly Color ButtonHoveredColor = Color.DarkGray;
+
     public TurretPurchasePanel(
         Vector2 position,
         TextureAtlas gameObjects,
@@ -113,18 +117,14 @@ internal sealed class TurretPurchasePanel
         Vector2 scale,
         float panelLayerDepth)
     {
-        var hideButtonIdle = new Sprite(textureRegion);
-
-        var hideButtonHovered = new Sprite(textureRegion)
-        {
-            Color = Color.DarkGray
-        };
+        var hideButton = new Sprite(textureRegion);
 
         return new Button(
             position,
             origin: Vector2.Zero,
-            spriteIdle: hideButtonIdle,
-            spriteHovered: hideButtonHovered,
+            hideButton,
+            ButtonIdleColor,
+            ButtonHoveredColor,
             scale,
             layerDepth: panelLayerDepth);
     }
@@ -135,22 +135,17 @@ internal sealed class TurretPurchasePanel
         Vector2 scale,
         float panelLayerDepth)
     {
-        var showButtonIdle = new Sprite(textureRegion)
+        var showButton = new Sprite(textureRegion)
         {
-            Effects = SpriteEffects.FlipHorizontally
-        };
-
-        var showButtonHovered = new Sprite(textureRegion)
-        {
-            Color = Color.DarkGray,
             Effects = SpriteEffects.FlipHorizontally
         };
 
         return new Button(
             position,
             origin: Vector2.Zero,
-            spriteIdle: showButtonIdle,
-            spriteHovered: showButtonHovered,
+            showButton,
+            ButtonIdleColor,
+            ButtonHoveredColor,
             scale,
             layerDepth: panelLayerDepth);
     }
@@ -257,10 +252,7 @@ internal sealed class TurretPurchasePanel
         float scale,
         float buttonLayerDepth)
     {
-        var idle = gameObjects.CreateSprite(textureAlias);
-
-        var hovered = gameObjects.CreateSprite(textureAlias);
-        hovered.Color = Color.DarkGray;
+        var sprite = gameObjects.CreateSprite(textureAlias);
 
         return new TurretPurchaseButton(
             name,
@@ -269,8 +261,9 @@ internal sealed class TurretPurchasePanel
             priceFont,
             position,
             origin: Vector2.Zero,
-            spriteIdle: idle,
-            spriteHovered: hovered,
+            sprite,
+            ButtonIdleColor,
+            ButtonHoveredColor,
             scale: new Vector2(scale),
             buttonLayerDepth);
     }
