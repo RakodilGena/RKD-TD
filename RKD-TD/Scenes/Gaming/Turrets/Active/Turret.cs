@@ -93,7 +93,6 @@ internal sealed class Turret
         _reloadTimeInSec = turretTemplate.ReloadTimeInSec;
         _fixateDistanceSquared = turretTemplate.FixateDistanceSquared;
         _firingDistanceSquared = turretTemplate.FiringDistanceSquared;
-        OccupiedCell = occupiedCell;
         _firingDistance = turretTemplate.FiringDistance;
 
         var projectileTemplate = projectileFactory.GetTemplate(turretTemplate.ProjectileAlias);
@@ -115,6 +114,10 @@ internal sealed class Turret
         _aimingMode = turretTemplate.AimingMode;
         _barrelLenght = turretTemplate.BarrelLenght;
         _projectileFlightSpeed = projectileTemplate.Speed;
+        
+        
+        OccupiedCell = occupiedCell;
+        OccupiedCell.IsOccupied = true;
     }
 
     public void Draw(SpriteBatch spriteBatch)

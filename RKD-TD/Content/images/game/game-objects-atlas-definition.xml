@@ -139,8 +139,9 @@
 
 
         <Region name="pause_menu" x="3310" y="5" width="600" height="800"/>
-        <Region name="pause_menu_btn" x="3310" y="820" width="600" height="300"/>
+        <Region name="button" x="3310" y="820" width="600" height="300"/>
 
+        <Region name="selected_turret_borders" x="3310" y="1140" width="200" height="200"/>
 
     </Regions>
     <Animations>

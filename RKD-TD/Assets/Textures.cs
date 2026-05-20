@@ -29,6 +29,8 @@ internal static class Textures
         public const string TURRET_PANEL_HIDE_BTN_125_250 = "turret_panel_hide_btn_125_250";
 
         public const string PAUSE_MENU = "pause_menu";
-        public const string PAUSE_MENU_BTN = "pause_menu_btn";
+        public const string BUTTON = "button";
+        
+        public const string SELECTED_TURRET_BORDERS = "selected_turret_borders";
     }
 }

@@ -101,7 +101,7 @@ internal sealed class PauseMenu
             float topY,
             TextureAtlas gameObjectsTextures)
     {
-        var btnTexture = gameObjectsTextures.GetRegion(Textures.Game.PAUSE_MENU_BTN);
+        var btnTexture = gameObjectsTextures.GetRegion(Textures.Game.BUTTON);
         var font = GlobalAssets.FontAtlas.GetFont(Fonts.PAUSE_MENU_BTN_TEXT);
 
         var resumeButton = CreateButton(
