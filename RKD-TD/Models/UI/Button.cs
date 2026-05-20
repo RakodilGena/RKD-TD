@@ -14,6 +14,7 @@ public class Button
     private readonly Sprite
         _spriteIdle,
         _spriteHovered;
+    //todo: keep 1 sprite and idle/hover colors. unify with Btn Toggled
 
     private Sprite _current;
 

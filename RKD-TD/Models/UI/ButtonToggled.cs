@@ -14,7 +14,11 @@ internal sealed class ButtonToggled
     private Rectangle _bounds;
     private bool _hovered, _toggled;
 
-    private readonly Color _idleColor, _hoveredColor, _toggledColor, _toggledHoveredColor;
+    private readonly Color 
+        _idleColor, 
+        _hoveredColor, 
+        _toggledColor,
+        _toggledHoveredColor;
 
     public event EventHandler? Toggled;
 
