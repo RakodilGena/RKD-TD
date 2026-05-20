@@ -11,14 +11,13 @@ namespace RKD_TD.Scenes.Gaming;
 
 internal sealed class UserResources
 {
-   private const int
+    private const int
         ICON_SIZE_PX = 40,
         LABEL_MARGIN_X_PX = 10,
         COINS_MARGIN_PX = 60,
-        
         LABEL_PADDING_Y_PX = -4;
-    
-    
+
+
     private Vector2 _healthSpritePosition, _coinsSpritePosition;
 
     private readonly Sprite _healthSprite, _coinsSprite;

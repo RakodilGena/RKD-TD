@@ -12,6 +12,9 @@ namespace RKD_TD.Scenes.Gaming.Enemies.Spawns;
 
 internal sealed class EnemySpawner
 {
+    private const int
+        COUNTER_LABEL_MARGIN_Y_PX = 40;
+
     private readonly EnemyFactory _enemyFactory;
     private readonly Queue<EnemyWave> _waves;
     private readonly float _wavesInterval;
@@ -46,8 +49,8 @@ internal sealed class EnemySpawner
         _wavesInterval = wavesInterval;
         _enemyFactory = enemyFactory;
 
-        _waveTextLabel = CreateTextLabel(widgetPosition, waveTextFont, out var counterLabelPosition);
-        _waveCounterLabel = CreateCounterLabel(counterLabelPosition, waveCounterFont);
+        _waveTextLabel = CreateTextLabel(widgetPosition, waveTextFont, out var counterLabelMarginX);
+        _waveCounterLabel = CreateCounterLabel(widgetPosition, waveCounterFont, counterLabelMarginX);
 
         _currentWaveIndex = -1;
 
@@ -59,9 +62,10 @@ internal sealed class EnemySpawner
     private static Label CreateTextLabel(
         Vector2 labelPosition,
         SpriteFont font,
-        out Vector2 counterLabelPosition)
+        out Vector2 counterLabelOrigin)
     {
         const string text = "Round";
+
         var label = new BorderedLabel(text, font)
         {
             Position = labelPosition,
@@ -69,19 +73,21 @@ internal sealed class EnemySpawner
             BorderColor = Color.Black,
             BorderWidth = new Vector2(2f)
         };
+        label.CenterOrigin();
 
-        var size = font.MeasureString(text);
+        label.Position += label.Origin;
 
-        counterLabelPosition = new Vector2(labelPosition.X + size.X, labelPosition.Y);
+        counterLabelOrigin = label.Origin;
 
         return label;
     }
 
     private static Label CreateCounterLabel(
         Vector2 labelPosition,
-        SpriteFont font)
+        SpriteFont font,
+        Vector2 counterLabelOrigin)
     {
-        labelPosition += new Vector2(20, -2);
+        labelPosition += counterLabelOrigin + new Vector2(0, COUNTER_LABEL_MARGIN_Y_PX);
 
         var label = new BorderedLabel(font)
         {
@@ -144,6 +150,7 @@ internal sealed class EnemySpawner
 
         string labelText = $"{_currentWaveIndex + 1}/{_maxWaves}";
         _waveCounterLabel.Text = labelText;
+        _waveCounterLabel.CenterOrigin();
     }
 
 
@@ -299,9 +306,9 @@ internal sealed class EnemySpawner
             waves.Enqueue(wave);
         }
 
-        var enemiesPicked = waves.SelectMany(w => w.EnemiesToSpawn)
-            .GroupBy(w => w)
-            .Select(w => (w.Key, w.Count())).ToArray();
+        // var enemiesPicked = waves.SelectMany(w => w.EnemiesToSpawn)
+        //     .GroupBy(w => w)
+        //     .Select(w => (w.Key, w.Count())).ToArray();
 
 
         var textFont = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES);

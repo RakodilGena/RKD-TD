@@ -212,7 +212,7 @@ internal sealed class GamingScene : Scene
             enemyConfigDoc,
             healthBarConfigDoc,
             _gameObjectsTextures,
-            new Vector2(600, 32));
+            new Vector2(1680, 30));
 
         _enemySpawner.EnemySpawned += OnEnemySpawned;
         _enemySpawner.AllWavesFinished += OnAllWavesFinished;
