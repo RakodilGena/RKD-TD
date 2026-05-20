@@ -18,4 +18,17 @@ internal static class ParseHelper
             .Select(float.Parse)
             .ToArray();
     }
+
+    public static int[] ParseToIntArr(XElement element, string attributeName, char separator)
+    {
+        return ParseToIntArr(element.Attribute(attributeName)!.Value, separator);
+    }
+
+    public static int[] ParseToIntArr(string value, char separator)
+    {
+        return value
+            .Split(separator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(int.Parse)
+            .ToArray();
+    }
 }

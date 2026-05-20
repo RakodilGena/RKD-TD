@@ -69,6 +69,8 @@ internal sealed class TurretFactory
             template,
             destination,
             _turretSelector,
+            template.Price,
+            template.UpgradePrices,
             _projectileFactory,
             _gunshotFlashFactory);
     }
@@ -116,7 +118,7 @@ internal sealed class TurretFactory
             flashFactory);
 
         var pendingTurrets = templates.Select(p =>
-            new PendingTurret(p.Value.Name, p.Key, p.Value.Price, p.Value.FiringDistance));
+            new PendingTurret(p.Value.Name, p.Key, p.Value.Price, p.Value.FiringDistance[0]));
         pendingTurretStash = new PendingTurretStash(pendingTurrets);
 
         var selector = gameObjectTextures.CreateSprite(Textures.Game.SELECTED_TURRET_BORDERS);
@@ -167,8 +169,10 @@ internal sealed class TurretFactory
         var rotationSpeed = float.Parse(turretElement.Attribute("rotationSpeed")!.Value);
         var reloadTimeMs = float.Parse(turretElement.Attribute("reloadTimeMs")!.Value);
         var reloadTimeSec = reloadTimeMs / 1000f;
-        var fixateDistance = float.Parse(turretElement.Attribute("fixateDistance")!.Value);
-        var firingDistance = float.Parse(turretElement.Attribute("firingDistance")!.Value);
+
+        var fixateDistance = ParseHelper.ParseToFloatArr(turretElement, "fixateDistance", ';');
+        var firingDistance = ParseHelper.ParseToFloatArr(turretElement, "firingDistance", ';');
+
         var projectileAlias = turretElement.Attribute("projectileAlias")!.Value;
         var flashAlias = turretElement.Attribute("flashAlias")!.Value;
 
@@ -199,7 +203,8 @@ internal sealed class TurretFactory
                 y: pointValues[1] * barrelScale.Y))
             .ToArray();
 
-        var price = int.Parse(turretElement.Attribute("price")!.Value);
+
+        var pricesArr = ParseHelper.ParseToIntArr(turretElement, "price", ';');
 
         var aimingModeValue = turretElement.Attribute("aimingMode")?.Value;
         var aimingMode = aimingModeValue switch
@@ -213,8 +218,8 @@ internal sealed class TurretFactory
             ? (int)(int.Parse(barrelLenghtValue) * barrelScale.X)
             : 0;
 
-        var projectileFlightRange = float.Parse(turretElement.Attribute("projectileFlightRange")?.Value!);
-        var directDamage = int.Parse(turretElement.Attribute("directDamage")?.Value!);
+        var projectileFlightRange = ParseHelper.ParseToFloatArr(turretElement, "projectileFlightRange", ';');
+        var directDamage = ParseHelper.ParseToIntArr(turretElement, "directDamage", ';');
 
         var aoeRangeValue = turretElement.Attribute("aoeRange")?.Value;
         var aoeRange = !string.IsNullOrEmpty(aoeRangeValue)
@@ -223,14 +228,15 @@ internal sealed class TurretFactory
 
         var aoeDamageValue = turretElement.Attribute("aoeDamage")?.Value;
         var aoeDamage = !string.IsNullOrEmpty(aoeDamageValue)
-            ? int.Parse(aoeDamageValue)
-            : 0;
+            ? ParseHelper.ParseToIntArr(aoeDamageValue, ';')
+            : null;
 
         var name = turretElement.Attribute("name")!.Value;
 
         return new TurretTemplate(
             name,
-            price,
+            Price: pricesArr[0],
+            UpgradePrices: pricesArr[1..].ToArray(),
             barrelTexture,
             barrelAnimation,
             barrelScale,
@@ -240,9 +246,9 @@ internal sealed class TurretFactory
             CarriageOrigin: new Vector2(carriageOrigin[0], carriageOrigin[1]),
             RotationSpeedRadianInSec: MathHelper.ToRadians(rotationSpeed),
             reloadTimeSec,
-            FixateDistanceSquared: fixateDistance * fixateDistance,
+            FixateDistanceSquared: fixateDistance.Select(fd => fd * fd).ToArray(),
             firingDistance,
-            FiringDistanceSquared: firingDistance * firingDistance,
+            FiringDistanceSquared: firingDistance.Select(fd => fd * fd).ToArray(),
             projectileFlightRange,
             directDamage,
             aoeRange,

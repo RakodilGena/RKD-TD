@@ -12,10 +12,10 @@ internal sealed class TurretBarrel
     private readonly TurretFiringMode _firingMode;
     private readonly Vector2[] _gunFlashPoints;
 
-    private readonly float _projectileFlightRange;
-    private readonly int _directDamage;
+    private readonly float[] _projectileFlightRange;
+    private readonly int[] _directDamage;
     private readonly int _aoeRange;
-    private readonly int _aoeDamage;
+    private readonly int[]? _aoeDamage;
 
     private readonly ProjectileTemplate _projectileTemplate;
     private readonly string _flashAlias;
@@ -25,20 +25,23 @@ internal sealed class TurretBarrel
 
     private int _currentFiringPointIdx;
 
+    private int _level;
 
     public TurretBarrel(
+        int level,
         TurretFiringPoint[] firingPoints,
         TurretFiringMode firingMode,
         Vector2[] gunFlashPoints,
         ProjectileTemplate projectileTemplate,
-        float projectileFlightRange,
-        int directDamage,
+        float[] projectileFlightRange,
+        int[] directDamage,
         int aoeRange,
-        int aoeDamage,
+        int[]? aoeDamage,
         string flashAlias,
         ProjectileFactory projectileFactory,
         FlashFactory flashFactory)
     {
+        _level = level;
         _firingPoints = firingPoints;
         _projectileFactory = projectileFactory;
         _firingMode = firingMode;
@@ -51,6 +54,7 @@ internal sealed class TurretBarrel
         _aoeDamage = aoeDamage;
         _gunFlashPoints = gunFlashPoints;
     }
+
 
     public (Projectile[] projectiles, Flash[] flashes) Fire(
         Vector2 turretCenter,
@@ -123,10 +127,10 @@ internal sealed class TurretBarrel
         var bulletRotation = rotation + firingPoint.BulletExtraAngleInRadians;
 
         var projectileValues = new ProjectileValues(
-            _projectileFlightRange,
-            _directDamage,
+            _projectileFlightRange[_level],
+            _directDamage[_level],
             _aoeRange,
-            _aoeDamage);
+            _aoeDamage?[_level] ?? 0);
 
         var projectile = _projectileFactory.Create(
             _projectileTemplate,
@@ -142,5 +146,10 @@ internal sealed class TurretBarrel
             rotation);
 
         return (projectile, flash);
+    }
+
+    public void Upgrade(int level)
+    {
+        _level = level;
     }
 }

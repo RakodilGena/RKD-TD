@@ -8,7 +8,7 @@
         <MachineGun
                 name="Gatling"
 
-                price="100"
+                price="100;200;400"
 
                 barrelAnimationAlias="turret-mg-animation"
                 barrelSize="200;100"
@@ -21,11 +21,11 @@
                 reloadTimeMs="100"
 
                 rotationSpeed="180"
-                fixateDistance="750"
-                firingDistance="650"
-                projectileFlightRange="750"
+                firingDistance="650;680;730"
+                fixateDistance="750;780;830"
+                projectileFlightRange="750;780;830"
 
-                directDamage="8"
+                directDamage="8; 18; 44"
 
                 firingPoints="275,-20,-5; 275,-10,-3; 275,0,0; 275,10,3; 275,20,5"
                 firingMode="random"
@@ -40,7 +40,7 @@
         <Shotgun
                 name="Shotgun"
 
-                price="175"
+                price="175;350;700"
 
                 barrelTextureAlias="turret_shotgun"
                 barrelSize="200;100"
@@ -53,11 +53,11 @@
                 reloadTimeMs="1500"
 
                 rotationSpeed="140"
-                fixateDistance="550"
-                firingDistance="480"
-                projectileFlightRange="550"
+                firingDistance="480;495;520"
+                fixateDistance="530;545;570"
+                projectileFlightRange="530;545;570"
 
-                directDamage="14"
+                directDamage="14;30;70"
 
                 firingPoints="285,-5,-10;  285,-3,-5;  285,0,0;  285,3,5;  285,5,10"
                 firingMode="all"
@@ -72,7 +72,7 @@
         <Cannon
                 name="Cannon"
 
-                price="350"
+                price="350;700;1400"
 
                 barrelTextureAlias="turret_cannon"
                 barrelSize="200;100"
@@ -84,14 +84,15 @@
 
                 reloadTimeMs="3000"
 
-                rotationSpeed="100"
-                fixateDistance="1000"
-                firingDistance="900"
-                projectileFlightRange="1100"
+                rotationSpeed="110"
 
-                directDamage="220"
+                firingDistance="900;950;1030"
+                fixateDistance="980;1040;1130"
+                projectileFlightRange="1000;1060;1160"
+
+                directDamage="220;450;1000"
                 aoeRange="70"
-                aoeDamage="50"
+                aoeDamage="50;110;235"
 
                 firingPoints="285,0,0"
                 firingMode="single"
@@ -106,7 +107,7 @@
         <Missile
                 name="Missile"
 
-                price="280"
+                price="280;560;1080"
 
                 barrelTextureAlias="turret_missile"
                 barrelSize="110;100"
@@ -118,14 +119,14 @@
 
                 reloadTimeMs="2100"
 
-                rotationSpeed="125"
-                fixateDistance="1150"
-                firingDistance="1050"
-                projectileFlightRange="1250"
+                rotationSpeed="135"
+                firingDistance="1050;1120;1210"
+                fixateDistance="1120;1200;1300"
+                projectileFlightRange="1300;1370;1460"
 
-                directDamage="30"
+                directDamage="30;65;140"
                 aoeRange="100"
-                aoeDamage="90"
+                aoeDamage="90;200;460"
 
                 firingPoints="180,-50,0; 180,0,0; 180,58,0;"
                 firingMode="rotation"
@@ -252,7 +253,7 @@
                 origin="150;150"
 
                 size="210;210"
-                damageDelayMs="100"/>
+                damageDelayMs="70"/>
 
         <Explosion
                 alias="missile_explosion"
@@ -261,7 +262,7 @@
                 origin="200;200"
 
                 size="220;220"
-                damageDelayMs="120"/>
+                damageDelayMs="100"/>
 
     </Explosions>
 </Root>

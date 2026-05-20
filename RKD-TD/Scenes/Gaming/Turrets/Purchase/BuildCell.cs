@@ -48,7 +48,7 @@ internal sealed class BuildCell
                 camera,
                 circlePosition,
                 turret.Radius,
-                Colors.TurretRadiusColor);
+                Colors.Game.TurretRadiusColor);
         }
 
         // green = valid, red = blocked
