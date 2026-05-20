@@ -4,5 +4,6 @@ internal enum GameState
 {
     Normal,
     PlacingTurret,
+    TurretSelected,
     InPauseMenu
 }

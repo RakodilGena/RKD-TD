@@ -67,6 +67,8 @@ internal sealed class GamingScene : Scene
     private readonly HashSet<Flash> _flashes = [];
     private readonly HashSet<Explosion> _explosions = [];
 
+    private Turret? _selectedTurret;
+
     private event EventHandler<Enemy>? EnemyRemoved;
 
     public GamingScene(string mapFile)
@@ -289,6 +291,11 @@ internal sealed class GamingScene : Scene
         {
             _turretPurchasePanel.Draw(sb);
 
+            if (_gameState is GameState.TurretSelected && _selectedTurret is not null)
+            {
+                //todo: draw upgrade sell widget
+            }
+
             if (_gameState is GameState.InPauseMenu)
             {
                 _pauseMenu.Draw(sb);
@@ -321,6 +328,11 @@ internal sealed class GamingScene : Scene
         }
         else
         {
+            if (_gameState is GameState.TurretSelected && _selectedTurret is not null)
+            {
+                //todo: update turret selector
+            }
+
             _turretPurchasePanel.Update();
             _gameClockWidget.Update();
         }
@@ -368,17 +380,22 @@ internal sealed class GamingScene : Scene
             if (kb.WasKeyJustPressed(Keys.Escape))
             {
                 _gameState = GameState.Normal;
-                return;
             }
+
+            return;
         }
+
+        HandleClockWidgetInput(kb);
 
         if (_gameState is GameState.PlacingTurret)
         {
             if (kb.WasKeyJustPressed(Keys.Escape) || mouse.WasButtonJustPressed(MouseButton.Right))
             {
                 CancelTurretPlacing();
+                return;
             }
-            else if (mouse.WasButtonJustPressed(MouseButton.Left))
+
+            if (mouse.WasButtonJustReleased(MouseButton.Left))
             {
                 var mousePosition = mouse.Position;
 
@@ -391,17 +408,47 @@ internal sealed class GamingScene : Scene
                     if (PlaceTurret(cell))
                         CancelTurretPlacing();
                 }
-            }
-        }
-        else if (_gameState is GameState.Normal)
-        {
-            if (kb.WasKeyJustPressed(Keys.Escape))
-            {
-                _gameState = GameState.InPauseMenu;
+
                 return;
             }
         }
 
+        if (_gameState is GameState.Normal or GameState.TurretSelected)
+        {
+            if (_gameState is GameState.Normal && kb.WasKeyJustPressed(Keys.Escape))
+            {
+                _gameState = GameState.InPauseMenu;
+                return;
+            }
+
+
+            if (_gameState is GameState.TurretSelected
+                && (kb.WasKeyJustPressed(Keys.Escape) || mouse.WasButtonJustPressed(MouseButton.Right)))
+            {
+                CancelTurretSelection();
+                return;
+            }
+
+
+            if (mouse.WasButtonJustPressed(MouseButton.Left))
+            {
+                var mousePosition = mouse.Position;
+
+                var cell = _buildGrid.GetCellAtWorld(
+                    mousePosition.ToVector2(),
+                    _camera);
+
+                if (cell?.BuiltTurret is not null)
+                {
+                    CancelTurretSelection();
+                    SelectTurret(cell.BuiltTurret);
+                }
+            }
+        }
+    }
+
+    private void HandleClockWidgetInput(KeyboardInfo kb)
+    {
         if (kb.WasKeyJustPressed(Keys.Space))
         {
             _gameClockWidget.SwitchPaused();
@@ -476,6 +523,8 @@ internal sealed class GamingScene : Scene
         if (pendingTurret.Price > _userResources.Coins)
             return;
 
+        CancelTurretSelection();
+
         _pendingTurret = pendingTurret;
         _gameState = GameState.PlacingTurret;
         Core.IsMouseVisible = false;
@@ -509,15 +558,35 @@ internal sealed class GamingScene : Scene
     {
         _gameState = GameState.Normal;
         _pendingTurret = null;
+        _hoveredCell = null;
         Core.IsMouseVisible = true;
     }
 
-    private void RemoveTurret(Turret turret)
+    private void CancelTurretSelection()
     {
-        _turrets.Remove(turret);
+        _gameState = GameState.Normal;
+        _selectedTurret?.Unselect();
+        _selectedTurret = null;
+    }
 
-        turret.OccupiedCell.IsOccupied = false;
-        EnemyRemoved -= turret.OnEnemyRemoved;
+    private void SelectTurret(Turret turret)
+    {
+        _gameState = GameState.TurretSelected;
+        turret.Select();
+        _selectedTurret = turret;
+    }
+
+    private void SellSelectedTurret()
+    {
+        if (_selectedTurret is null)
+            return;
+
+        _turrets.Remove(_selectedTurret);
+
+        _selectedTurret.OccupiedCell.Deoccupy();
+        EnemyRemoved -= _selectedTurret.OnEnemyRemoved;
+
+        CancelTurretSelection();
     }
 
     private void OnProjectilesFired(object? sender, TurretShotEventArgs e)

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
-using MonoGameLibrary.Collisions;
+using MonoGameLibrary.Geometrics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies.HealthBars;
 
@@ -286,7 +286,7 @@ internal class Enemy
         if (GameCore.DRAW_HIT_BOX)
 #pragma warning disable CS0162 // Unreachable code detected
         {
-            Circle.DrawHitCircle(spriteBatch, Camera, Target, _hitCircleRadius, Color.Red);
+            Circle.DrawCircle(spriteBatch, Camera, Target, _hitCircleRadius, Color.Red);
         }
 #pragma warning restore CS0162 // Unreachable code detected
     }

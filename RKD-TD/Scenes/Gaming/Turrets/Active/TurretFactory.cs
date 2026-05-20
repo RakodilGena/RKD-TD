@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Assets;
 using RKD_TD.Helpers;
 using RKD_TD.Scenes.Gaming.Flashes;
 using RKD_TD.Scenes.Gaming.Projectiles;
@@ -18,15 +19,18 @@ internal sealed class TurretFactory
     private readonly FrozenDictionary<TurretType, TurretTemplate> _turrets;
     private readonly ProjectileFactory _projectileFactory;
     private readonly FlashFactory _gunshotFlashFactory;
+    private readonly Sprite _turretSelector;
 
     public TurretFactory(
         FrozenDictionary<TurretType, TurretTemplate> turrets,
+        Sprite turretSelector,
         ProjectileFactory projectileFactory,
         FlashFactory gunshotFlashFactory)
     {
         _turrets = turrets;
         _projectileFactory = projectileFactory;
         _gunshotFlashFactory = gunshotFlashFactory;
+        _turretSelector = turretSelector;
     }
 
     public Turret CreateTurret(
@@ -64,6 +68,7 @@ internal sealed class TurretFactory
             position,
             template,
             destination,
+            _turretSelector,
             _projectileFactory,
             _gunshotFlashFactory);
     }
@@ -114,8 +119,12 @@ internal sealed class TurretFactory
             new PendingTurret(p.Value.Name, p.Key, p.Value.Price, p.Value.FiringDistance));
         pendingTurretStash = new PendingTurretStash(pendingTurrets);
 
+        var selector = gameObjectTextures.CreateSprite(Textures.Game.SELECTED_TURRET_BORDERS);
+        selector.CenterOrigin();
+
         return new TurretFactory(
             turrets: templates.ToFrozenDictionary(),
+            selector,
             projectileFactory,
             flashFactory);
     }

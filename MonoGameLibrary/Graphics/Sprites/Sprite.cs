@@ -117,6 +117,20 @@ public class Sprite
         Region.Draw(spriteBatch, finalPosition, Color, Rotation, Origin, finalScale, Effects, LayerDepth);
     }
 
+    /// <summary>
+    /// Submit this sprite for drawing to the current batch.
+    /// </summary>
+    /// <param name="spriteBatch">The SpriteBatch instance used for batching draw calls.</param>
+    /// <param name="worldPosition">The xy-coordinate position to render this sprite at.</param>
+    /// <param name="camera"></param>
+    public void Draw(SpriteBatch spriteBatch, Vector2 worldPosition, ICamera? camera)
+    {
+        var (finalScale, finalPosition) = camera.WorldToScreen(
+            Scale, worldPosition);
+
+        Region.Draw(spriteBatch, finalPosition, Color, Rotation, Origin, finalScale, Effects, LayerDepth);
+    }
+
     public virtual void Update(float deltaSeconds)
     {
     }

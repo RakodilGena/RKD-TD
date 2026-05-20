@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
-using MonoGameLibrary.Collisions;
+using MonoGameLibrary.Geometrics;
+using RKD_TD.Assets;
+using RKD_TD.Scenes.Gaming.Turrets.Active;
 
 namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 
@@ -10,8 +12,21 @@ internal sealed class BuildCell
     public Vector2 WorldPosition { get; init; } // top-left corner in world space
 
     public Vector2 CellSize { get; init; }
-    public bool IsOccupied { get; set; } = false;
+
+    public Turret? BuiltTurret { get; private set; }
+
+    public bool IsOccupied => BuiltTurret is not null;
     public bool IsBuildable { get; init; } = true;
+
+    public void Occupy(Turret turret)
+    {
+        BuiltTurret = turret;
+    }
+
+    public void Deoccupy()
+    {
+        BuiltTurret = null;
+    }
 
     public void DrawPlacementOverlay(
         SpriteBatch spriteBatch,
@@ -28,13 +43,12 @@ internal sealed class BuildCell
         if (canPlace)
         {
             var circlePosition = WorldPosition + CellSize * 0.5f;
-            Circle.DrawHitCircle(
+            Circle.DrawCircle(
                 spriteBatch,
                 camera,
                 circlePosition,
                 turret.Radius,
-                new Color(0, 0, 0, alpha: 80));
-            //new Color(255, 206, 8, alpha: 240));
+                Colors.TurretRadiusColor);
         }
 
         // green = valid, red = blocked

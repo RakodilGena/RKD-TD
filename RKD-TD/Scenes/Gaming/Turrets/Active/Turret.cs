@@ -4,7 +4,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Extensions;
+using MonoGameLibrary.Geometrics;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Assets;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Flashes;
 using RKD_TD.Scenes.Gaming.Projectiles;
@@ -14,7 +16,7 @@ namespace RKD_TD.Scenes.Gaming.Turrets.Active;
 
 internal sealed class Turret
 {
-    private readonly Sprite _barrelSprite, _carriageSprite;
+    private readonly Sprite _barrelSprite, _carriageSprite; //todo: make carriage a button
     private readonly Vector2 _position;
 
     private readonly float
@@ -48,6 +50,9 @@ internal sealed class Turret
 
     private Enemy? _fixatedEnemy;
 
+    private bool _selected;
+    private readonly Sprite _selector;
+
 
     private const float MIN_IDLE_TIMER_SEC = 1;
     private const float IDLE_TIMER_MULTIPLIER_SEC = 4;
@@ -78,6 +83,7 @@ internal sealed class Turret
         Vector2 position,
         TurretTemplate turretTemplate,
         BuildCell occupiedCell,
+        Sprite selector,
         ProjectileFactory projectileFactory,
         FlashFactory flashFactory)
     {
@@ -116,12 +122,20 @@ internal sealed class Turret
         _projectileFlightSpeed = projectileTemplate.Speed;
 
 
+        _selector = selector;
+
         OccupiedCell = occupiedCell;
-        OccupiedCell.IsOccupied = true;
+        OccupiedCell.Occupy(this);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
+        if (_selected)
+        {
+            Circle.DrawCircle(spriteBatch, Camera, _position, _firingDistance, Colors.TurretRadiusColor);
+            _selector.Draw(spriteBatch, _position, Camera);
+        }
+
         _carriageSprite.Draw(spriteBatch, _position);
         _barrelSprite.Draw(spriteBatch, _position);
     }
@@ -325,5 +339,15 @@ internal sealed class Turret
     {
         if (_fixatedEnemy == removedEnemy)
             Unfixate();
+    }
+
+    public void Select()
+    {
+        _selected = true;
+    }
+
+    public void Unselect()
+    {
+        _selected = false;
     }
 }

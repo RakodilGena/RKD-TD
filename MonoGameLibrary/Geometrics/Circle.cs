@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
 
-namespace MonoGameLibrary.Collisions;
+namespace MonoGameLibrary.Geometrics;
 
 public readonly struct Circle
 {
@@ -96,7 +96,7 @@ public readonly struct Circle
         return texture;
     }
 
-    public static void DrawHitCircle(
+    public static void DrawCircle(
         SpriteBatch sb,
         ICamera? camera,
         Vector2 worldPos,

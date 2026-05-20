@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Collisions;
+using MonoGameLibrary.Geometrics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Flashes;
@@ -75,7 +75,7 @@ internal sealed class Explosion : Flash
 #pragma warning disable CS0162 // Unreachable code detected
         if (GameCore.DRAW_HIT_BOX && _explosionCanHappen)
         {
-            Circle.DrawHitCircle(spriteBatch, Camera, Position, _damageCircle.Radius, Color.White);
+            Circle.DrawCircle(spriteBatch, Camera, Position, _damageCircle.Radius, Color.White);
         }
 #pragma warning restore CS0162 // Unreachable code detected
     }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
-using MonoGameLibrary.Collisions;
 using MonoGameLibrary.Extensions;
+using MonoGameLibrary.Geometrics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Explosions;
@@ -106,7 +106,7 @@ internal class Projectile
         if (GameCore.DRAW_HIT_BOX)
 #pragma warning disable CS0162 // Unreachable code detected
         {
-            Circle.DrawHitCircle(spriteBatch, Camera, Position, _hitCircleRadius, Color.BlueViolet);
+            Circle.DrawCircle(spriteBatch, Camera, Position, _hitCircleRadius, Color.BlueViolet);
         }
 #pragma warning restore CS0162 // Unreachable code detected
     }
