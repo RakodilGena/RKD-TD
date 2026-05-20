@@ -11,6 +11,14 @@ namespace RKD_TD.Scenes.Gaming;
 
 internal sealed class UserResources
 {
+   private const int
+        ICON_SIZE_PX = 40,
+        LABEL_MARGIN_X_PX = 10,
+        COINS_MARGIN_PX = 60,
+        
+        LABEL_PADDING_Y_PX = -4;
+    
+    
     private Vector2 _healthSpritePosition, _coinsSpritePosition;
 
     private readonly Sprite _healthSprite, _coinsSprite;
@@ -82,24 +90,17 @@ internal sealed class UserResources
 
     private void PlaceElements(Vector2 position)
     {
-        const int
-            sizePx = 60,
-            labelMarginPx = 10,
-            resMarginPx = 250;
-
-        var toLabel = new Vector2(sizePx + labelMarginPx, 0);
-
+        var toLabel = new Vector2(ICON_SIZE_PX + LABEL_MARGIN_X_PX, LABEL_PADDING_Y_PX);
         _healthSpritePosition = position;
-
-        var healthScaleX = sizePx / _healthSprite.Width;
-        var healthScaleY = sizePx / _healthSprite.Height;
+        var healthScaleX = ICON_SIZE_PX / _healthSprite.Width;
+        var healthScaleY = ICON_SIZE_PX / _healthSprite.Height;
         _healthSprite.Scale = new Vector2(healthScaleX, healthScaleY);
         _healthLabel.Position = _healthSpritePosition + toLabel;
 
 
-        _coinsSpritePosition = position + new Vector2(resMarginPx, 0);
-        var coinsScaleX = sizePx / _coinsSprite.Width;
-        var coinsScaleY = sizePx / _coinsSprite.Height;
+        _coinsSpritePosition = position + new Vector2(0, COINS_MARGIN_PX);
+        var coinsScaleX = ICON_SIZE_PX / _coinsSprite.Width;
+        var coinsScaleY = ICON_SIZE_PX / _coinsSprite.Height;
         _coinsSprite.Scale = new Vector2(coinsScaleX, coinsScaleY);
         _coinsLabel.Position = _coinsSpritePosition + toLabel;
     }
