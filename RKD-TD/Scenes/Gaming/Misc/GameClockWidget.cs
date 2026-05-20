@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
@@ -18,7 +17,6 @@ internal sealed class GameClockWidget
     private readonly GameClock _gameClock;
 
     public Rectangle Bounds { get; }
-    public Texture2D Texture { get; }
 
     private readonly ButtonToggled
         _pauseBtn,
@@ -48,9 +46,6 @@ internal sealed class GameClockWidget
         Vector2 widgetPosition,
         TextureAtlas textures)
     {
-        Texture = new Texture2D(Core.GraphicsDevice, 1, 1);
-        Texture.SetData([Color.White]);
-
         //4 buttons, 3 margins
         Bounds = new Rectangle(
             (int)widgetPosition.X,
@@ -209,12 +204,5 @@ internal sealed class GameClockWidget
         _speed1Btn.Draw(spriteBatch);
         _speed2Btn.Draw(spriteBatch);
         _speed3Btn.Draw(spriteBatch);
-
-        Color highlight = new Color(255, 0, 0, 60);
-
-        spriteBatch.Draw(
-            Texture,
-            Bounds,
-            highlight);
     }
 }
