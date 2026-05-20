@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
@@ -9,7 +10,15 @@ namespace RKD_TD.Scenes.Gaming.Misc;
 
 internal sealed class GameClockWidget
 {
+    private const int
+        ICON_SIZE_X = 40,
+        ICON_SIZE_Y = 50,
+        ICON_MARGIN_Y = 15;
+
     private readonly GameClock _gameClock;
+
+    public Rectangle Bounds { get; }
+    public Texture2D Texture { get; }
 
     private readonly ButtonToggled
         _pauseBtn,
@@ -17,10 +26,10 @@ internal sealed class GameClockWidget
         _speed2Btn,
         _speed3Btn;
 
-    private readonly float
-        _speed1 = 1,
-        _speed2 = 2,
-        _speed3 = 3;
+    private const float
+        SPEED1 = 1,
+        SPEED2 = 2,
+        SPEED3 = 3;
 
     public float LayerDepth
     {
@@ -39,6 +48,16 @@ internal sealed class GameClockWidget
         Vector2 widgetPosition,
         TextureAtlas textures)
     {
+        Texture = new Texture2D(Core.GraphicsDevice, 1, 1);
+        Texture.SetData([Color.White]);
+
+        //4 buttons, 3 margins
+        Bounds = new Rectangle(
+            (int)widgetPosition.X,
+            (int)widgetPosition.Y,
+            ICON_SIZE_X,
+            (ICON_SIZE_Y + ICON_MARGIN_Y) * 3 + ICON_SIZE_Y);
+
         _gameClock = new GameClock();
 
         _pauseBtn = CreateButton(
@@ -76,7 +95,7 @@ internal sealed class GameClockWidget
         _speed1Btn.Toggled += (_, _) =>
         {
             _gameClock.Resume();
-            _gameClock.SetSpeed(_speed1);
+            _gameClock.SetSpeed(SPEED1);
 
             _pauseBtn.Untoggle();
             _speed2Btn.Untoggle();
@@ -86,7 +105,7 @@ internal sealed class GameClockWidget
         _speed2Btn.Toggled += (_, _) =>
         {
             _gameClock.Resume();
-            _gameClock.SetSpeed(_speed2);
+            _gameClock.SetSpeed(SPEED2);
 
             _speed1Btn.Untoggle();
             _pauseBtn.Untoggle();
@@ -96,7 +115,7 @@ internal sealed class GameClockWidget
         _speed3Btn.Toggled += (_, _) =>
         {
             _gameClock.Resume();
-            _gameClock.SetSpeed(_speed3);
+            _gameClock.SetSpeed(SPEED3);
 
             _speed1Btn.Untoggle();
             _speed2Btn.Untoggle();
@@ -117,15 +136,16 @@ internal sealed class GameClockWidget
             toggledColor = Color.Orange,
             toggledHoveredColor = Color.DarkOrange;
 
-        var scale = new Vector2(0.25f);
-        var btnMargin = new Vector2(0, 65);
 
         var sprite = textures.CreateSprite(spriteName);
+        var scale = new Vector2(ICON_SIZE_X / sprite.Width, ICON_SIZE_Y / sprite.Height);
         sprite.Scale = scale;
+
+        var iconMargin = new Vector2(0, ICON_SIZE_Y + ICON_MARGIN_Y) * btnIndex;
 
         return new ButtonToggled(
             sprite,
-            position: widgetPosition + btnMargin * btnIndex,
+            position: widgetPosition + iconMargin,
             idleColor,
             hoveredColor,
             toggledColor,
@@ -149,9 +169,9 @@ internal sealed class GameClockWidget
     {
         var speed = _gameClock.TimeScale;
 
-        if (speed == _speed1)
+        if (speed is SPEED1)
             _speed1Btn.Toggle();
-        else if (speed == _speed2)
+        else if (speed is SPEED2)
             _speed2Btn.Toggle();
         else
             _speed3Btn.Toggle();
@@ -189,5 +209,12 @@ internal sealed class GameClockWidget
         _speed1Btn.Draw(spriteBatch);
         _speed2Btn.Draw(spriteBatch);
         _speed3Btn.Draw(spriteBatch);
+
+        Color highlight = new Color(255, 0, 0, 60);
+
+        spriteBatch.Draw(
+            Texture,
+            Bounds,
+            highlight);
     }
 }

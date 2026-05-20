@@ -18,7 +18,7 @@ public class Button
         _hoveredColor;
 
     private bool _wasPressed, _hovered;
-    protected Rectangle Bounds { get; }
+    public Rectangle Bounds { get; }
 
     public event EventHandler? Clicked;
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -68,6 +69,8 @@ internal sealed class GamingScene : Scene
     private readonly HashSet<Explosion> _explosions = [];
 
     private Turret? _selectedTurret;
+
+    private bool _clickConsumed;
 
     private event EventHandler<Enemy>? EnemyRemoved;
 
@@ -293,7 +296,7 @@ internal sealed class GamingScene : Scene
 
             if (_gameState is GameState.TurretSelected && _selectedTurret is not null)
             {
-                //todo: draw upgrade sell widget
+                //todo: draw turret upgrade panel
             }
 
             if (_gameState is GameState.InPauseMenu)
@@ -308,7 +311,9 @@ internal sealed class GamingScene : Scene
 
     public override void Update(GameTime gameTime)
     {
-        HandleInput();
+        _clickConsumed = false;
+
+        HandleStateChanges();
 
         if (_gameState is GameState.InPauseMenu)
         {
@@ -330,11 +335,11 @@ internal sealed class GamingScene : Scene
         {
             if (_gameState is GameState.TurretSelected && _selectedTurret is not null)
             {
-                //todo: update turret selector
+                //todo: update turret upgrade panel
             }
 
-            _turretPurchasePanel.Update();
-            _gameClockWidget.Update();
+            UpdatePurchasePanel();
+            UpdateGameClockWidget();
         }
 
         _portals.Update(clockDelta);
@@ -366,11 +371,13 @@ internal sealed class GamingScene : Scene
 
         _enemySpawner.Update(clockDelta);
 
+        HandleMapClicks();
+
 
         base.Update(gameTime);
     }
 
-    private void HandleInput()
+    private void HandleStateChanges()
     {
         var kb = Core.Input.Keyboard;
         var mouse = Core.Input.Mouse;
@@ -392,9 +399,33 @@ internal sealed class GamingScene : Scene
             if (kb.WasKeyJustPressed(Keys.Escape) || mouse.WasButtonJustPressed(MouseButton.Right))
             {
                 CancelTurretPlacing();
-                return;
             }
 
+            return;
+        }
+
+        if (_gameState is GameState.Normal && kb.WasKeyJustPressed(Keys.Escape))
+        {
+            _gameState = GameState.InPauseMenu;
+            return;
+        }
+
+        if (_gameState is GameState.TurretSelected
+            && (kb.WasKeyJustPressed(Keys.Escape) || mouse.WasButtonJustPressed(MouseButton.Right)))
+        {
+            CancelTurretSelection();
+        }
+    }
+
+    private void HandleMapClicks()
+    {
+        var mouse = Core.Input.Mouse;
+
+        if (_clickConsumed)
+            return;
+
+        if (_gameState is GameState.PlacingTurret)
+        {
             if (mouse.WasButtonJustReleased(MouseButton.Left))
             {
                 var mousePosition = mouse.Position;
@@ -409,27 +440,14 @@ internal sealed class GamingScene : Scene
                         CancelTurretPlacing();
                 }
 
-                return;
+                _clickConsumed = true;
             }
+
+            return;
         }
 
         if (_gameState is GameState.Normal or GameState.TurretSelected)
         {
-            if (_gameState is GameState.Normal && kb.WasKeyJustPressed(Keys.Escape))
-            {
-                _gameState = GameState.InPauseMenu;
-                return;
-            }
-
-
-            if (_gameState is GameState.TurretSelected
-                && (kb.WasKeyJustPressed(Keys.Escape) || mouse.WasButtonJustPressed(MouseButton.Right)))
-            {
-                CancelTurretSelection();
-                return;
-            }
-
-
             if (mouse.WasButtonJustPressed(MouseButton.Left))
             {
                 var mousePosition = mouse.Position;
@@ -443,6 +461,8 @@ internal sealed class GamingScene : Scene
                     CancelTurretSelection();
                     SelectTurret(cell.BuiltTurret);
                 }
+
+                _clickConsumed = true;
             }
         }
     }
@@ -465,6 +485,41 @@ internal sealed class GamingScene : Scene
         {
             _gameClockWidget.SetSpeed(speedIndex: 3);
         }
+    }
+
+    private void UpdatePurchasePanel()
+    {
+        Debug.Assert(_gameState is not GameState.PlacingTurret);
+
+        _turretPurchasePanel.Update();
+
+        if (_clickConsumed)
+            return;
+
+        var mouse = Core.Input.Mouse.Position;
+        var bounds = _turretPurchasePanel.GetPanelBounds();
+
+        //consume clicks even if no button clicked to prevent clicking through panel.
+        foreach (var rectangle in bounds)
+        {
+            if (rectangle.Contains(mouse))
+            {
+                _clickConsumed = true;
+                return;
+            }
+        }
+    }
+
+    private void UpdateGameClockWidget()
+    {
+        _gameClockWidget.Update();
+
+        if (_clickConsumed)
+            return;
+
+        var mouse = Core.Input.Mouse.Position;
+        if (_gameClockWidget.Bounds.Contains(mouse))
+            _clickConsumed = true;
     }
 
     private void OnEnemySpawned(object? sender, Enemy[] enemies)
@@ -518,6 +573,11 @@ internal sealed class GamingScene : Scene
 
     private void BeginTurretPlacing(object? sender, TurretType turretType)
     {
+        if (_clickConsumed)
+            return;
+
+        _clickConsumed = true;
+
         var pendingTurret = _pendingTurretStash.GetPendingTurret(turretType);
 
         if (pendingTurret.Price > _userResources.Coins)

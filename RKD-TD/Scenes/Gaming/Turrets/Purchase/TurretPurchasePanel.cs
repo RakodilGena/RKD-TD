@@ -21,6 +21,7 @@ internal sealed class TurretPurchasePanel
 
     public event EventHandler<TurretType>? TurretPicked;
 
+    private readonly Rectangle _panelBounds;
 
     private static readonly Color ButtonIdleColor = Color.White;
     private static readonly Color ButtonHoveredColor = Color.DarkGray;
@@ -66,6 +67,12 @@ internal sealed class TurretPurchasePanel
             absoluteMargin: new Vector2(30, 18),
             scale * turretPurchaseButtonScale,
             buttonLayerDepth);
+
+        _panelBounds = new Rectangle(
+            (int)_panelPosition.X,
+            (int)_panelPosition.Y,
+            (int)_panelSprite.Width,
+            (int)_panelSprite.Height);
     }
 
     private void OnHideButtonClicked(object? sender, EventArgs args)
@@ -266,5 +273,15 @@ internal sealed class TurretPurchasePanel
             ButtonHoveredColor,
             scale: new Vector2(scale),
             buttonLayerDepth);
+    }
+
+    public Rectangle[] GetPanelBounds()
+    {
+        if (_hidden)
+        {
+            return [_showButton.Bounds];
+        }
+
+        return [_hideButton.Bounds, _panelBounds];
     }
 }
