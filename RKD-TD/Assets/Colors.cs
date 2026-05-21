@@ -30,5 +30,12 @@ internal static class Colors
             public static readonly Color Unaffordable = Color.DarkRed;
             public static readonly Color Borders = Color.Black;
         }
+
+        public static class Ending
+        {
+            public static readonly Color Victory = Color.Goldenrod; //new (255,215,0);
+            public static readonly Color Defeat = Color.DarkRed;
+            public static readonly Color Borders = Color.Black;
+        }
     }
 }

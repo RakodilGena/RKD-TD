@@ -25,4 +25,6 @@ internal static class Fonts
 
     public const string TURRET_ACTION_BUTTON_TEXT = "turret_action_button_text";
     public const string TURRET_ACTION_BUTTON_PRICE_TEXT = "turret_action_button_price_text";
+
+    public const string ENDING_TEXT = "ending_text";
 }

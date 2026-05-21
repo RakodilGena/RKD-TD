@@ -22,6 +22,13 @@
 #begin configs/turretconfig.xml
 /copy:configs/turretconfig.xml
 
+#begin fonts/ending_text.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/ending_text.spritefont
+
 #begin fonts/font-atlas-definition.xml
 /copy:fonts/font-atlas-definition.xml
 

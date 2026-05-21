@@ -22,5 +22,7 @@
         <Font name="turret_action_button_text"/>
         <Font name="turret_action_button_price_text"/>
 
+        <Font name="ending_text"/>
+
     </Fonts>
 </FontAtlas>

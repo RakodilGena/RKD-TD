@@ -12,6 +12,7 @@ using MonoGameLibrary.Graphics.Sprites;
 using MonoGameLibrary.Graphics.Tiles;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.Scenes;
+using RKD_TD.Scenes.Gaming.Ending;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Enemies.Spawns;
 using RKD_TD.Scenes.Gaming.Explosions;
@@ -72,10 +73,11 @@ internal sealed class GamingScene : Scene
     private Turret? _selectedTurret;
     private TurretActionsPanel _turretActionsPanel = null!;
 
-
     private bool _clickConsumed;
 
     private event EventHandler<Enemy>? EnemyRemoved;
+
+    private GameEndingAnimation? _gameEndingAnimation;
 
     public GamingScene(string mapFile)
     {
@@ -321,12 +323,26 @@ internal sealed class GamingScene : Scene
             }
         }
 
+        _gameEndingAnimation?.Draw(sb);
+
         sb.End();
         base.Draw(gameTime);
     }
 
     public override void Update(GameTime gameTime)
     {
+        var uiDelta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        if (_gameState is GameState.Ending)
+        {
+            if (_gameEndingAnimation!.Update(uiDelta))
+            {
+                ToMapSelection();
+            }
+
+            return;
+        }
+
         _clickConsumed = false;
 
         HandleStateChanges();
@@ -338,7 +354,6 @@ internal sealed class GamingScene : Scene
         }
 
         var clockDelta = _gameClockWidget.GetDelta(gameTime);
-        var uiDelta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         _camera.Update(uiDelta);
         _fpsMeter.Update(uiDelta);
@@ -588,8 +603,7 @@ internal sealed class GamingScene : Scene
 
             if (_allWavesSpawned && _userResources.Health > 0)
             {
-                Console.WriteLine("All enemies are successfully destroyed, GAME WON");
-                ToMapSelection();
+                WinGame();
             }
         }
     }
@@ -756,8 +770,18 @@ internal sealed class GamingScene : Scene
 
     private void OnCriticalDamageReceived(object? sender, EventArgs e)
     {
-        Console.WriteLine("Critical damage");
-        ToMapSelection();
+        _gameEndingAnimation = new GameEndingAnimation("Defeat", isVictory: false);
+        CancelTurretPlacing();
+        CancelTurretSelection();
+        _gameState = GameState.Ending;
+    }
+
+    private void WinGame()
+    {
+        _gameEndingAnimation = new GameEndingAnimation("Victory", isVictory: true);
+        CancelTurretPlacing();
+        CancelTurretSelection();
+        _gameState = GameState.Ending;
     }
 
     private void OnWaveFinished(object? sender, int reward)
