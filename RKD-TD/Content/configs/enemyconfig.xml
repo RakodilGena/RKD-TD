@@ -4,7 +4,7 @@
     <Enemy alias="soldier"
 
            health="320"
-           healthIncreasePerWave="12"
+           healthIncreasePerWave="20"
            healthMultiplierPerWave="1.07"
 
            speed="150"
@@ -22,7 +22,7 @@
     <Enemy alias="tank"
 
            health="1800"
-           healthIncreasePerWave="80"
+           healthIncreasePerWave="100"
            healthMultiplierPerWave="1.07"
 
            speed="70"
@@ -40,7 +40,7 @@
     <Enemy alias="speedster"
 
            health="420"
-           healthIncreasePerWave="18"
+           healthIncreasePerWave="20"
            healthMultiplierPerWave="1.08"
 
            speed="230"
@@ -58,7 +58,7 @@
     <Enemy alias="swarmer"
 
            health="140"
-           healthIncreasePerWave="8"
+           healthIncreasePerWave="10"
            healthMultiplierPerWave="1.1"
 
            speed="150"
@@ -78,11 +78,11 @@
            isBoss="true"
 
            health="10000"
-           healthIncreasePerWave="150"
-           healthMultiplierPerWave="1.025"
+           healthIncreasePerWave="200"
+           healthMultiplierPerWave="1.026"
 
            speed="50"
-           cost="300"
+           cost="180"
            reward="150 "
            damage="9999"
            animationAlias="boss-animation"

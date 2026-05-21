@@ -51,12 +51,11 @@
             waveRewardIncrease="20"
 
             initialWaveValue="90"
-            waveValueMultiplier="1.11"
+            waveValueMultiplier="1.12"
             waveValueIncrease="10"
 
             basicSpawnInterval="3"
-            spawnIntervalDecrease="0.12"
-    >
+            spawnIntervalDecrease="0.12">
 
         <Waves>
             <!--The waves from here are hardcoded to better introduce them to the player-->
@@ -92,11 +91,6 @@
             </Wave>
 
         </Waves>
-
-        <WavesGenerator>
-            <!--After the waves end, generator kicks in and generates waves randomly based on 
-             the values of included enemies and the total wave value.-->
-        </WavesGenerator>
 
         <Waypoints>
             <Waypoint>1;2</Waypoint>
