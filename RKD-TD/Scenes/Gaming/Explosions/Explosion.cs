@@ -5,11 +5,14 @@ using MonoGameLibrary.Geometrics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Flashes;
+using RKD_TD.Scenes.Gaming.Turrets.Active;
 
 namespace RKD_TD.Scenes.Gaming.Explosions;
 
 internal sealed class Explosion : Flash
 {
+    private readonly Turret _owner;
+    
     private readonly Circle _damageCircle;
     private readonly float _damageDelaySec;
     private readonly int _aoeDamage;
@@ -21,10 +24,12 @@ internal sealed class Explosion : Flash
         Vector2 position,
         int aoeRange,
         int aoeDamage,
-        float damageDelaySec) : base(sprite, position)
+        float damageDelaySec, 
+        Turret owner) : base(sprite, position)
     {
         _aoeDamage = aoeDamage;
         _damageDelaySec = damageDelaySec;
+        _owner = owner;
         _damageCircle = new Circle(position, aoeRange);
 
         _explosionCanHappen =
@@ -63,7 +68,8 @@ internal sealed class Explosion : Flash
 
             if (enemyCircle.Intersects(_damageCircle))
             {
-                enemy.ReceiveDamage(_aoeDamage);
+                var damageDealt = enemy.ReceiveDamage(_aoeDamage);
+                _owner.RecordDealtDamage(damageDealt);
             }
         }
     }

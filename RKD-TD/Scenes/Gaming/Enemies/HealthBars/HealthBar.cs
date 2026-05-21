@@ -65,12 +65,31 @@ internal sealed class HealthBar
         _fillerInitialScale = template.FillerScale;
     }
 
-    public void ReceiveDamage(int damage)
+    public int ReceiveDamage(int damage)
     {
-        CurrentHealth -= damage;
+        if (CurrentHealth <= 0)
+            return 0;
 
-        var healthPercent = (float)CurrentHealth / _maxHealth;
+        int damageDealt;
+        float healthPercent;
+        if (CurrentHealth <= damage)
+        {
+            damageDealt = CurrentHealth;
+
+            CurrentHealth = 0;
+            healthPercent = 0;
+        }
+        else
+        {
+            damageDealt = damage;
+
+            CurrentHealth -= damage;
+            healthPercent = (float)CurrentHealth / _maxHealth;
+        }
+
         _fillerSprite.Scale = new Vector2(_fillerInitialScale.X * healthPercent, _fillerInitialScale.Y);
+
+        return damageDealt;
     }
 
     public void SetPosition(Vector2 enemyPosition)

@@ -110,7 +110,7 @@ internal sealed class TurretActionsPanel
     public void Initialize(Turret selectedTurret)
     {
         _turretDefinition.Text = $"{selectedTurret.Name} LVL ";
-        _turretLevel.Text = $"{selectedTurret.GetLevel() + 1}";
+        _turretLevel.Text = $"{selectedTurret.Level + 1}";
 
         var panelMiddleX = _panelSprite.Width / 2;
 

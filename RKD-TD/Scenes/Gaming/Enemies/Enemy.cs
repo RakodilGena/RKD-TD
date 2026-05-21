@@ -6,6 +6,7 @@ using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Geometrics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies.HealthBars;
+using RKD_TD.Scenes.Gaming.Enemies.Spawns;
 
 namespace RKD_TD.Scenes.Gaming.Enemies;
 
@@ -58,21 +59,14 @@ internal class Enemy
     public event EventHandler<int>? ReachedPortal;
 
     public Enemy(
-        float speed,
-        int reward,
-        int damage,
+        EnemyTemplate template,
         Sprite sprite,
         WaypointPath path,
         Vector2 positionInTile,
-        Vector2 origin,
-        float appearDistance,
-        int hitCircleRadius,
-        Vector2 hitCircleOffset,
-        HealthBarTemplate healthBarTemplate,
         int waveIndex)
     {
-        Speed = speed;
-        _reward = reward;
+        Speed = template.Speed;
+        _reward = template.Reward;
 
         _sprite = sprite;
         _initialScale = sprite.Scale;
@@ -80,11 +74,11 @@ internal class Enemy
 
         _path = path;
         _positionInTile = positionInTile;
-        _origin = origin;
-        _appearDistance = appearDistance;
-        _hitCircleRadius = hitCircleRadius;
-        _hitCircleOffset = hitCircleOffset;
-        _damage = damage;
+        _origin = template.Origin;
+        _appearDistance = template.AppearDistance;
+        _hitCircleRadius = template.HitCircleRadius;
+        _hitCircleOffset = template.HitCircleOffset;
+        _damage = template.Damage;
 
         _positionForMovement = path.Start;
         _currentWaypointIndex = 1; // start moving toward waypoint 1
@@ -92,7 +86,7 @@ internal class Enemy
         SetFaceDirection();
 
         _healthBar = new HealthBar(
-            healthBarTemplate,
+            template.HealthBarTemplate,
             waveIndex);
     }
 
@@ -152,7 +146,7 @@ internal class Enemy
         return true;
     }
 
-    public void ReceiveDamage(int damage) => _healthBar.ReceiveDamage(damage);
+    public int ReceiveDamage(int damage) => _healthBar.ReceiveDamage(damage);
 
     private bool HandleDestroyed()
     {

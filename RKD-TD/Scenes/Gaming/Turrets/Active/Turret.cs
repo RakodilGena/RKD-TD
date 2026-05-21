@@ -18,10 +18,10 @@ internal sealed class Turret
 {
     public string Name { get; }
     private readonly Sprite _barrelSprite, _carriageSprite;
-    private readonly Vector2 _position;
+    public Vector2 Position { get; }
+    public int Level { get; private set; }
 
     private const int MAX_LEVEL = 2;
-    private int _level;
     private readonly int[] _upgradePrices;
     private int _totalSpent;
 
@@ -45,7 +45,7 @@ internal sealed class Turret
 
     private float _currentReloadTime;
 
-    private float CurrentRotation
+    public float CurrentRotation
     {
         get;
         set
@@ -55,6 +55,8 @@ internal sealed class Turret
             _barrelSprite.Rotation = wrapped;
         }
     }
+
+    public int DamageDealt { get; private set; }
 
     private Enemy? _fixatedEnemy;
 
@@ -103,7 +105,7 @@ internal sealed class Turret
         _carriageSprite = carriageSprite;
         SetLevelColors();
 
-        _position = position;
+        Position = position;
         _rotationSpeedRadianInSec = turretTemplate.RotationSpeedRadianInSec;
         _reloadTimeInSec = turretTemplate.ReloadTimeInSec;
         _fixateDistanceSquared = turretTemplate.FixateDistanceSquared;
@@ -113,7 +115,7 @@ internal sealed class Turret
         var projectileTemplate = projectileFactory.GetTemplate(turretTemplate.ProjectileAlias);
 
         _turretBarrel = new TurretBarrel(
-            _level,
+            owner: this,
             turretTemplate.FiringPoints,
             turretTemplate.FiringMode,
             turretTemplate.GunFlashPoints,
@@ -145,17 +147,17 @@ internal sealed class Turret
     {
         if (_selected)
         {
-            Circle.DrawCircle(spriteBatch, Camera, _position, _firingDistance[_level], Colors.Game.TurretRadius);
-            _selector.Draw(spriteBatch, _position, Camera);
+            Circle.DrawCircle(spriteBatch, Camera, Position, _firingDistance[Level], Colors.Game.TurretRadius);
+            _selector.Draw(spriteBatch, Position, Camera);
         }
 
-        _carriageSprite.Draw(spriteBatch, _position);
-        _barrelSprite.Draw(spriteBatch, _position);
+        _carriageSprite.Draw(spriteBatch, Position);
+        _barrelSprite.Draw(spriteBatch, Position);
     }
 
     private void SetLevelColors()
     {
-        var color = Colors.Game.TurretLevels[_level];
+        var color = Colors.Game.TurretLevels[Level];
         _barrelSprite.Color = color;
         _carriageSprite.Color = color;
     }
@@ -175,19 +177,19 @@ internal sealed class Turret
                 return;
             }
 
-            var vectorToEnemy = CalculateEnemyTarget(_fixatedEnemy) - _position;
+            var vectorToEnemy = CalculateEnemyTarget(_fixatedEnemy) - Position;
             var distanceToEnemySquared = vectorToEnemy.LengthSquared();
-            if (distanceToEnemySquared > _fixateDistanceSquared[_level])
+            if (distanceToEnemySquared > _fixateDistanceSquared[Level])
             {
                 //too far away
                 Unfixate();
                 return;
             }
 
-            if (distanceToEnemySquared > _firingDistanceSquared[_level])
+            if (distanceToEnemySquared > _firingDistanceSquared[Level])
             {
                 //cant shoot yet, try switching
-                var newTarget = FindClosestTargetWithin(_firingDistanceSquared[_level], enemies);
+                var newTarget = FindClosestTargetWithin(_firingDistanceSquared[Level], enemies);
                 if (newTarget is not null)
                 {
                     Fixate(newTarget);
@@ -217,7 +219,7 @@ internal sealed class Turret
             return;
         }
 
-        var newTarget1 = FindClosestTargetWithin(_fixateDistanceSquared[_level], enemies);
+        var newTarget1 = FindClosestTargetWithin(_fixateDistanceSquared[Level], enemies);
         if (newTarget1 is not null)
         {
             Fixate(newTarget1);
@@ -231,7 +233,7 @@ internal sealed class Turret
     {
         if (_aimingMode is TurretAimingMode.Predictive)
         {
-            var distance = (enemy.Target - _position).Length() - _barrelLenght;
+            var distance = (enemy.Target - Position).Length() - _barrelLenght;
 
             if (distance < 0)
                 return enemy.Target;
@@ -272,7 +274,7 @@ internal sealed class Turret
             if (enemy.State is not EnemyState.Vulnerable)
                 continue;
 
-            var distanceToEnemy = (enemy.Target - _position).LengthSquared();
+            var distanceToEnemy = (enemy.Target - Position).LengthSquared();
 
             if (minDistance < distanceToEnemy)
                 continue;
@@ -301,7 +303,7 @@ internal sealed class Turret
         if (_currentReloadTime > 0)
             return;
 
-        var (projectiles, flashes) = _turretBarrel.Fire(_position, CurrentRotation);
+        var (projectiles, flashes) = _turretBarrel.Fire();
 
         foreach (var projectile in projectiles)
         {
@@ -373,31 +375,30 @@ internal sealed class Turret
 
     public void Upgrade()
     {
-        if (_level is MAX_LEVEL)
+        if (Level is MAX_LEVEL)
             return;
 
-        _totalSpent += _upgradePrices[_level];
+        _totalSpent += _upgradePrices[Level];
 
-        _level++;
-        _turretBarrel.Upgrade(_level);
+        Level++;
         SetLevelColors();
-    }
-
-    public int GetLevel()
-    {
-        return _level;
     }
 
     public int GetUpgradePrice()
     {
-        if (_level is MAX_LEVEL)
+        if (Level is MAX_LEVEL)
             return -1;
 
-        return _upgradePrices[_level];
+        return _upgradePrices[Level];
     }
 
     public int GetSellPrice()
     {
         return _totalSpent / 2;
+    }
+
+    public void RecordDealtDamage(int damage)
+    {
+        DamageDealt += damage;
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Helpers;
+using RKD_TD.Scenes.Gaming.Turrets.Active;
 
 namespace RKD_TD.Scenes.Gaming.Explosions;
 
@@ -21,7 +22,8 @@ internal sealed class ExplosionFactory
         string explosionAlias,
         Vector2 position,
         int aoeRange,
-        int aoeDamage)
+        int aoeDamage,
+        Turret owner)
     {
         var tmp = _explosionTemplates[explosionAlias];
 
@@ -36,7 +38,8 @@ internal sealed class ExplosionFactory
             position,
             aoeRange,
             aoeDamage,
-            tmp.DamageDelaySec);
+            tmp.DamageDelaySec,
+            owner);
     }
 
     public static ExplosionFactory FromFile(

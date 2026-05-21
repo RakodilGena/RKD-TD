@@ -9,11 +9,14 @@ using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Explosions;
 using RKD_TD.Scenes.Gaming.Flashes;
+using RKD_TD.Scenes.Gaming.Turrets.Active;
 
 namespace RKD_TD.Scenes.Gaming.Projectiles;
 
 internal class Projectile
 {
+    private readonly Turret _owner;
+    
     private readonly Sprite _sprite;
 
     private readonly string _explosionAlias;
@@ -77,7 +80,9 @@ internal class Projectile
         float trailFlashSpawnPauseSec,
         Vector2 trailFlashSpawnOffset,
         ExplosionFactory explosionFactory,
-        FlashFactory flashFactory)
+        FlashFactory flashFactory, 
+        
+        Turret owner)
     {
         _sprite = sprite;
         _speed = speed;
@@ -89,6 +94,7 @@ internal class Projectile
         _explosionAlias = explosionAlias;
         _explosionFactory = explosionFactory;
         _flashFactory = flashFactory;
+        _owner = owner;
         _trailFlashSpawnOffset = trailFlashSpawnOffset;
         _trailFlashAlias = trailFlashAlias;
 
@@ -162,16 +168,19 @@ internal class Projectile
         return false;
     }
 
-    private void Explode(Enemy? enemy = null)
+    private void Explode(Enemy enemy)
     {
         var explosion = _explosionFactory.Create(
             _explosionAlias,
             Position,
             _aoeRange,
-            _aoeDamage);
+            _aoeDamage,
+            _owner);
+        
         Collided?.Invoke(this, explosion);
 
-        enemy?.ReceiveDamage(_directDamage);
+        var damageDealt = enemy.ReceiveDamage(_directDamage);
+        _owner.RecordDealtDamage(damageDealt);
 
         _dead = true;
     }

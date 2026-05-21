@@ -4,6 +4,7 @@ using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Explosions;
 using RKD_TD.Scenes.Gaming.Flashes;
+using RKD_TD.Scenes.Gaming.Turrets.Active;
 
 namespace RKD_TD.Scenes.Gaming.Projectiles;
 
@@ -26,10 +27,12 @@ internal sealed class HomingMissile : Projectile
         float trailFlashSpawnPauseSec,
         Vector2 trailFlashSpawnOffset,
         ExplosionFactory explosionFactory,
-        FlashFactory flashFactory)
+        FlashFactory flashFactory, 
+        
+        Turret owner)
         : base(sprite, speed, flightRange, hitCircleRadius, directDamage, aoeDamage, aoeRange,
             position, rotation, explosionAlias, trailFlashAlias, trailFlashSpawnPauseSec,
-            trailFlashSpawnOffset, explosionFactory, flashFactory)
+            trailFlashSpawnOffset, explosionFactory, flashFactory, owner)
     {
     }
 

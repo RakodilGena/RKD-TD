@@ -8,6 +8,7 @@ using MonoGameLibrary.Graphics.Sprites;
 using RKD_TD.Helpers;
 using RKD_TD.Scenes.Gaming.Explosions;
 using RKD_TD.Scenes.Gaming.Flashes;
+using RKD_TD.Scenes.Gaming.Turrets.Active;
 
 namespace RKD_TD.Scenes.Gaming.Projectiles;
 
@@ -36,7 +37,8 @@ internal sealed class ProjectileFactory
         ProjectileTemplate template,
         ProjectileValues projectileValues,
         Vector2 position,
-        float angle)
+        float angle,
+        Turret owner)
     {
         Sprite sprite;
         if (template.Texture != null)
@@ -68,7 +70,8 @@ internal sealed class ProjectileFactory
                 template.TrailFlashSpawnPauseSec,
                 template.TrailFlashSpawnOffset,
                 _explosionFactory,
-                _flashFactory);
+                _flashFactory,
+                owner);
         }
 
         return new Projectile(
@@ -86,18 +89,20 @@ internal sealed class ProjectileFactory
             template.TrailFlashSpawnPauseSec,
             template.TrailFlashSpawnOffset,
             _explosionFactory,
-            _flashFactory);
+            _flashFactory,
+            owner);
     }
 
     public Projectile Create(
         string projectileAlias,
         ProjectileValues projectileValues,
         Vector2 position,
-        float angle)
+        float angle,
+        Turret owner)
     {
         var template = GetTemplate(projectileAlias);
 
-        return Create(template, projectileValues, position, angle);
+        return Create(template, projectileValues, position, angle, owner);
     }
 
     public static ProjectileFactory FromFile(

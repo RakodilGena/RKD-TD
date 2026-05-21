@@ -56,17 +56,10 @@ internal sealed class EnemyFactory
                 sprite);
 
             var enemy = new Enemy(
-                template.Speed,
-                template.Reward,
-                template.Damage,
+                template,
                 sprite,
                 _waypointPath,
                 positionInTile,
-                template.Origin,
-                template.AppearDistance,
-                template.HitCircleRadius,
-                template.HitCircleOffset,
-                template.HealthBarTemplate,
                 waveIndex);
 
             return [enemy];
@@ -87,17 +80,10 @@ internal sealed class EnemyFactory
                         sprite);
 
                 var enemy = new Enemy(
-                    template.Speed,
-                    template.Reward,
-                    template.Damage,
+                    template,
                     sprite,
                     _waypointPath,
                     positionInTile,
-                    template.Origin,
-                    template.AppearDistance,
-                    template.HitCircleRadius,
-                    template.HitCircleOffset,
-                    template.HealthBarTemplate,
                     waveIndex);
 
                 enemies[i] = enemy;
