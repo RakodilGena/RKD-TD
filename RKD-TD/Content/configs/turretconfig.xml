@@ -91,8 +91,8 @@
                 projectileFlightRange="1000;1060;1160"
 
                 directDamage="220;450;1000"
-                aoeRange="70"
-                aoeDamage="50;110;235"
+                aoeRange="80"
+                aoeDamage="40;95;210"
 
                 firingPoints="285,0,0"
                 firingMode="single"
@@ -124,9 +124,9 @@
                 fixateDistance="1120;1200;1300"
                 projectileFlightRange="1300;1370;1460"
 
-                directDamage="30;65;140"
-                aoeRange="100"
-                aoeDamage="90;200;460"
+                directDamage="20;45;100"
+                aoeRange="150"
+                aoeDamage="80;180;400"
 
                 firingPoints="180,-50,0; 180,0,0; 180,58,0;"
                 firingMode="rotation"
@@ -252,8 +252,8 @@
                 animationAlias="explosion-shell-animation"
                 origin="150;150"
 
-                size="210;210"
-                damageDelayMs="70"/>
+                size="250;250"
+                damageDelayMs="50"/>
 
         <Explosion
                 alias="missile_explosion"
@@ -261,8 +261,8 @@
                 animationAlias="explosion-missile-animation"
                 origin="200;200"
 
-                size="220;220"
-                damageDelayMs="100"/>
+                size="400;400"
+                damageDelayMs="70"/>
 
     </Explosions>
 </Root>
