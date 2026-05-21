@@ -69,7 +69,7 @@ public sealed class BorderedLabel : Label
         spriteBatch.DrawString(
             Font,
             Text,
-            position: Position + offset,
+            Position + offset,
             BorderColor,
             Rotation,
             Origin,

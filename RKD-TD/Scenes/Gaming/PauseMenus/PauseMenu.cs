@@ -18,14 +18,11 @@ internal sealed class PauseMenu
         SIZE_X = 400,
         SIZE_Y = 600,
         POSITION_X = 1920 / 2,
-        
         LABEL_OFFSET_Y = 30,
         LABEL_BORDER_WIDTH = 3,
-        
         BUTTON_SIZE_X = 300,
         BUTTON_SIZE_Y = 100,
         BUTTON_TEXT_BORDER_WIDTH = 2,
-        
         RESUME_BTN_OFFSET_Y = 140,
         EXIT_TO_MAP_SELECTION_BTN_OFFSET_Y = 340,
         EXIT_GAME_BTN_OFFSET_Y = 450;
@@ -68,7 +65,7 @@ internal sealed class PauseMenu
 
     private static Sprite CreateSprite(TextureAtlas gameObjectsTextures)
     {
-        var menuTexture = gameObjectsTextures.GetRegion(Textures.Game.PANEL);
+        var menuTexture = gameObjectsTextures.GetRegion(Textures.Game.PANEL_600_800);
         var menuSprite = new Sprite(menuTexture)
         {
             Origin = new Vector2(menuTexture.Width * 0.5f, 0),

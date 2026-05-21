@@ -30,6 +30,5 @@ internal static class Colors
             public static readonly Color Unaffordable = Color.DarkRed;
             public static readonly Color Borders = Color.Black;
         }
-        
     }
 }

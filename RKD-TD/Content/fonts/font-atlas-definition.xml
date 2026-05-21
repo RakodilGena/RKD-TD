@@ -19,7 +19,8 @@
         <Font name="turret_action_panel_label_text"/>
         <Font name="turret_action_panel_lvl_text"/>
 
-        
-        
+        <Font name="turret_action_button_text"/>
+        <Font name="turret_action_button_price_text"/>
+
     </Fonts>
 </FontAtlas>

@@ -74,6 +74,20 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/regular_btn_text.spritefont
 
+#begin fonts/turret_action_button_price_text.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/turret_action_button_price_text.spritefont
+
+#begin fonts/turret_action_button_text.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/turret_action_button_text.spritefont
+
 #begin fonts/turret_action_panel_label_text.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

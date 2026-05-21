@@ -18,8 +18,11 @@ internal static class Fonts
 
     public const string PAUSE_MENU_BTN_TEXT = "pause_menu_btn_text";
     public const string PAUSE_MENU_TITLE_TEXT = "pause_menu_title_text";
-        
-        
+
+
     public const string TURRET_ACTION_PANEL_LABEL_TEXT = "turret_action_panel_label_text";
     public const string TURRET_ACTION_PANEL_LVL_TEXT = "turret_action_panel_lvl_text";
+
+    public const string TURRET_ACTION_BUTTON_TEXT = "turret_action_button_text";
+    public const string TURRET_ACTION_BUTTON_PRICE_TEXT = "turret_action_button_price_text";
 }

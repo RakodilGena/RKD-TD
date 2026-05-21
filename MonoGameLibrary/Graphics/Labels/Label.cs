@@ -38,6 +38,7 @@ public class Label
         float layerDepth)
     {
         Position = position;
+
         Origin = origin;
         Text = text;
         Font = font;

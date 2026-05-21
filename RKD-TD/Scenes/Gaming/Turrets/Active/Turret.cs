@@ -98,7 +98,7 @@ internal sealed class Turret
         FlashFactory flashFactory)
     {
         Name = turretTemplate.Name;
-        
+
         _barrelSprite = barrelSprite;
         _carriageSprite = carriageSprite;
         SetLevelColors();
@@ -392,7 +392,7 @@ internal sealed class Turret
     {
         if (_level is MAX_LEVEL)
             return -1;
-        
+
         return _upgradePrices[_level];
     }
 

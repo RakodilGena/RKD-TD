@@ -28,7 +28,8 @@ internal static class Textures
         public const string TURRET_ICON_MISSILE_240 = "turret_icon_missile_240";
         public const string TURRET_PANEL_HIDE_BTN_125_250 = "turret_panel_hide_btn_125_250";
 
-        public const string PANEL = "panel";
+        public const string PANEL_600_800 = "panel_600_800";
+        public const string PANEL_400_300 = "panel_400_300";
         public const string BUTTON = "button";
 
         public const string SELECTED_TURRET_BORDERS = "selected_turret_borders";

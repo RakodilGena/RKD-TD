@@ -71,7 +71,7 @@ internal sealed class GamingScene : Scene
 
     private Turret? _selectedTurret;
     private TurretActionsPanel _turretActionsPanel = null!;
-        
+
 
     private bool _clickConsumed;
 
@@ -150,8 +150,13 @@ internal sealed class GamingScene : Scene
     private void InitTurretActionsPanel()
     {
         _turretActionsPanel = new TurretActionsPanel(
-            new Vector2(1600, 660),
+            new Vector2(
+                1920 - 320,
+                1080 - 265),
             _gameObjectsTextures);
+
+        _turretActionsPanel.UpgradeButtonClicked += (_, _) => UpgradeSelectedTurret();
+        _turretActionsPanel.SellButtonClicked += (_, _) => SellSelectedTurret();
     }
 
     public override void LoadContent()
@@ -309,7 +314,7 @@ internal sealed class GamingScene : Scene
             {
                 _turretActionsPanel.Draw(sb);
             }
-            
+
             if (_gameState is GameState.InPauseMenu)
             {
                 _pauseMenu.Draw(sb);
@@ -432,7 +437,7 @@ internal sealed class GamingScene : Scene
     {
         if (_clickConsumed)
             return;
-        
+
         var mouse = Core.Input.Mouse;
 
         if (_gameState is GameState.PlacingTurret)
@@ -501,23 +506,17 @@ internal sealed class GamingScene : Scene
     private void UpdateTurretActionsPanel()
     {
         Debug.Assert(_gameState is GameState.TurretSelected);
-        
-        if (_clickConsumed)
-            return;
-        
+
         _turretActionsPanel.Update(_userResources.Coins);
-        
+
         var mouse = Core.Input.Mouse.Position;
         if (_turretActionsPanel.Bounds.Contains(mouse))
             _clickConsumed = true;
     }
-    
+
     private void UpdatePurchasePanel()
     {
         Debug.Assert(_gameState is not GameState.PlacingTurret);
-
-        if (_clickConsumed)
-            return;
 
         _turretPurchasePanel.Update(_userResources.Coins);
 
@@ -537,9 +536,6 @@ internal sealed class GamingScene : Scene
 
     private void UpdateGameClockWidget()
     {
-        if (_clickConsumed)
-            return;
-        
         _gameClockWidget.Update();
 
         var mouse = Core.Input.Mouse.Position;
@@ -659,12 +655,36 @@ internal sealed class GamingScene : Scene
         turret.Select();
         _selectedTurret = turret;
         _turretActionsPanel.Initialize(turret);
-            
+
         _gameState = GameState.TurretSelected;
+    }
+
+    private void UpgradeSelectedTurret()
+    {
+        if (_clickConsumed)
+            return;
+
+        _clickConsumed = true;
+
+        if (_selectedTurret is null)
+            return;
+
+        var upgradeCost = _selectedTurret.GetUpgradePrice();
+        if (_userResources.Coins < upgradeCost)
+            return;
+
+        _userResources.GainCoins(-upgradeCost);
+        _selectedTurret.Upgrade();
+        _turretActionsPanel.Initialize(_selectedTurret);
     }
 
     private void SellSelectedTurret()
     {
+        if (_clickConsumed)
+            return;
+
+        _clickConsumed = true;
+
         if (_selectedTurret is null)
             return;
 
@@ -672,6 +692,8 @@ internal sealed class GamingScene : Scene
 
         _selectedTurret.OccupiedCell.Deoccupy();
         EnemyRemoved -= _selectedTurret.OnEnemyRemoved;
+
+        _userResources.GainCoins(_selectedTurret.GetSellPrice());
 
         CancelTurretSelection();
     }
