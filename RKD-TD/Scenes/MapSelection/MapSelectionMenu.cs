@@ -178,7 +178,7 @@ internal sealed class MapSelectionMenu
         {
             var mapIndex = maps.Count;
 
-            var mapName = $"MOCK MAP {mapIndex + 1}";
+            var mapName = "LOCKED";
 
             var sprite = textures.CreateSprite(Textures.MapSelection.MAP_BLANK_500_300);
 
