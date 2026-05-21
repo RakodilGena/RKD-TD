@@ -106,7 +106,7 @@ internal sealed class TurretBarrel
     {
         var firingPoint = _firingPoints[pointIdx];
 
-        var (turretCenter, rotation, level) = 
+        var (turretCenter, rotation, level) =
             (_owner.Position, _owner.CurrentRotation, _owner.Level);
 
         var firingPointAbsolutePosition = turretCenter + firingPoint.Position.GetRotatedVector(rotation);

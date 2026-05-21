@@ -27,8 +27,7 @@ internal sealed class HomingMissile : Projectile
         float trailFlashSpawnPauseSec,
         Vector2 trailFlashSpawnOffset,
         ExplosionFactory explosionFactory,
-        FlashFactory flashFactory, 
-        
+        FlashFactory flashFactory,
         Turret owner)
         : base(sprite, speed, flightRange, hitCircleRadius, directDamage, aoeDamage, aoeRange,
             position, rotation, explosionAlias, trailFlashAlias, trailFlashSpawnPauseSec,

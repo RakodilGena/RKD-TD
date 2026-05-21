@@ -12,7 +12,7 @@ namespace RKD_TD.Scenes.Gaming.Explosions;
 internal sealed class Explosion : Flash
 {
     private readonly Turret _owner;
-    
+
     private readonly Circle _damageCircle;
     private readonly float _damageDelaySec;
     private readonly int _aoeDamage;
@@ -24,7 +24,7 @@ internal sealed class Explosion : Flash
         Vector2 position,
         int aoeRange,
         int aoeDamage,
-        float damageDelaySec, 
+        float damageDelaySec,
         Turret owner) : base(sprite, position)
     {
         _aoeDamage = aoeDamage;

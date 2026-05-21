@@ -16,7 +16,7 @@ namespace RKD_TD.Scenes.Gaming.Projectiles;
 internal class Projectile
 {
     private readonly Turret _owner;
-    
+
     private readonly Sprite _sprite;
 
     private readonly string _explosionAlias;
@@ -80,8 +80,7 @@ internal class Projectile
         float trailFlashSpawnPauseSec,
         Vector2 trailFlashSpawnOffset,
         ExplosionFactory explosionFactory,
-        FlashFactory flashFactory, 
-        
+        FlashFactory flashFactory,
         Turret owner)
     {
         _sprite = sprite;
@@ -176,7 +175,7 @@ internal class Projectile
             _aoeRange,
             _aoeDamage,
             _owner);
-        
+
         Collided?.Invoke(this, explosion);
 
         var damageDealt = enemy.ReceiveDamage(_directDamage);

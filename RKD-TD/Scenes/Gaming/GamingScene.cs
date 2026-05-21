@@ -152,7 +152,7 @@ internal sealed class GamingScene : Scene
         _turretActionsPanel = new TurretActionsPanel(
             new Vector2(
                 1920 - 320,
-                1080 - 265),
+                1080 - 345),
             _gameObjectsTextures);
 
         _turretActionsPanel.UpgradeButtonClicked += (_, _) => UpgradeSelectedTurret();
@@ -507,7 +507,9 @@ internal sealed class GamingScene : Scene
     {
         Debug.Assert(_gameState is GameState.TurretSelected);
 
-        _turretActionsPanel.Update(_userResources.Coins);
+        _turretActionsPanel.Update(
+            _userResources.Coins,
+            _selectedTurret!.DamageDealt);
 
         var mouse = Core.Input.Mouse.Position;
         if (_turretActionsPanel.Bounds.Contains(mouse))
