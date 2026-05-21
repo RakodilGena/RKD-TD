@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Graphics.Labels;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Assets;
 using RKD_TD.Models.UI;
 
 namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
@@ -11,6 +12,7 @@ internal sealed class TurretPurchaseButton : Button
 {
     private readonly Label _nameLabel;
     private readonly Label _priceLabel;
+    private readonly int _price;
 
     private const int PADDING_Y = 5, PADDING_X = 15;
 
@@ -28,6 +30,7 @@ internal sealed class TurretPurchaseButton : Button
         float layerDepth)
         : base(position, origin, sprite, idleColor, hoveredColor, scale, layerDepth)
     {
+        _price = price;
         _nameLabel = CreateNameLabel(name, nameFont, scale, out var textTopY);
         _priceLabel = CreatePriceLabel(price, priceFont, scale, textTopY);
     }
@@ -95,6 +98,15 @@ internal sealed class TurretPurchaseButton : Button
         priceLabel.CenterOrigin();
 
         return priceLabel;
+    }
+
+    public void Update(int userCoins)
+    {
+        base.Update();
+        
+        _priceLabel.Color = userCoins >= _price?
+            Colors.Game.TurretPurchaseButtonPrices[0]
+            :  Colors.Game.TurretPurchaseButtonPrices[1];
     }
 
     public override void Draw(SpriteBatch spriteBatch)

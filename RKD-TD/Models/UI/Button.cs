@@ -50,7 +50,7 @@ public class Button
             (int)_sprite.Height);
     }
 
-    public void Update()
+    public virtual void Update()
     {
         var exHovered = _hovered;
 

@@ -142,7 +142,7 @@ internal sealed class Turret
     {
         if (_selected)
         {
-            Circle.DrawCircle(spriteBatch, Camera, _position, _firingDistance[_level], Colors.Game.TurretRadiusColor);
+            Circle.DrawCircle(spriteBatch, Camera, _position, _firingDistance[_level], Colors.Game.TurretRadius);
             _selector.Draw(spriteBatch, _position, Camera);
         }
 
@@ -152,7 +152,7 @@ internal sealed class Turret
 
     private void SetLevelColors()
     {
-        var color = Colors.Game.TurretColors[_level];
+        var color = Colors.Game.TurretLevels[_level];
         _barrelSprite.Color = color;
         _carriageSprite.Color = color;
     }

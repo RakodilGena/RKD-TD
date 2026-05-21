@@ -85,7 +85,7 @@ internal sealed class TurretPurchasePanel
         _hidden = false;
     }
 
-    public void Update()
+    public void Update(int userCoins)
     {
         if (_hidden)
         {
@@ -96,7 +96,7 @@ internal sealed class TurretPurchasePanel
             _hideButton.Update();
             foreach (var turretPurchaseButton in _turretPurchaseButtons)
             {
-                turretPurchaseButton.Update();
+                turretPurchaseButton.Update(userCoins);
             }
         }
     }

@@ -65,7 +65,7 @@ internal sealed class PauseMenu
 
     private static Sprite CreateSprite(TextureAtlas gameObjectsTextures)
     {
-        var menuTexture = gameObjectsTextures.GetRegion(Textures.Game.PAUSE_MENU);
+        var menuTexture = gameObjectsTextures.GetRegion(Textures.Game.PANEL);
         var menuSprite = new Sprite(menuTexture)
         {
             Origin = new Vector2(menuTexture.Width * 0.5f, 0),

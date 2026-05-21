@@ -491,7 +491,7 @@ internal sealed class GamingScene : Scene
     {
         Debug.Assert(_gameState is not GameState.PlacingTurret);
 
-        _turretPurchasePanel.Update();
+        _turretPurchasePanel.Update(_userResources.Coins);
 
         if (_clickConsumed)
             return;
