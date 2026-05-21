@@ -638,8 +638,6 @@ internal sealed class GamingScene : Scene
         if (_pendingTurret is null)
             return false;
 
-        Console.WriteLine($"TURRET {_pendingTurret.Type} placed at [{cell.WorldPosition.X},{cell.WorldPosition.Y}]");
-
         var turret = _turretFactory.CreateTurret(cell, _pendingTurret.Type);
 
         turret.Camera = _camera;

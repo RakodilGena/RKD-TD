@@ -85,12 +85,11 @@ internal sealed class TitleScene : Scene
 
     private static void OnSettingsClicked(object? sender, EventArgs eventArgs)
     {
-        Console.WriteLine("Settings clicked!");
     }
 
     private static void OnCreditsClicked(object? sender, EventArgs eventArgs)
     {
-        Console.WriteLine("Credits clicked!");
+        //todo
     }
 
     private static void OnExitClicked(object? sender, EventArgs eventArgs)
