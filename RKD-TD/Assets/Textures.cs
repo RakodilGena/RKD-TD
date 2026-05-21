@@ -5,6 +5,7 @@ internal static class Textures
     public static class MainTitle
     {
         public const string MAIN_MENU_BUTTON = "main_menu_button";
+        public const string BACKGROUND = "main_menu_background";
     }
 
     public static class MapSelection
@@ -12,6 +13,8 @@ internal static class Textures
         public const string BUTTON_300_100 = "button_300_100";
 
         public const string MAP_BLANK_500_300 = "map_blank_500_300";
+
+        public const string BACKGROUND = "map_selection_background";
     }
 
     public static class Game

@@ -29,8 +29,8 @@ internal sealed class GameEndingAnimation
             GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height) * 0.5f;
 
         var color = isVictory
-            ? Colors.Game.Ending.Victory
-            : Colors.Game.Ending.Defeat;
+            ? Colors.Game.EndingTitle.Victory
+            : Colors.Game.EndingTitle.Defeat;
 
         var font = GlobalAssets.FontAtlas.GetFont(Fonts.ENDING_TEXT);
         _label = new BorderedLabel(font)
@@ -39,7 +39,7 @@ internal sealed class GameEndingAnimation
             Position = position,
             Color = color,
             Scale = new Vector2(INITIAL_SCALE),
-            BorderColor = Colors.Game.Ending.Borders,
+            BorderColor = Colors.Game.EndingTitle.Borders,
             BorderWidth = new Vector2(LABEL_BORDER_WIDTH)
         };
         _label.CenterOrigin();

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Assets;
 
 namespace RKD_TD.Scenes.Gaming;
 
@@ -100,13 +101,13 @@ internal sealed class Portals
             }).ToArray();
 
         var startingPortal = gameObjectsTextures.CreateRotatingSprite(portalSpriteName);
-        startingPortal.Color = Color.LawnGreen;
+        startingPortal.Color = Colors.Game.Portals.Starting;
         startingPortal.RotationDirection = 1;
         startingPortal.RotationSpeedDegreesPerSecond = 10;
         startingPortal.CenterOrigin();
 
         var endingPortal = gameObjectsTextures.CreateRotatingSprite(portalSpriteName);
-        endingPortal.Color = Color.Red;
+        endingPortal.Color = Colors.Game.Portals.Ending;
         endingPortal.Effects = SpriteEffects.FlipHorizontally;
         endingPortal.RotationDirection = -1;
         endingPortal.RotationSpeedDegreesPerSecond = 10;

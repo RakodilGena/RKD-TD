@@ -2,11 +2,15 @@
 <TextureAtlas>
     <Texture>images/map-selection/ms-atlas</Texture>
     <Regions>
-        <Region name="map_blank_500_300" x="8" y="0" width="500" height="300"/>
 
-        <Region name="map1_500_300" x="518" y="0" width="500" height="300"/>
+        <Region name="map_selection_background" x="10" y="10" width="1920" height="1080"/>
 
-        <Region name="button_300_100" x="10" y="310" width="300" height="100"/>
+        <Region name="map_blank_500_300" x="8" y="1130" width="500" height="300"/>
+
+        <Region name="map1_500_300" x="518" y="1130" width="500" height="300"/>
+
+        <Region name="button_300_100" x="10" y="1440" width="300" height="100"/>
+
     </Regions>
 </TextureAtlas>
 

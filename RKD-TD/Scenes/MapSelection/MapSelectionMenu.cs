@@ -13,12 +13,6 @@ namespace RKD_TD.Scenes.MapSelection;
 
 internal sealed class MapSelectionMenu
 {
-    private static readonly Color MapIdleColor = Color.White;
-    private static readonly Color MapHoveredColor = Color.DarkGray;
-
-    private static readonly Color BlankMapIdleColor = Color.Wheat;
-    private static readonly Color BlankMapHoveredColor = Color.Gray;
-
     private readonly MapPreview[] _maps;
 
     private const int
@@ -66,8 +60,8 @@ internal sealed class MapSelectionMenu
             scale: Vector2.One,
             mapNameFont,
             mapNameScale: Vector2.One,
-            mapNameColor: Color.Black,
-            mapNameBorderColor: Color.White,
+            mapNameColor: Colors.Buttons.Text,
+            mapNameBorderColor: Colors.Buttons.TextBorders,
             mapNameBorderWidth: new Vector2(2, 2),
             layerDepth: 1);
     }
@@ -87,13 +81,13 @@ internal sealed class MapSelectionMenu
             mapPosition,
             origin: Vector2.Zero,
             sprite,
-            BlankMapIdleColor,
-            BlankMapHoveredColor,
+            Colors.Buttons.Idle,
+            Colors.Buttons.Hovered,
             scale: Vector2.One,
             mapNameFont,
             mapNameScale: Vector2.One,
-            mapNameColor: Color.Black,
-            mapNameBorderColor: Color.White,
+            mapNameColor: Colors.Buttons.Text,
+            mapNameBorderColor: Colors.Buttons.TextBorders,
             mapNameBorderWidth: new Vector2(2, 2),
             layerDepth: 1);
     }
@@ -157,16 +151,14 @@ internal sealed class MapSelectionMenu
 
             var textureAlias = region.Attribute("textureAlias")?.Value;
             Sprite sprite;
-            Color idle, hovered;
+
             if (string.IsNullOrWhiteSpace(textureAlias))
             {
-                (idle, hovered) = (BlankMapIdleColor, BlankMapHoveredColor);
                 sprite = textures.CreateSprite(Textures.MapSelection.MAP_BLANK_500_300);
             }
             else
             {
                 sprite = textures.CreateSprite(textureAlias);
-                (idle, hovered) = (MapIdleColor, MapHoveredColor);
             }
 
             var map = CreateMap(
@@ -176,8 +168,8 @@ internal sealed class MapSelectionMenu
                 mapFileName!,
                 mapIndex: maps.Count,
                 sprite,
-                idle,
-                hovered);
+                Colors.Buttons.Idle,
+                Colors.Buttons.Hovered);
 
             maps.Add(map);
         }

@@ -26,8 +26,8 @@ internal sealed class TurretSellButton : Button
         _textLabel = new BorderedLabel(
             font: GlobalAssets.FontAtlas.GetFont(Fonts.TURRET_ACTION_BUTTON_TEXT))
         {
-            Color = Colors.Game.TurretLabels.Text,
-            BorderColor = Colors.Game.TurretLabels.Borders,
+            Color = Colors.Buttons.Text,
+            BorderColor = Colors.Buttons.TextBorders,
             BorderWidth = new Vector2(LABEL_BORDER_WIDTH)
         };
 

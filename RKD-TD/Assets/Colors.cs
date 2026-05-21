@@ -4,6 +4,32 @@ namespace RKD_TD.Assets;
 
 internal static class Colors
 {
+    public static class Buttons
+    {
+        public static readonly Color
+            Text = Color.White,
+            TextBorders = Color.Black;
+
+
+        public static readonly Color
+            Idle = Color.White,
+            Hovered = Color.DarkGray;
+    }
+
+    public static class MainTitle
+    {
+        public static readonly Color
+            TitleColor = Color.White,
+            TitleBorders = Color.Black;
+    }
+
+    public static class MapSelection
+    {
+        public static readonly Color
+            TitleColor = Color.White,
+            TitleBorders = Color.Black;
+    }
+
     public static class Game
     {
         public static readonly Color TurretRadius = new(0, 0, 0, alpha: 80);
@@ -13,29 +39,62 @@ internal static class Colors
             new(174, 192, 192),
             new(66, 153, 225),
             new(236, 175, 42)
-            // new(88, 152, 188),
-            // new(255, 172, 79),
-            // new(200, 0, 0)
         ];
-
-        public static class TurretLabels
-        {
-            public static readonly Color Text = Color.White;
-            public static readonly Color Borders = Color.Black;
-        }
 
         public static class TurretPrices
         {
-            public static readonly Color Affordable = Color.Goldenrod;
-            public static readonly Color Unaffordable = Color.DarkRed;
-            public static readonly Color Borders = Color.Black;
+            public static readonly Color
+                Affordable = Color.Goldenrod,
+                Unaffordable = Color.DarkRed,
+                Borders = Color.Black;
         }
 
-        public static class Ending
+        public static class EndingTitle
         {
-            public static readonly Color Victory = Color.Goldenrod; //new (255,215,0);
-            public static readonly Color Defeat = Color.DarkRed;
-            public static readonly Color Borders = Color.Black;
+            public static readonly Color
+                Victory = Color.Goldenrod,
+                Defeat = Color.DarkRed,
+                Borders = Color.Black;
+        }
+
+        public static class HealthBar
+        {
+            public static readonly Color
+                Borders = Color.Black,
+                Background = Color.Red,
+                Filler = Color.LawnGreen;
+        }
+
+        public static readonly Color EnemyDying = Color.DarkGray;
+
+        public static class Portals
+        {
+            public static readonly Color
+                Starting = Color.LawnGreen,
+                Ending = Color.Red;
+        }
+
+        public static class Labels
+        {
+            public static readonly Color
+                Text = Color.White,
+                TextBorders = Color.Black;
+        }
+
+        public static class CellHighlight
+        {
+            public static readonly Color
+                Available = new(0, 255, 0, 60),
+                NotAvailable = new(255, 0, 0, 60);
+        }
+
+        public static class GameClock
+        {
+            public static readonly Color
+                Idle = Color.White,
+                Hovered = Color.DarkGray,
+                Toggled = Color.Orange,
+                ToggledHovered = Color.DarkOrange;
         }
     }
 }

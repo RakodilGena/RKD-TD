@@ -28,8 +28,6 @@ internal sealed class TurretActionsPanel
         DamageLabelScale = 0.7f,
         DamageCounterScaleX = 0.8f;
 
-    private static readonly Color ButtonIdleColor = Color.White;
-    private static readonly Color ButtonHoveredColor = Color.DarkGray;
 
     public event EventHandler? UpgradeButtonClicked;
     public event EventHandler? SellButtonClicked;
@@ -64,15 +62,15 @@ internal sealed class TurretActionsPanel
 
         _turretDefinition = new BorderedLabel(labelTextFont)
         {
-            Color = Colors.Game.TurretLabels.Text,
-            BorderColor = Colors.Game.TurretLabels.Borders,
+            Color = Colors.Buttons.Text,
+            BorderColor = Colors.Buttons.TextBorders,
             BorderWidth = new Vector2(LABEL_BORDER_WIDTH),
         };
 
         _turretLevel = new BorderedLabel(levelTextFont)
         {
-            Color = Colors.Game.TurretLabels.Text,
-            BorderColor = Colors.Game.TurretLabels.Borders,
+            Color = Colors.Buttons.Text,
+            BorderColor = Colors.Buttons.TextBorders,
             BorderWidth = new Vector2(LABEL_BORDER_WIDTH)
         };
 
@@ -99,8 +97,8 @@ internal sealed class TurretActionsPanel
             upgradeButtonPosition,
             origin: Vector2.Zero,
             upgradeButtonSprite,
-            ButtonIdleColor,
-            ButtonHoveredColor,
+            Colors.Buttons.Idle,
+            Colors.Buttons.Hovered,
             buttonScale);
         _upgradeButton.Clicked += (_, _) => UpgradeButtonClicked?.Invoke(this, EventArgs.Empty);
 
@@ -115,8 +113,8 @@ internal sealed class TurretActionsPanel
             sellButtonPosition,
             origin: Vector2.Zero,
             sellButtonSprite,
-            ButtonIdleColor,
-            ButtonHoveredColor,
+            Colors.Buttons.Idle,
+            Colors.Buttons.Hovered,
             buttonScale);
         _sellButton.Clicked += (_, _) => SellButtonClicked?.Invoke(this, EventArgs.Empty);
 
@@ -125,8 +123,8 @@ internal sealed class TurretActionsPanel
         {
             Text = "Damage dealt: ",
             Scale = new Vector2(DamageLabelScale),
-            Color = Colors.Game.TurretLabels.Text,
-            BorderColor = Colors.Game.TurretLabels.Borders,
+            Color = Colors.Buttons.Text,
+            BorderColor = Colors.Buttons.TextBorders,
             BorderWidth = new Vector2(DAMAGE_COUNTER_BORDER_WIDTH),
             Position = new Vector2(center.X, Bounds.Y + DAMAGE_LABEL_OFFSET_Y)
         };
@@ -136,8 +134,8 @@ internal sealed class TurretActionsPanel
         {
             Text = "0",
             Scale = new Vector2(DamageLabelScale) * new Vector2(DamageCounterScaleX, 1),
-            Color = Colors.Game.TurretLabels.Text,
-            BorderColor = Colors.Game.TurretLabels.Borders,
+            Color = Colors.Buttons.Text,
+            BorderColor = Colors.Buttons.TextBorders,
             BorderWidth = new Vector2(DAMAGE_COUNTER_BORDER_WIDTH),
             Position = new Vector2(center.X, Bounds.Y + DAMAGE_COUNTER_OFFSET_Y)
         };

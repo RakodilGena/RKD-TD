@@ -23,8 +23,6 @@ internal sealed class TurretPurchasePanel
 
     private readonly Rectangle _panelBounds;
 
-    private static readonly Color ButtonIdleColor = Color.White;
-    private static readonly Color ButtonHoveredColor = Color.DarkGray;
 
     public TurretPurchasePanel(
         Vector2 position,
@@ -130,8 +128,8 @@ internal sealed class TurretPurchasePanel
             position,
             origin: Vector2.Zero,
             hideButton,
-            ButtonIdleColor,
-            ButtonHoveredColor,
+            Colors.Buttons.Idle,
+            Colors.Buttons.Hovered,
             scale,
             layerDepth: panelLayerDepth);
     }
@@ -151,8 +149,8 @@ internal sealed class TurretPurchasePanel
             position,
             origin: Vector2.Zero,
             showButton,
-            ButtonIdleColor,
-            ButtonHoveredColor,
+            Colors.Buttons.Idle,
+            Colors.Buttons.Hovered,
             scale,
             layerDepth: panelLayerDepth);
     }
@@ -269,8 +267,8 @@ internal sealed class TurretPurchasePanel
             position,
             origin: Vector2.Zero,
             sprite,
-            ButtonIdleColor,
-            ButtonHoveredColor,
+            Colors.Buttons.Idle,
+            Colors.Buttons.Hovered,
             scale: new Vector2(scale),
             buttonLayerDepth);
     }

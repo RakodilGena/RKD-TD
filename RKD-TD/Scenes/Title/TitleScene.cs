@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Labels;
+using MonoGameLibrary.Graphics.Sprites;
 using MonoGameLibrary.Scenes;
 using RKD_TD.Assets;
 using RKD_TD.Scenes.MapSelection;
@@ -11,8 +12,10 @@ namespace RKD_TD.Scenes.Title;
 
 internal sealed class TitleScene : Scene
 {
+    private Sprite _background = null!;
     private Label _gameTitle = null!;
     private TitleMenu _titleMenu = null!;
+
     private TextureAtlas _tsAtlas = null!;
 
     public override void Initialize()
@@ -23,6 +26,7 @@ internal sealed class TitleScene : Scene
 
         InitTitleLabel();
         InitTitleMenu();
+        InitBackground();
     }
 
     public override void LoadContent()
@@ -32,6 +36,11 @@ internal sealed class TitleScene : Scene
         _tsAtlas = TextureAtlas.FromFile(
             Content,
             fileName: "images/main-title/mt-atlas-definition.xml");
+    }
+
+    private void InitBackground()
+    {
+        _background = _tsAtlas.CreateSprite(Textures.MainTitle.BACKGROUND);
     }
 
     private void InitTitleLabel()
@@ -46,16 +55,16 @@ internal sealed class TitleScene : Scene
         _gameTitle = new BorderedLabel(
             position: new Vector2(
                 screenCenter,
-                80),
+                0),
             origin: new Vector2(
                 textCenter.X,
                 0),
             mainTitleText,
             kwFont180,
-            color: Color.Green,
+            color: Colors.MainTitle.TitleColor,
             scale: Vector2.One,
             layerDepth: 1,
-            borderColor: Color.Black,
+            borderColor: Colors.MainTitle.TitleBorders,
             borderWidth: new Vector2(3));
     }
 
@@ -105,6 +114,7 @@ internal sealed class TitleScene : Scene
 
         sb.Begin();
 
+        _background.Draw(sb, new Vector2(0));
         _gameTitle.Draw(sb);
         _titleMenu.Draw(sb);
 

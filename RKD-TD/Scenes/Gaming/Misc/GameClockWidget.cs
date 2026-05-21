@@ -126,12 +126,6 @@ internal sealed class GameClockWidget
         string spriteName,
         int btnIndex)
     {
-        Color idleColor = Color.White,
-            hoveredColor = Color.DarkGray,
-            toggledColor = Color.Orange,
-            toggledHoveredColor = Color.DarkOrange;
-
-
         var sprite = textures.CreateSprite(spriteName);
         var scale = new Vector2(ICON_SIZE_X / sprite.Width, ICON_SIZE_Y / sprite.Height);
         sprite.Scale = scale;
@@ -141,10 +135,10 @@ internal sealed class GameClockWidget
         return new ButtonToggled(
             sprite,
             position: widgetPosition + iconMargin,
-            idleColor,
-            hoveredColor,
-            toggledColor,
-            toggledHoveredColor);
+            Colors.Game.GameClock.Idle,
+            Colors.Game.GameClock.Hovered,
+            Colors.Game.GameClock.Toggled,
+            Colors.Game.GameClock.ToggledHovered);
     }
 
     public void SwitchPaused()

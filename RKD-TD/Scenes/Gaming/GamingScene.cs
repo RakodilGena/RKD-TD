@@ -258,7 +258,7 @@ internal sealed class GamingScene : Scene
 
     public override void Draw(GameTime gameTime)
     {
-        Core.GraphicsDevice.Clear(new Color(30, 30, 30));
+        Core.GraphicsDevice.Clear(Color.DarkGray);
 
         //order of calling draw is important here because apparently by default layerDepth is ignored
         //thus the later draw is called, the higher it is drawn.

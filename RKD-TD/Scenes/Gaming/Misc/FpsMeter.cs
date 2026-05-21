@@ -15,8 +15,8 @@ internal sealed class FpsMeter
         _label = new BorderedLabel(font)
         {
             Position = position,
-            Color = Color.White,
-            BorderColor = Color.Black,
+            Color = Colors.Game.Labels.Text,
+            BorderColor = Colors.Game.Labels.TextBorders,
             BorderWidth = new Vector2(2f)
         };
     }

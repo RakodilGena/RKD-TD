@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Geometrics;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Assets;
 using RKD_TD.Scenes.Gaming.Enemies.HealthBars;
 using RKD_TD.Scenes.Gaming.Enemies.Spawns;
 
@@ -49,7 +50,6 @@ internal class Enemy
         }
     }
 
-    private readonly Color _dyingColor = Color.DarkGray;
     private readonly float _dyingTimeSec = 1f;
     private float _dyingTimer, _dyingAngle;
     private Vector2 _dyingShrink;
@@ -155,7 +155,7 @@ internal class Enemy
 
         State = EnemyState.Dying;
 
-        _sprite.Color = _dyingColor;
+        _sprite.Color = Colors.Game.EnemyDying;
         _dyingAngle = MathF.PI / _dyingTimeSec;
         _dyingShrink = _sprite.Scale / _dyingTimeSec;
         return true;

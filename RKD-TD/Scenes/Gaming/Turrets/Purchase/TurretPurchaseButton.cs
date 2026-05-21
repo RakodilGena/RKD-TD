@@ -10,11 +10,13 @@ namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 
 internal sealed class TurretPurchaseButton : Button
 {
+    private const int PADDING_Y = 5, PADDING_X = 15;
+    private const int LABEL_BORDER_WIDTH = 2;
+
     private readonly Label _nameLabel;
     private readonly Label _priceLabel;
     private readonly int _price;
 
-    private const int PADDING_Y = 5, PADDING_X = 15;
 
     public TurretPurchaseButton(
         string name,
@@ -54,10 +56,10 @@ internal sealed class TurretPurchaseButton : Button
 
         var nameLabel = new BorderedLabel(name, font)
         {
-            Color = Colors.Game.TurretLabels.Text,
-            BorderColor = Colors.Game.TurretLabels.Borders,
+            Color = Colors.Buttons.Text,
+            BorderColor = Colors.Buttons.TextBorders,
 
-            BorderWidth = new Vector2(2),
+            BorderWidth = new Vector2(LABEL_BORDER_WIDTH),
             Position = position,
             Scale = new Vector2(nameLabelScaleX, scale.Y)
         };
@@ -91,7 +93,7 @@ internal sealed class TurretPurchaseButton : Button
             Color = Colors.Game.TurretPrices.Affordable,
             BorderColor = Colors.Game.TurretPrices.Borders,
 
-            BorderWidth = new Vector2(2),
+            BorderWidth = new Vector2(LABEL_BORDER_WIDTH),
             Position = position,
             Scale = scale
         };

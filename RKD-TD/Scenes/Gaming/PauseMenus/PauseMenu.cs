@@ -11,9 +11,6 @@ namespace RKD_TD.Scenes.Gaming.PauseMenus;
 
 internal sealed class PauseMenu
 {
-    private static readonly Color ButtonIdleColor = Color.DarkGray;
-    private static readonly Color ButtonHoveredColor = Color.Gray;
-
     private const int
         SIZE_X = 400,
         SIZE_Y = 600,
@@ -90,8 +87,8 @@ internal sealed class PauseMenu
         var label = new BorderedLabel(LABEL_TEXT, font)
         {
             Position = position,
-            Color = Color.Black,
-            BorderColor = Color.White,
+            Color = Colors.Buttons.Text,
+            BorderColor = Colors.Buttons.TextBorders,
             BorderWidth = new Vector2(LABEL_BORDER_WIDTH),
             Origin = new Vector2(size.X * 0.5f, 0)
         };
@@ -143,14 +140,14 @@ internal sealed class PauseMenu
             position,
             origin,
             sprite,
-            ButtonIdleColor,
-            ButtonHoveredColor,
+            Colors.Buttons.Idle,
+            Colors.Buttons.Hovered,
             scale,
             text,
             font,
             textScale: Vector2.One,
-            textColor: Color.Black,
-            borderColor: Color.White,
+            textColor: Colors.Buttons.Text,
+            borderColor: Colors.Buttons.TextBorders,
             borderWidth: new Vector2(BUTTON_TEXT_BORDER_WIDTH),
             1f);
     }

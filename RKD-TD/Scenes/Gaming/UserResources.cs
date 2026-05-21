@@ -15,7 +15,8 @@ internal sealed class UserResources
         ICON_SIZE_PX = 40,
         LABEL_MARGIN_X_PX = 10,
         COINS_MARGIN_PX = 60,
-        LABEL_PADDING_Y_PX = -4;
+        LABEL_PADDING_Y_PX = -4,
+        LABEL_BORDER_WIDTH = 2;
 
 
     private Vector2 _healthSpritePosition, _coinsSpritePosition;
@@ -70,15 +71,15 @@ internal sealed class UserResources
 
         _healthLabel = new BorderedLabel(font)
         {
-            Color = Color.White,
-            BorderColor = Color.Black,
-            BorderWidth = new Vector2(2f)
+            Color = Colors.Game.Labels.Text,
+            BorderColor = Colors.Game.Labels.TextBorders,
+            BorderWidth = new Vector2(LABEL_BORDER_WIDTH)
         };
         _coinsLabel = new BorderedLabel(font)
         {
-            Color = Color.White,
-            BorderColor = Color.Black,
-            BorderWidth = new Vector2(2f)
+            Color = Colors.Game.Labels.Text,
+            BorderColor = Colors.Game.Labels.TextBorders,
+            BorderWidth = new Vector2(LABEL_BORDER_WIDTH)
         };
 
         Health = health;

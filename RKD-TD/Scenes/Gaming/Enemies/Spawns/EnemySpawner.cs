@@ -69,8 +69,8 @@ internal sealed class EnemySpawner
         var label = new BorderedLabel(text, font)
         {
             Position = labelPosition,
-            Color = Color.White,
-            BorderColor = Color.Black,
+            Color = Colors.Game.Labels.Text,
+            BorderColor = Colors.Game.Labels.TextBorders,
             BorderWidth = new Vector2(2f)
         };
         label.CenterOrigin();
@@ -92,8 +92,8 @@ internal sealed class EnemySpawner
         var label = new BorderedLabel(font)
         {
             Position = labelPosition,
-            Color = Color.White,
-            BorderColor = Color.Black,
+            Color = Colors.Game.Labels.Text,
+            BorderColor = Colors.Game.Labels.TextBorders,
             BorderWidth = new Vector2(2f)
         };
 

@@ -9,9 +9,6 @@ namespace RKD_TD.Scenes.Title;
 
 public sealed class TitleMenu
 {
-    private static readonly Color ButtonIdleColor = Color.DarkGray;
-    private static readonly Color ButtonHoveredColor = Color.Gray;
-
     private readonly ButtonLabeled[] _menuButtons;
 
     public event EventHandler?
@@ -90,14 +87,14 @@ public sealed class TitleMenu
             position: position,
             origin: Vector2.Zero,
             sprite,
-            ButtonIdleColor,
-            ButtonHoveredColor,
+            Colors.Buttons.Idle,
+            Colors.Buttons.Hovered,
             scale: Vector2.One,
             text: label,
             font,
             textScale: Vector2.One,
-            textColor: Color.Black,
-            borderColor: Color.White,
+            textColor: Colors.Buttons.Text,
+            borderColor: Colors.Buttons.TextBorders,
             borderWidth: new Vector2(3, 3),
             layerDepth: 0.5f);
     }

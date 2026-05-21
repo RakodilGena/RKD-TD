@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
+using RKD_TD.Assets;
 using RKD_TD.Helpers;
 using RKD_TD.Scenes.Gaming.Enemies.HealthBars;
 
@@ -283,11 +284,11 @@ internal sealed class EnemyFactory
                 cfg.Borders,
                 cfg.BordersTexture,
                 bordersScale,
-                BordersColor: Color.Black,
+                BordersColor: Colors.Game.HealthBar.Borders,
                 cfg.BackgroundTexture,
-                BackgroundColor: Color.Red,
+                BackgroundColor: Colors.Game.HealthBar.Background,
                 cfg.FillerTexture,
-                FillerColor: Color.LawnGreen,
+                FillerColor: Colors.Game.HealthBar.Filler,
                 fillerScale);
         }
     }

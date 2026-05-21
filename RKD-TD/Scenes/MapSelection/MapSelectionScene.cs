@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Labels;
+using MonoGameLibrary.Graphics.Sprites;
 using MonoGameLibrary.Scenes;
 using RKD_TD.Assets;
 using RKD_TD.Models.UI;
@@ -13,9 +14,7 @@ namespace RKD_TD.Scenes.MapSelection;
 
 internal sealed class MapSelectionScene : Scene
 {
-    private static readonly Color ButtonIdleColor = Color.DarkGray;
-    private static readonly Color ButtonHoveredColor = Color.Gray;
-
+    private Sprite _background = null!;
     private Label _selectMapLabel = null!;
     private MapSelectionMenu _mapSelectionMenu = null!;
     private ButtonLabeled _backButton = null!;
@@ -33,6 +32,7 @@ internal sealed class MapSelectionScene : Scene
         InitTitle(screenCenter);
         InitBackButton();
         InitMapSelectionMenu();
+        InitBackground();
     }
 
     private void InitTitle(int screenCenter)
@@ -51,11 +51,11 @@ internal sealed class MapSelectionScene : Scene
                 0),
             mstText,
             mstFont,
-            Color.Black,
+            color: Colors.MapSelection.TitleColor,
             scale: Vector2.One,
             layerDepth: 1,
             borderWidth: new Vector2(2),
-            borderColor: Color.White);
+            borderColor: Colors.MapSelection.TitleBorders);
     }
 
     private void InitBackButton()
@@ -71,14 +71,14 @@ internal sealed class MapSelectionScene : Scene
             position: new Vector2(1570, 930),
             origin: Vector2.Zero,
             sprite,
-            ButtonIdleColor,
-            ButtonHoveredColor,
+            Colors.Buttons.Idle,
+            Colors.Buttons.Hovered,
             scale: Vector2.One,
             btnText,
             btnFont,
             textScale: Vector2.One,
-            textColor: Color.Black,
-            borderColor: Color.White,
+            textColor: Colors.Buttons.Text,
+            borderColor: Colors.Buttons.TextBorders,
             borderWidth: new Vector2(2, 2),
             layerDepth: 1f);
 
@@ -94,6 +94,11 @@ internal sealed class MapSelectionScene : Scene
             mapsFileName: "maps/maps.xml");
 
         _mapSelectionMenu.MapClicked += OnMapClicked;
+    }
+
+    private void InitBackground()
+    {
+        _background = _msAtlas.CreateSprite(Textures.MapSelection.BACKGROUND);
     }
 
     private static void OnMapClicked(object? sender, MapPreview mapPreview)
@@ -142,6 +147,7 @@ internal sealed class MapSelectionScene : Scene
         var sb = Core.SpriteBatch;
         sb.Begin();
 
+        _background.Draw(sb, new Vector2(0));
         _selectMapLabel.Draw(sb);
         _mapSelectionMenu.Draw(sb);
         _backButton.Draw(sb);

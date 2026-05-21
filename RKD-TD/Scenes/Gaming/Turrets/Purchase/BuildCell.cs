@@ -53,8 +53,8 @@ internal sealed class BuildCell
 
         // green = valid, red = blocked
         Color highlight = canPlace
-            ? new Color(0, 255, 0, 60)
-            : new Color(255, 0, 0, 60);
+            ? Colors.Game.CellHighlight.Available
+            : Colors.Game.CellHighlight.NotAvailable;
 
         spriteBatch.Draw(
             turret.Texture,
