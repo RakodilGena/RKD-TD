@@ -17,12 +17,15 @@ internal sealed class PauseMenu
     private const int
         SIZE_X = 400,
         SIZE_Y = 600,
-        BORDER_WIDTH = 3,
         POSITION_X = 1920 / 2,
+        
         LABEL_OFFSET_Y = 30,
+        LABEL_BORDER_WIDTH = 3,
+        
         BUTTON_SIZE_X = 300,
         BUTTON_SIZE_Y = 100,
-        BUTTON_BORDER_WIDTH = 2,
+        BUTTON_TEXT_BORDER_WIDTH = 2,
+        
         RESUME_BTN_OFFSET_Y = 140,
         EXIT_TO_MAP_SELECTION_BTN_OFFSET_Y = 340,
         EXIT_GAME_BTN_OFFSET_Y = 450;
@@ -92,7 +95,7 @@ internal sealed class PauseMenu
             Position = position,
             Color = Color.Black,
             BorderColor = Color.White,
-            BorderWidth = new Vector2(BORDER_WIDTH),
+            BorderWidth = new Vector2(LABEL_BORDER_WIDTH),
             Origin = new Vector2(size.X * 0.5f, 0)
         };
         return label;
@@ -151,7 +154,7 @@ internal sealed class PauseMenu
             textScale: Vector2.One,
             textColor: Color.Black,
             borderColor: Color.White,
-            borderWidth: new Vector2(BUTTON_BORDER_WIDTH),
+            borderWidth: new Vector2(BUTTON_TEXT_BORDER_WIDTH),
             1f);
     }
 

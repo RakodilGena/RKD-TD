@@ -16,6 +16,7 @@ namespace RKD_TD.Scenes.Gaming.Turrets.Active;
 
 internal sealed class Turret
 {
+    public string Name { get; }
     private readonly Sprite _barrelSprite, _carriageSprite;
     private readonly Vector2 _position;
 
@@ -96,6 +97,8 @@ internal sealed class Turret
         ProjectileFactory projectileFactory,
         FlashFactory flashFactory)
     {
+        Name = turretTemplate.Name;
+        
         _barrelSprite = barrelSprite;
         _carriageSprite = carriageSprite;
         SetLevelColors();
@@ -378,6 +381,19 @@ internal sealed class Turret
         _level++;
         _turretBarrel.Upgrade(_level);
         SetLevelColors();
+    }
+
+    public int GetLevel()
+    {
+        return _level;
+    }
+
+    public int GetUpgradePrice()
+    {
+        if (_level is MAX_LEVEL)
+            return -1;
+        
+        return _upgradePrices[_level];
     }
 
     public int GetSellPrice()

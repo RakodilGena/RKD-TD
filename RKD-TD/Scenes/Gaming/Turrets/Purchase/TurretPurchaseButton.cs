@@ -54,8 +54,8 @@ internal sealed class TurretPurchaseButton : Button
 
         var nameLabel = new BorderedLabel(name, font)
         {
-            Color = Color.White,
-            BorderColor = Color.Black,
+            Color = Colors.Game.TurretLabels.Text,
+            BorderColor = Colors.Game.TurretLabels.Borders,
 
             BorderWidth = new Vector2(2),
             Position = position,
@@ -88,8 +88,8 @@ internal sealed class TurretPurchaseButton : Button
 
         var priceLabel = new BorderedLabel(priceText, font)
         {
-            Color = Color.Goldenrod,
-            BorderColor = Color.Black,
+            Color = Colors.Game.TurretPrices.Affordable,
+            BorderColor = Colors.Game.TurretPrices.Borders,
 
             BorderWidth = new Vector2(2),
             Position = position,
@@ -103,10 +103,10 @@ internal sealed class TurretPurchaseButton : Button
     public void Update(int userCoins)
     {
         base.Update();
-        
-        _priceLabel.Color = userCoins >= _price?
-            Colors.Game.TurretPurchaseButtonPrices[0]
-            :  Colors.Game.TurretPurchaseButtonPrices[1];
+
+        _priceLabel.Color = userCoins >= _price
+            ? Colors.Game.TurretPrices.Affordable
+            : Colors.Game.TurretPrices.Unaffordable;
     }
 
     public override void Draw(SpriteBatch spriteBatch)

@@ -18,10 +18,18 @@ internal static class Colors
             // new(200, 0, 0)
         ];
 
-        public static readonly Color[] TurretPurchaseButtonPrices =
-        [
-            Color.Goldenrod,
-            Color.DarkRed
-        ];
+        public static class TurretLabels
+        {
+            public static readonly Color Text = Color.White;
+            public static readonly Color Borders = Color.Black;
+        }
+
+        public static class TurretPrices
+        {
+            public static readonly Color Affordable = Color.Goldenrod;
+            public static readonly Color Unaffordable = Color.DarkRed;
+            public static readonly Color Borders = Color.Black;
+        }
+        
     }
 }

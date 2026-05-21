@@ -15,5 +15,11 @@
 
         <Font name="pause_menu_btn_text"/>
         <Font name="pause_menu_title_text"/>
+
+        <Font name="turret_action_panel_label_text"/>
+        <Font name="turret_action_panel_lvl_text"/>
+
+        
+        
     </Fonts>
 </FontAtlas>

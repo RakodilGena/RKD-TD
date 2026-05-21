@@ -19,6 +19,7 @@ using RKD_TD.Scenes.Gaming.Flashes;
 using RKD_TD.Scenes.Gaming.Misc;
 using RKD_TD.Scenes.Gaming.PauseMenus;
 using RKD_TD.Scenes.Gaming.Projectiles;
+using RKD_TD.Scenes.Gaming.Turrets.Actions;
 using RKD_TD.Scenes.Gaming.Turrets.Active;
 using RKD_TD.Scenes.Gaming.Turrets.Purchase;
 using RKD_TD.Scenes.MapSelection;
@@ -69,6 +70,8 @@ internal sealed class GamingScene : Scene
     private readonly HashSet<Explosion> _explosions = [];
 
     private Turret? _selectedTurret;
+    private TurretActionsPanel _turretActionsPanel = null!;
+        
 
     private bool _clickConsumed;
 
@@ -90,6 +93,7 @@ internal sealed class GamingScene : Scene
         InitGameClockWidget();
         InitTurretPurchasePanel();
         InitPauseMenu();
+        InitTurretActionsPanel();
 
         //free the memory after the atlas no longer needed.
         _gameObjectsTextures = null!;
@@ -141,6 +145,13 @@ internal sealed class GamingScene : Scene
         _pauseMenu.Resumed += (_, _) => ResumeGame();
         _pauseMenu.ExitedToMainMenu += (_, _) => ToMapSelection();
         _pauseMenu.ExitedGame += (_, _) => Core.Exit();
+    }
+
+    private void InitTurretActionsPanel()
+    {
+        _turretActionsPanel = new TurretActionsPanel(
+            new Vector2(1600, 660),
+            _gameObjectsTextures);
     }
 
     public override void LoadContent()
@@ -296,9 +307,9 @@ internal sealed class GamingScene : Scene
 
             if (_gameState is GameState.TurretSelected && _selectedTurret is not null)
             {
-                //todo: draw turret upgrade panel
+                _turretActionsPanel.Draw(sb);
             }
-
+            
             if (_gameState is GameState.InPauseMenu)
             {
                 _pauseMenu.Draw(sb);
@@ -335,7 +346,7 @@ internal sealed class GamingScene : Scene
         {
             if (_gameState is GameState.TurretSelected && _selectedTurret is not null)
             {
-                //todo: update turret upgrade panel
+                UpdateTurretActionsPanel();
             }
 
             UpdatePurchasePanel();
@@ -419,10 +430,10 @@ internal sealed class GamingScene : Scene
 
     private void HandleMapClicks()
     {
-        var mouse = Core.Input.Mouse;
-
         if (_clickConsumed)
             return;
+        
+        var mouse = Core.Input.Mouse;
 
         if (_gameState is GameState.PlacingTurret)
         {
@@ -487,14 +498,28 @@ internal sealed class GamingScene : Scene
         }
     }
 
+    private void UpdateTurretActionsPanel()
+    {
+        Debug.Assert(_gameState is GameState.TurretSelected);
+        
+        if (_clickConsumed)
+            return;
+        
+        _turretActionsPanel.Update(_userResources.Coins);
+        
+        var mouse = Core.Input.Mouse.Position;
+        if (_turretActionsPanel.Bounds.Contains(mouse))
+            _clickConsumed = true;
+    }
+    
     private void UpdatePurchasePanel()
     {
         Debug.Assert(_gameState is not GameState.PlacingTurret);
 
-        _turretPurchasePanel.Update(_userResources.Coins);
-
         if (_clickConsumed)
             return;
+
+        _turretPurchasePanel.Update(_userResources.Coins);
 
         var mouse = Core.Input.Mouse.Position;
         var bounds = _turretPurchasePanel.GetPanelBounds();
@@ -512,10 +537,10 @@ internal sealed class GamingScene : Scene
 
     private void UpdateGameClockWidget()
     {
-        _gameClockWidget.Update();
-
         if (_clickConsumed)
             return;
+        
+        _gameClockWidget.Update();
 
         var mouse = Core.Input.Mouse.Position;
         if (_gameClockWidget.Bounds.Contains(mouse))
@@ -631,9 +656,11 @@ internal sealed class GamingScene : Scene
 
     private void SelectTurret(Turret turret)
     {
-        _gameState = GameState.TurretSelected;
         turret.Select();
         _selectedTurret = turret;
+        _turretActionsPanel.Initialize(turret);
+            
+        _gameState = GameState.TurretSelected;
     }
 
     private void SellSelectedTurret()

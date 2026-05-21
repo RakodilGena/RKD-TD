@@ -46,12 +46,17 @@ public class Label
         LayerDepth = layerDepth;
     }
 
+    public Vector2 MeasureText()
+    {
+        return Font.MeasureString(Text);
+    }
+
     /// <summary>
     /// Sets the origin of this sprite to the center.
     /// </summary>
     public void CenterOrigin()
     {
-        Origin = Font.MeasureString(Text) / 2;
+        Origin = MeasureText() / 2;
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
