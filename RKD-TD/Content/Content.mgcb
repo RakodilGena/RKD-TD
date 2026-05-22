@@ -166,6 +166,21 @@
 /processorParam:TextureFormat=Color
 /build:images/credits/credits-atlas.bmp
 
+#begin images/cursor/cursor-atlas-definition.xml
+/copy:images/cursor/cursor-atlas-definition.xml
+
+#begin images/cursor/cursor-atlas.bmp
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/cursor/cursor-atlas.bmp
+
 #begin images/game/background.bmp
 /importer:TextureImporter
 /processor:TextureProcessor

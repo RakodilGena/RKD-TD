@@ -23,6 +23,7 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Content\images\credits\"/>
+        <Folder Include="Content\images\cursor\"/>
         <Folder Include="Content\images\icons\"/>
     </ItemGroup>
 </Project>

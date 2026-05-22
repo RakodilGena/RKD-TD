@@ -325,6 +325,8 @@ internal sealed class GamingScene : Scene
 
         _gameEndingAnimation?.Draw(sb);
 
+        GameCore.Cursor.Draw(sb);
+
         sb.End();
         base.Draw(gameTime);
     }
@@ -624,7 +626,7 @@ internal sealed class GamingScene : Scene
 
         _pendingTurret = pendingTurret;
         _gameState = GameState.PlacingTurret;
-        Core.IsMouseVisible = false;
+        GameCore.Cursor.Visible = false;
     }
 
     private void UpdatePlacementMode()
@@ -654,7 +656,7 @@ internal sealed class GamingScene : Scene
         _gameState = GameState.Normal;
         _pendingTurret = null;
         _hoveredCell = null;
-        Core.IsMouseVisible = true;
+        GameCore.Cursor.Visible = true;
     }
 
     private void CancelTurretSelection()

@@ -121,6 +121,8 @@ internal sealed class TitleScene : Scene
         _gameTitle.Draw(sb);
         _titleMenu.Draw(sb);
 
+        GameCore.Cursor.Draw(sb);
+
         sb.End();
 
         base.Draw(gameTime);

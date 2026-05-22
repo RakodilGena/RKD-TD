@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+    <Texture>images/cursor/cursor-atlas</Texture>
+    <Regions>
+        <Region name="cursor_idle" x="0" y="0" width="160" height="200"/>
+        <Region name="cursor_pressed" x="170" y="0" width="160" height="200"/>
+    </Regions>
+</TextureAtlas>

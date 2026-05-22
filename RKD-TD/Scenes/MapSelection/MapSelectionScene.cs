@@ -155,6 +155,8 @@ internal sealed class MapSelectionScene : Scene
         _mapSelectionMenu.Draw(sb);
         _backButton.Draw(sb);
 
+        GameCore.Cursor.Draw(sb);
+
         sb.End();
         base.Draw(gameTime);
     }

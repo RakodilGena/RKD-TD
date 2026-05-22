@@ -191,6 +191,8 @@ internal sealed class CreditsScene : Scene
 
         _backButton.Draw(sb);
 
+        GameCore.Cursor.Draw(sb);
+
         sb.End();
         base.Draw(gameTime);
     }

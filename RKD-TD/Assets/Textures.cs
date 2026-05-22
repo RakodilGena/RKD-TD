@@ -2,6 +2,12 @@ namespace RKD_TD.Assets;
 
 internal static class Textures
 {
+    public static class Cursor
+    {
+        public const string IDLE = "cursor_idle";
+        public const string PRESSED = "cursor_pressed";
+    }
+
     public static class MainTitle
     {
         public const string MAIN_MENU_BUTTON = "main_menu_button";
