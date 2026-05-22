@@ -6,7 +6,8 @@
  * path    vertical pv0, horizontal ph0, top-right  ptr, top-left ptl, left-bottom pbl, right bottom pbr
  * path start/finish     top sft, bottom sfb, left sfl, right sfr
  * bridge vertical  bv0, horizontal bh0
- *
+ * bush/clump/shrub bu0
+ * swamp sw0
  */
 
 //15x11
@@ -16,17 +17,17 @@ using System.Text;
 
 string mapRaw =
     @"
-f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 rv0 f00 
+f00 sw0 f00 f00 f00 bu0 f00 f00 f00 f00 f00 f00 f00 rv0 f00 
 f00 pbr ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 pbl f00 rv0 f00 
-f00 sft f00 f00 f00 f00 f00 f00 f00 f00 f00 pv0 f00 rv0 f00 
-f00 f00 f00 pbr ph0 ph0 ph0 pbl f00 f00 f00 pv0 f00 rv0 f00 
-f00 f00 f00 pv0 f00 f00 f00 pv0 f00 rbr rh0 bv0 rh0 rtl f00 
-f00 f00 f00 pv0 f00 rbr rh0 bv0 rh0 rtl f00 pv0 f00 f00 f00 
-f00 rbr rh0 bv0 rh0 rtl f00 pv0 f00 f00 f00 pv0 f00 f00 f00 
-f00 rv0 f00 pv0 f00 f00 f00 ptr ph0 ph0 ph0 ptl f00 f00 f00 
-f00 rv0 f00 pv0 f00 f00 f00 f00 f00 f00 f00 f00 f00 sfb f00 
+f00 sft f00 f00 f00 f00 f00 f00 f00 f00 sw0 pv0 f00 rv0 f00 
+f00 bu0 f00 pbr ph0 ph0 ph0 pbl f00 f00 f00 pv0 f00 rv0 f00 
+f00 f00 f00 pv0 f00 sw0 f00 pv0 f00 rbr rh0 bv0 rh0 rtl f00 
+f00 f00 f00 pv0 f00 rbr rh0 bv0 rh0 rtl f00 pv0 bu0 f00 f00 
+f00 rbr rh0 bv0 rh0 rtl f00 pv0 bu0 f00 f00 pv0 f00 f00 f00 
+f00 rv0 bu0 pv0 f00 f00 f00 ptr ph0 ph0 ph0 ptl f00 f00 f00 
+f00 rv0 f00 pv0 f00 f00 f00 sw0 f00 f00 f00 f00 f00 sfb f00 
 f00 rv0 f00 ptr ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ptl f00 
-f00 rv0 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 
+f00 rv0 f00 f00 f00 f00 bu0 f00 f00 f00 f00 f00 f00 f00 f00 
 ";
 
 var cellMap = CreateCellsMap();
@@ -129,10 +130,17 @@ static FrozenDictionary<string, string[]> CreateCellsMap()
 //bridges vertical
     mapCells.Add("bv0", ["28", "38"]);
 
+    //unbuildables---------------------------------------
+    //bushes
+    mapCells.Add("bu0", ["40", "41"]);
+
+    //swamps
+    mapCells.Add("sw0", ["42", "43"]);
+
     return mapCells.ToFrozenDictionary();
 }
 
-string GetCellTurretState(string cell)
+static string GetCellTurretState(string cell)
 {
     return cell is "f00"
         ? "01"
