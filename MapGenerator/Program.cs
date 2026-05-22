@@ -72,7 +72,7 @@ static FrozenDictionary<string, string[]> CreateCellsMap()
     Dictionary<string, string[]> mapCells = [];
 
 //fields
-    mapCells.Add("f00", ["00", "10", "20"]);
+    mapCells.Add("f00", ["00", "10", "20", "30"]);
 
     //PATHS-----------------------------------------------
 //path horizontal
