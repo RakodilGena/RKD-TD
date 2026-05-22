@@ -28,6 +28,9 @@ internal sealed class TitleScene : Scene
         InitTitleLabel();
         InitTitleMenu();
         InitBackground();
+
+        //free the memory after the atlas no longer needed.
+        _tsAtlas = null!;
     }
 
     public override void LoadContent()

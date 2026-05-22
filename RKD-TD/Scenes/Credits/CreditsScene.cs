@@ -38,6 +38,9 @@ internal sealed class CreditsScene : Scene
         InitTitle();
         InitBackButton();
         InitCredits();
+
+        //free the memory after the atlas no longer needed.
+        _csAtlas = null!;
     }
 
     private void InitBackground()

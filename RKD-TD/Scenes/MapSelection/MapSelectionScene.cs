@@ -31,6 +31,9 @@ internal sealed class MapSelectionScene : Scene
         InitTitle();
         InitBackButton();
         InitMapSelectionMenu();
+
+        //free the memory after the atlas no longer needed.
+        _msAtlas = null!;
     }
 
     private void InitBackground()
