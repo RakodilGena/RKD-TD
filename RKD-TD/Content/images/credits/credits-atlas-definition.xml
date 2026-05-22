@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas>
+    <Texture>images/credits/credits-atlas</Texture>
+    <Regions>
+
+        <Region name="credits_background" x="10" y="10" width="1920" height="1080"/>
+        <Region name="button_300_100" x="10" y="1130" width="300" height="100"/>
+
+    </Regions>
+</TextureAtlas>
+

@@ -22,6 +22,20 @@
 #begin configs/turretconfig.xml
 /copy:configs/turretconfig.xml
 
+#begin fonts/credits_department_title.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/credits_department_title.spritefont
+
+#begin fonts/credits_text.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/credits_text.spritefont
+
 #begin fonts/ending_text.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -45,13 +59,6 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:fonts/main_title.spritefont
-
-#begin fonts/map_selection_title.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:fonts/map_selection_title.spritefont
 
 #begin fonts/map_title.spritefont
 /importer:FontDescriptionImporter
@@ -80,6 +87,13 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:fonts/regular_btn_text.spritefont
+
+#begin fonts/scene_title.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/scene_title.spritefont
 
 #begin fonts/turret_action_button_price_text.spritefont
 /importer:FontDescriptionImporter
@@ -136,6 +150,21 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:fonts/user_resources.spritefont
+
+#begin images/credits/credits-atlas-definition.xml
+/copy:images/credits/credits-atlas-definition.xml
+
+#begin images/credits/credits-atlas.bmp
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/credits/credits-atlas.bmp
 
 #begin images/game/background.bmp
 /importer:TextureImporter

@@ -3,9 +3,13 @@
     <Fonts>
         <Font name="main_title"/>
         <Font name="main_menu_btn_text"/>
-        <Font name="map_selection_title"/>
+
+        <Font name="scene_title"/>
         <Font name="regular_btn_text"/>
         <Font name="map_title"/>
+
+        <Font name="credits_department_title"/>
+        <Font name="credits_text"/>
 
         <Font name="user_resources"/>
         <Font name="user_resources_digits"/>
@@ -23,6 +27,7 @@
         <Font name="turret_action_button_price_text"/>
 
         <Font name="ending_text"/>
+
 
     </Fonts>
 </FontAtlas>

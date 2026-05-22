@@ -15,9 +15,9 @@ namespace RKD_TD.Scenes.MapSelection;
 internal sealed class MapSelectionScene : Scene
 {
     private Sprite _background = null!;
-    private Label _selectMapLabel = null!;
+    private Label _titleLabel = null!;
     private MapSelectionMenu _mapSelectionMenu = null!;
-    private ButtonLabeled _backButton = null!;
+    private Button _backButton = null!;
 
     private TextureAtlas _msAtlas = null!;
 
@@ -27,22 +27,27 @@ internal sealed class MapSelectionScene : Scene
 
         Core.ExitOnEscape = false;
 
-        var screenCenter = Core.GraphicsDevice.Viewport.Width / 2;
-
-        InitTitle(screenCenter);
+        InitBackground();
+        InitTitle();
         InitBackButton();
         InitMapSelectionMenu();
-        InitBackground();
     }
 
-    private void InitTitle(int screenCenter)
+    private void InitBackground()
     {
-        var mstFont = GlobalAssets.FontAtlas.GetFont(Fonts.MAP_SELECTION_TITLE);
+        _background = _msAtlas.CreateSprite(Textures.MapSelection.BACKGROUND);
+    }
+
+    private void InitTitle()
+    {
+        var screenCenter = Core.GraphicsDevice.Viewport.Width / 2;
+
+        var mstFont = GlobalAssets.FontAtlas.GetFont(Fonts.SCENE_TITLE);
 
         const string mstText = "CHOOSE A MAP TO PLAY";
         var textCenter = mstFont.MeasureString(mstText) / 2;
 
-        _selectMapLabel = new BorderedLabel(
+        _titleLabel = new BorderedLabel(
             position: new Vector2(
                 screenCenter,
                 40),
@@ -51,11 +56,11 @@ internal sealed class MapSelectionScene : Scene
                 0),
             mstText,
             mstFont,
-            color: Colors.MapSelection.TitleColor,
+            color: Colors.SceneTitles.Text,
             scale: Vector2.One,
             layerDepth: 1,
-            borderWidth: new Vector2(2),
-            borderColor: Colors.MapSelection.TitleBorders);
+            borderWidth: new Vector2(3),
+            borderColor: Colors.SceneTitles.Borders);
     }
 
     private void InitBackButton()
@@ -94,11 +99,6 @@ internal sealed class MapSelectionScene : Scene
             mapsFileName: "maps/maps.xml");
 
         _mapSelectionMenu.MapClicked += OnMapClicked;
-    }
-
-    private void InitBackground()
-    {
-        _background = _msAtlas.CreateSprite(Textures.MapSelection.BACKGROUND);
     }
 
     private static void OnMapClicked(object? sender, MapPreview mapPreview)
@@ -148,7 +148,7 @@ internal sealed class MapSelectionScene : Scene
         sb.Begin();
 
         _background.Draw(sb, new Vector2(0));
-        _selectMapLabel.Draw(sb);
+        _titleLabel.Draw(sb);
         _mapSelectionMenu.Draw(sb);
         _backButton.Draw(sb);
 

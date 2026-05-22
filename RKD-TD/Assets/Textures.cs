@@ -17,6 +17,12 @@ internal static class Textures
         public const string BACKGROUND = "map_selection_background";
     }
 
+    public static class Credits
+    {
+        public const string BACKGROUND = "credits_background";
+        public const string BUTTON_300_100 = "button_300_100";
+    }
+
     public static class Game
     {
         public const string PAUSE_150_200 = "pause_150_200";

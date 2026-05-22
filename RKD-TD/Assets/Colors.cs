@@ -16,14 +16,14 @@ internal static class Colors
             Hovered = Color.DarkGray;
     }
 
-    public static class MainTitle
+    public static class SceneTitles
     {
         public static readonly Color
-            TitleColor = Color.White,
-            TitleBorders = Color.Black;
+            Text = Color.White,
+            Borders = Color.Black;
     }
 
-    public static class MapSelection
+    public static class MainTitle
     {
         public static readonly Color
             TitleColor = Color.White,

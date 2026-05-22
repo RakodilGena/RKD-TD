@@ -6,6 +6,7 @@ using MonoGameLibrary.Graphics.Labels;
 using MonoGameLibrary.Graphics.Sprites;
 using MonoGameLibrary.Scenes;
 using RKD_TD.Assets;
+using RKD_TD.Scenes.Credits;
 using RKD_TD.Scenes.MapSelection;
 
 namespace RKD_TD.Scenes.Title;
@@ -89,7 +90,7 @@ internal sealed class TitleScene : Scene
 
     private static void OnCreditsClicked(object? sender, EventArgs eventArgs)
     {
-        //todo
+        Core.ChangeScene(new CreditsScene());
     }
 
     private static void OnExitClicked(object? sender, EventArgs eventArgs)
