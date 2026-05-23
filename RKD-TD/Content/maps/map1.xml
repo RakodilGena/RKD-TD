@@ -27,7 +27,6 @@
         01 00 01 00 01 01 01 00 01 01 01 01 01 00 01
         01 00 01 00 00 00 00 00 00 00 00 00 00 00 01
         01 00 01 01 01 01 00 01 01 01 01 01 01 01 01
-
     </BuildGrid>
 
     <GameObjectsAtlas>images/game/game-objects-atlas-definition.xml</GameObjectsAtlas>

@@ -253,6 +253,12 @@
 #begin maps/map1.xml
 /copy:maps/map1.xml
 
+#begin maps/map2.xml
+/copy:maps/map2.xml
+
+#begin maps/map3.xml
+/copy:maps/map3.xml
+
 #begin maps/maps.xml
 /copy:maps/maps.xml
 

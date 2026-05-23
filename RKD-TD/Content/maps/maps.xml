@@ -3,4 +3,12 @@
     <Map name="Arrival"
          mapFileName="maps/map1.xml"
          textureAlias="map1_500_300"/>
+
+    <Map name="Interception"
+         mapFileName="maps/map2.xml"
+         textureAlias="map2_500_300"/>
+
+    <Map name="Vortex"
+         mapFileName="maps/map3.xml"
+         textureAlias="map3_500_300"/>
 </Maps>

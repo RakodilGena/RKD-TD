@@ -15,20 +15,54 @@
 using System.Collections.Frozen;
 using System.Text;
 
+//map 1 template (15 x 11)
+// string mapRaw =
+//     @"
+// f00 sw0 f00 f00 f00 bu0 f00 f00 f00 f00 f00 f00 f00 rv0 f00 
+// f00 pbr ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 pbl f00 rv0 f00 
+// f00 sft f00 f00 f00 f00 f00 f00 f00 f00 sw0 pv0 f00 rv0 f00 
+// f00 bu0 f00 pbr ph0 ph0 ph0 pbl f00 f00 f00 pv0 f00 rv0 f00 
+// f00 f00 f00 pv0 f00 sw0 f00 pv0 f00 rbr rh0 bv0 rh0 rtl f00 
+// f00 f00 f00 pv0 f00 rbr rh0 bv0 rh0 rtl f00 pv0 bu0 f00 f00 
+// f00 rbr rh0 bv0 rh0 rtl f00 pv0 bu0 f00 f00 pv0 f00 f00 f00 
+// f00 rv0 bu0 pv0 f00 f00 f00 ptr ph0 ph0 ph0 ptl f00 f00 f00 
+// f00 rv0 f00 pv0 f00 f00 f00 sw0 f00 f00 f00 f00 f00 sfb f00 
+// f00 rv0 f00 ptr ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ptl f00 
+// f00 rv0 f00 f00 f00 f00 bu0 f00 f00 f00 f00 f00 f00 f00 f00 
+// ";
+
+//map 2 template (16 x 11)
+// string mapRaw =
+//     @"
+// f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 
+// f00 f00 f00 f00 f00 pbr ph0 ph0 ph0 ph0 ph0 ph0 ph0 pbl f00 f00 
+// f00 f00 f00 f00 f00 pv0 f00 f00 bu0 f00 f00 sw0 f00 pv0 f00 f00 
+// f00 f00 f00 f00 f00 pv0 f00 bu0 f00 bu0 bu0 pbr ph0 ptl f00 f00 
+// f00 sfr ph0 ph0 ph0 ptl bu0 f00 f00 f00 f00 pv0 f00 f00 f00 f00 
+// rh0 rh0 rh0 rh0 rh0 rh0 rh0 rh0 rh0 rh0 rh0 bv0 rh0 rh0 rh0 rh0 
+// f00 sfr ph0 ph0 ph0 pbl bu0 f00 f00 f00 f00 pv0 f00 f00 f00 f00 
+// f00 f00 f00 f00 f00 pv0 f00 bu0 f00 bu0 bu0 ptr ph0 pbl f00 f00 
+// f00 f00 f00 f00 f00 pv0 f00 f00 bu0 f00 f00 sw0 f00 pv0 f00 f00 
+// f00 f00 f00 f00 f00 ptr ph0 ph0 ph0 ph0 ph0 ph0 ph0 ptl f00 f00 
+// f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 f00 
+// ";
+
+//map 3 template (17 x 11)
 string mapRaw =
     @"
-f00 sw0 f00 f00 f00 bu0 f00 f00 f00 f00 f00 f00 f00 rv0 f00 
-f00 pbr ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 pbl f00 rv0 f00 
-f00 sft f00 f00 f00 f00 f00 f00 f00 f00 sw0 pv0 f00 rv0 f00 
-f00 bu0 f00 pbr ph0 ph0 ph0 pbl f00 f00 f00 pv0 f00 rv0 f00 
-f00 f00 f00 pv0 f00 sw0 f00 pv0 f00 rbr rh0 bv0 rh0 rtl f00 
-f00 f00 f00 pv0 f00 rbr rh0 bv0 rh0 rtl f00 pv0 bu0 f00 f00 
-f00 rbr rh0 bv0 rh0 rtl f00 pv0 bu0 f00 f00 pv0 f00 f00 f00 
-f00 rv0 bu0 pv0 f00 f00 f00 ptr ph0 ph0 ph0 ptl f00 f00 f00 
-f00 rv0 f00 pv0 f00 f00 f00 sw0 f00 f00 f00 f00 f00 sfb f00 
-f00 rv0 f00 ptr ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ph0 ptl f00 
-f00 rv0 f00 f00 f00 f00 bu0 f00 f00 f00 f00 f00 f00 f00 f00 
+f00 f00 f00 bu0 f00 f00 f00 f00 rv0 f00 f00 f00 f00 f00 bu0 f00 f00
+f00 bu0 f00 f00 f00 f00 f00 f00 rv0 f00 f00 sw0 f00 f00 f00 f00 f00
+f00 f00 pbr ph0 ph0 ph0 ph0 ph0 bh0 ph0 ph0 ph0 ph0 ph0 pbl f00 f00
+f00 f00 pv0 f00 f00 f00 f00 bu0 rv0 bu0 f00 f00 f00 f00 pv0 f00 f00
+f00 f00 pv0 f00 sw0 f00 f00 f00 rv0 f00 f00 f00 f00 bu0 pv0 f00 sw0
+f00 f00 pv0 f00 f00 pbr ph0 ph0 bh0 ph0 ph0 sfl f00 bu0 pv0 f00 f00
+bu0 f00 pv0 f00 f00 pv0 f00 f00 rv0 bu0 f00 f00 f00 bu0 pv0 f00 f00
+f00 f00 pv0 f00 bu0 pv0 f00 f00 rv0 f00 sw0 f00 f00 f00 pv0 f00 f00
+f00 f00 pv0 f00 f00 ptr ph0 ph0 bh0 ph0 ph0 ph0 ph0 ph0 ptl bu0 f00
+f00 f00 sft f00 f00 f00 f00 f00 rv0 f00 f00 f00 f00 f00 f00 f00 f00
+f00 f00 f00 sw0 f00 f00 f00 f00 rv0 f00 bu0 f00 f00 f00 f00 f00 f00
 ";
+
 
 var cellMap = CreateCellsMap();
 
