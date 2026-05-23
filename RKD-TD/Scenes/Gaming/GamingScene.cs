@@ -103,6 +103,8 @@ internal sealed class GamingScene : Scene
 
     private void InitCamera()
     {
+        //todo: calculate bottom margin based on map size
+        //so there's always free space between map and turret purchase panel
         _camera = new Camera(
             maxZoom: 1,
             zoomSpeed: 2f,
@@ -110,7 +112,7 @@ internal sealed class GamingScene : Scene
             _map,
             putToCenter: true,
             mapBordersMargin: 150,
-            extraBottomMargin: 130);
+            extraBottomMargin: 320);
 
         _map.Camera = _camera;
         _portals.Camera = _camera;
