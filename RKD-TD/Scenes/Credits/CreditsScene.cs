@@ -7,6 +7,7 @@ using MonoGameLibrary.Scenes;
 using RKD_TD.Assets;
 using RKD_TD.Models.UI;
 using RKD_TD.Scenes.Title;
+using Microsoft.Xna.Framework.Input;
 
 namespace RKD_TD.Scenes.Credits;
 
@@ -110,8 +111,8 @@ internal sealed class CreditsScene : Scene
         Vector2 artsTitleOffset = new Vector2(1060, 400);
         Vector2 textOffset = new Vector2(0, 100);
 
-        var color = Colors.SceneTitles.Text;
-        var borderColor = Colors.SceneTitles.Borders;
+        var color = Colors.Credits.Text;
+        var borderColor = Colors.Credits.Borders;
         var titleBorderWidth = new Vector2(2.5f);
         var nameBorderWidth = new Vector2(2f);
 
@@ -172,6 +173,8 @@ internal sealed class CreditsScene : Scene
     {
         _backButton.Update();
 
+        HandleEscape();
+
         base.Update(gameTime);
     }
 
@@ -195,6 +198,12 @@ internal sealed class CreditsScene : Scene
 
         sb.End();
         base.Draw(gameTime);
+    }
+
+    private static void HandleEscape()
+    {
+        if (Core.Input.Keyboard.WasKeyJustPressed(Keys.Escape))
+            BackToTitle();
     }
 
     private static void BackToTitle()

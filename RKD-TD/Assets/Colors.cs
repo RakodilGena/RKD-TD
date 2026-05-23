@@ -4,6 +4,10 @@ namespace RKD_TD.Assets;
 
 internal static class Colors
 {
+    //these are button / panel colors
+    //new Color(200, 150, 80)  
+    //new Color(158, 97, 42)
+    
     public static class Buttons
     {
         public static readonly Color
@@ -19,15 +23,15 @@ internal static class Colors
     public static class SceneTitles
     {
         public static readonly Color
-            Text = Color.White,
+            Text = Color.Goldenrod,
             Borders = Color.Black;
     }
 
-    public static class MainTitle
+    public static class Credits
     {
         public static readonly Color
-            TitleColor = Color.White,
-            TitleBorders = Color.Black;
+            Text = Color.White,
+            Borders = Color.Black;
     }
 
     public static class Game

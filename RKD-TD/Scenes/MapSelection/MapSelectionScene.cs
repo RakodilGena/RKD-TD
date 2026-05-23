@@ -112,11 +112,6 @@ internal sealed class MapSelectionScene : Scene
         Core.ChangeScene(new GamingScene(mapPreview.MapFileName));
     }
 
-    private static void BackToTitle()
-    {
-        Core.ChangeScene(new TitleScene());
-    }
-
     public override void LoadContent()
     {
         base.LoadContent();
@@ -140,6 +135,11 @@ internal sealed class MapSelectionScene : Scene
     {
         if (Core.Input.Keyboard.WasKeyJustPressed(Keys.Escape))
             BackToTitle();
+    }
+
+    private static void BackToTitle()
+    {
+        Core.ChangeScene(new TitleScene());
     }
 
 

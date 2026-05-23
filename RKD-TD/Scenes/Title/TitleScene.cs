@@ -65,11 +65,11 @@ internal sealed class TitleScene : Scene
                 0),
             mainTitleText,
             kwFont180,
-            color: Colors.MainTitle.TitleColor,
+            color: Colors.SceneTitles.Text,
             scale: Vector2.One,
             layerDepth: 1,
-            borderColor: Colors.MainTitle.TitleBorders,
-            borderWidth: new Vector2(3));
+            borderColor: Colors.SceneTitles.Borders,
+            borderWidth: new Vector2(4));
     }
 
     private void InitTitleMenu()
