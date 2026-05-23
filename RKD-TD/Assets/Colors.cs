@@ -7,7 +7,7 @@ internal static class Colors
     //these are button / panel colors
     //new Color(200, 150, 80)  
     //new Color(158, 97, 42)
-    
+
     public static class Buttons
     {
         public static readonly Color
