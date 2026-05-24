@@ -59,6 +59,8 @@ public class Core : Game
         set => ((Game)_instance).IsMouseVisible = value;
     }
 
+    public static Rectangle ScreenBounds;
+
     /// <summary>
     /// Creates a new Core instance.
     /// </summary>
@@ -116,6 +118,12 @@ public class Core : Game
         TargetElapsedTime = TimeSpan.FromSeconds(1d / targetFps);
 
         ExitOnEscape = exitOnEscape;
+        
+        ScreenBounds = new Rectangle(
+            0, 
+            0,
+            width, 
+            height);
     }
 
     protected override void Initialize()

@@ -28,6 +28,7 @@
 
         <Font name="ending_text"/>
 
+        <Font name="fps"/>
 
     </Fonts>
 </FontAtlas>

@@ -16,13 +16,12 @@ internal sealed class GameCore : Core
 
     public GameCore() : base(
         title: "RKD Tower Defense",
-        width: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, //1280
-        height: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height, //720
-        targetFps: 60,
+        width: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
+        height: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height,
+        targetFps: 120,
         fullScreen: true,
         exitOnEscape: false)
     {
-        IsMouseVisible = false;
     }
 
     protected override void Initialize()
@@ -44,6 +43,7 @@ internal sealed class GameCore : Core
         var idle = atlas.GetRegion(Textures.Cursor.IDLE);
         var pressed = atlas.GetRegion(Textures.Cursor.PRESSED);
 
+        IsMouseVisible = false;
         Cursor = new GameCursor(idle, pressed);
     }
 

@@ -18,8 +18,6 @@ public sealed class Camera : ICamera
         _maxX,
         _maxY;
 
-    private Rectangle _screenBounds;
-
     private readonly bool _draggable;
     private bool _isDragged;
 
@@ -90,15 +88,10 @@ public sealed class Camera : ICamera
         _mapWidth = tilemap.TileWidth * tilemap.Columns + mapBordersMargin * 2;
         _mapHeight = tilemap.TileHeight * tilemap.Rows + mapBordersMargin * 2 + extraBottomMargin;
 
+        var screenBounds = Core.ScreenBounds;
 
-        _screenBounds = new Rectangle(
-            0,
-            0,
-            GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
-            GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
-
-        var minScaleX = _screenBounds.Width / _mapWidth;
-        var minScaleY = _screenBounds.Height / _mapHeight;
+        var minScaleX = screenBounds.Width / _mapWidth;
+        var minScaleY = screenBounds.Height / _mapHeight;
         var minScale = Math.Min(minScaleX, minScaleY);
         minScale = Math.Min(minScale, maxZoom);
 
@@ -114,7 +107,7 @@ public sealed class Camera : ICamera
 
         if (putToCenter)
         {
-            var screen = _screenBounds.Size.ToVector2();
+            var screen = screenBounds.Size.ToVector2();
             var map = new Vector2(_mapWidth, _mapHeight) * Zoom;
             var vpPos = (map - screen) / 2;
 
@@ -128,13 +121,14 @@ public sealed class Camera : ICamera
 
     private void RecalculateMinMaxWidthHeight()
     {
-        SetMinMax(out _minX, out _maxX, _screenBounds.Width, _mapWidth);
-        SetMinMax(out _minY, out _maxY, _screenBounds.Height, _mapHeight);
+        var screenBounds = Core.ScreenBounds;
+        SetMinMax(out _minX, out _maxX, screenBounds.Width, _mapWidth);
+        SetMinMax(out _minY, out _maxY, screenBounds.Height, _mapHeight);
     }
 
     private void KeepScreenCentered(float oldZoom)
     {
-        var screenCenter = _screenBounds.Center.ToVector2();
+        var screenCenter = Core.ScreenBounds.Center.ToVector2();
 
         var oldCenterPosition = (AbsolutePosition + screenCenter) / oldZoom;
 
@@ -200,7 +194,7 @@ public sealed class Camera : ICamera
             return;
 
         var mouse = Core.Input.Mouse;
-        if (!_screenBounds.Contains(mouse.Position) || !mouse.IsButtonDown(MouseButton.Middle))
+        if (!Core.ScreenBounds.Contains(mouse.Position) || !mouse.IsButtonDown(MouseButton.Middle))
         {
             _isDragged = false;
             return;

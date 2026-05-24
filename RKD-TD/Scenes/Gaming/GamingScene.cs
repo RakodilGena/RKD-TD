@@ -90,7 +90,7 @@ internal sealed class GamingScene : Scene
 
         //after base.Initialize() all graphic elements must have been created
 
-        _fpsMeter = new FpsMeter(new Vector2(1600, 32));
+        _fpsMeter = new FpsMeter();
         InitCamera();
         InitGameClockWidget();
         InitTurretPurchasePanel();
@@ -301,7 +301,7 @@ internal sealed class GamingScene : Scene
 
         _userResources.Draw(sb);
         _enemySpawner.Draw(sb);
-        //_fpsMeter.Draw(sb);
+        _fpsMeter.Draw(sb);
         _gameClockWidget.Draw(sb);
 
         if (_gameState is GameState.PlacingTurret)

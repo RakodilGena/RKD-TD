@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLibrary;
 using MonoGameLibrary.Graphics.Labels;
 using RKD_TD.Assets;
 
@@ -9,15 +10,15 @@ internal sealed class FpsMeter
 {
     private readonly Label _label;
 
-    public FpsMeter(Vector2 position)
+    public FpsMeter()
     {
-        var font = GlobalAssets.FontAtlas.GetFont(Fonts.USER_RESOURCES);
-        _label = new BorderedLabel(font)
+        var font = GlobalAssets.FontAtlas.GetFont(Fonts.FPS);
+        var size = font.MeasureString("FPS: 000");
+        
+        _label = new Label(font)
         {
-            Position = position,
-            Color = Colors.Game.Labels.Text,
-            BorderColor = Colors.Game.Labels.TextBorders,
-            BorderWidth = new Vector2(2f)
+            Position = new Vector2(Core.ScreenBounds.Width - size.X, 0),
+            Color = Colors.Game.Fps
         };
     }
 

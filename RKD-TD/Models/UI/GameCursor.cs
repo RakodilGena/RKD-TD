@@ -13,7 +13,6 @@ internal sealed class GameCursor
 
     private readonly Sprite _idle, _pressed;
     private Vector2 _position;
-    private Rectangle _screenBounds;
     private bool _isOnScreen, _isPressed;
 
     public bool Visible { get; set; } = true;
@@ -35,12 +34,6 @@ internal sealed class GameCursor
                 (float)SIZE_X / pressed.Width,
                 (float)SIZE_Y / pressed.Height)
         };
-
-        _screenBounds = new Rectangle(
-            0,
-            0,
-            GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
-            GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
         ShadowSystemMouse();
     }
@@ -69,7 +62,7 @@ internal sealed class GameCursor
         if (!mouse.WasMoved)
             return;
 
-        if (!_screenBounds.Contains(mouse.Position))
+        if (!Core.ScreenBounds.Contains(mouse.Position))
         {
             _isOnScreen = false;
             return;
