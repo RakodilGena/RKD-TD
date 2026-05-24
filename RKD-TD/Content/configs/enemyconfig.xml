@@ -3,8 +3,8 @@
 <Enemies> <!-- Soldier, Speedster, Tank, Swarm, BOSS??? -->
     <Enemy alias="soldier"
 
-           health="320"
-           healthIncreasePerWave="20"
+           health="350"
+           healthIncreasePerWave="25"
            healthMultiplierPerWave="1.07"
 
            speed="150"
@@ -21,8 +21,8 @@
 
     <Enemy alias="tank"
 
-           health="1800"
-           healthIncreasePerWave="100"
+           health="2000"
+           healthIncreasePerWave="120"
            healthMultiplierPerWave="1.07"
 
            speed="70"
@@ -39,8 +39,8 @@
 
     <Enemy alias="speedster"
 
-           health="420"
-           healthIncreasePerWave="20"
+           health="450"
+           healthIncreasePerWave="22"
            healthMultiplierPerWave="1.08"
 
            speed="230"
@@ -57,8 +57,8 @@
 
     <Enemy alias="swarmer"
 
-           health="140"
-           healthIncreasePerWave="10"
+           health="180"
+           healthIncreasePerWave="15"
            healthMultiplierPerWave="1.1"
 
            speed="150"
@@ -77,13 +77,13 @@
     <Enemy alias="boss"
            isBoss="true"
 
-           health="10000"
-           healthIncreasePerWave="200"
-           healthMultiplierPerWave="1.026"
+           health="12000"
+           healthIncreasePerWave="300"
+           healthMultiplierPerWave="1.027"
 
            speed="50"
            cost="180"
-           reward="150 "
+           reward="150"
            damage="9999"
            animationAlias="boss-animation"
 

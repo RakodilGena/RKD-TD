@@ -25,7 +25,7 @@
                 fixateDistance="750;780;830"
                 projectileFlightRange="750;780;830"
 
-                directDamage="8; 18; 44"
+                directDamage="6; 14; 34"
 
                 firingPoints="275,-20,-5; 275,-10,-3; 275,0,0; 275,10,3; 275,20,5"
                 firingMode="random"
@@ -57,7 +57,7 @@
                 fixateDistance="530;545;570"
                 projectileFlightRange="530;545;570"
 
-                directDamage="14;30;70"
+                directDamage="26;60;130"
 
                 firingPoints="285,-5,-10;  285,-3,-5;  285,0,0;  285,3,5;  285,5,10"
                 firingMode="all"
@@ -90,9 +90,9 @@
                 fixateDistance="980;1040;1130"
                 projectileFlightRange="1000;1060;1160"
 
-                directDamage="220;450;1000"
+                directDamage="230;470;1030"
                 aoeRange="80"
-                aoeDamage="40;95;210"
+                aoeDamage="45;100;210"
 
                 firingPoints="285,0,0"
                 firingMode="single"
@@ -126,7 +126,7 @@
 
                 directDamage="20;45;100"
                 aoeRange="150"
-                aoeDamage="80;180;400"
+                aoeDamage="100;220;480"
 
                 firingPoints="180,-50,0; 180,0,0; 180,58,0;"
                 firingMode="rotation"
