@@ -118,11 +118,11 @@ public class Core : Game
         TargetElapsedTime = TimeSpan.FromSeconds(1d / targetFps);
 
         ExitOnEscape = exitOnEscape;
-        
+
         ScreenBounds = new Rectangle(
-            0, 
             0,
-            width, 
+            0,
+            width,
             height);
     }
 

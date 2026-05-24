@@ -215,21 +215,21 @@ public sealed class Camera : ICamera
         if (_draggable && _isDragged)
         {
             var prevAbsolutePosition = AbsolutePosition;
-            
+
             var desiredDelta = mouse.PositionDelta.ToVector2();
             AbsolutePosition -= desiredDelta;
-            
+
             //if camera touches the border, it won't move by the desired delta,
             //so we calculate the deltas diff to visually keep the mouse 'glued' to the point
             //by which the camera is getting dragged. 
             var actualDelta = prevAbsolutePosition - AbsolutePosition;
             var moveMouse = (actualDelta - desiredDelta).ToPoint();
-            
+
             if (moveMouse == Point.Zero)
                 return;
 
             mouse.Position += moveMouse;
-            
+
             return;
         }
 

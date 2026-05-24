@@ -31,6 +31,6 @@ internal static class Fonts
 
     public const string CREDITS_DEPARTMENT_TITLE = "credits_department_title";
     public const string CREDITS_TEXT = "credits_text";
-    
+
     public const string FPS = "fps";
 }

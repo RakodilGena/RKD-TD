@@ -14,7 +14,7 @@ internal sealed class FpsMeter
     {
         var font = GlobalAssets.FontAtlas.GetFont(Fonts.FPS);
         var size = font.MeasureString("FPS: 000");
-        
+
         _label = new Label(font)
         {
             Position = new Vector2(Core.ScreenBounds.Width - size.X, 0),

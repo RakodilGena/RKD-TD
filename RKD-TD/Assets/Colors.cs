@@ -37,8 +37,8 @@ internal static class Colors
     public static class Game
     {
         public static readonly Color TurretRadius = new(0, 0, 0, alpha: 80);
-        
-        
+
+
         public static readonly Color Fps = Color.Red;
 
         public static readonly Color[] TurretLevels =
