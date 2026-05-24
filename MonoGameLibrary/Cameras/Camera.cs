@@ -1,13 +1,14 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary.Graphics.Tiles;
+using MonoGameLibrary.Input;
 
 namespace MonoGameLibrary.Cameras;
 
 public sealed class Camera : ICamera
 {
-    private readonly int _screenWidth, _screenHeight;
     private readonly float _mapWidth, _mapHeight, _mapBordersMargin;
 
     private readonly float _maxZoom, _minZoom, _zoomSpeed, _cameraMoveSpeed;
@@ -16,6 +17,11 @@ public sealed class Camera : ICamera
         _minY,
         _maxX,
         _maxY;
+
+    private Rectangle _screenBounds;
+
+    private readonly bool _draggable;
+    private bool _isDragged;
 
     private Vector2 AbsolutePosition
     {
@@ -74,7 +80,8 @@ public sealed class Camera : ICamera
         Tilemap tilemap,
         bool putToCenter,
         float mapBordersMargin,
-        float extraBottomMargin)
+        float extraBottomMargin,
+        bool draggable)
     {
         if (mapBordersMargin < 0)
             mapBordersMargin = 0;
@@ -83,11 +90,15 @@ public sealed class Camera : ICamera
         _mapWidth = tilemap.TileWidth * tilemap.Columns + mapBordersMargin * 2;
         _mapHeight = tilemap.TileHeight * tilemap.Rows + mapBordersMargin * 2 + extraBottomMargin;
 
-        _screenWidth = Core.GraphicsDevice.Viewport.Width;
-        _screenHeight = Core.GraphicsDevice.Viewport.Height;
 
-        var minScaleX = _screenWidth / _mapWidth;
-        var minScaleY = _screenHeight / _mapHeight;
+        _screenBounds = new Rectangle(
+            0,
+            0,
+            GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
+            GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+
+        var minScaleX = _screenBounds.Width / _mapWidth;
+        var minScaleY = _screenBounds.Height / _mapHeight;
         var minScale = Math.Min(minScaleX, minScaleY);
         minScale = Math.Min(minScale, maxZoom);
 
@@ -96,13 +107,14 @@ public sealed class Camera : ICamera
         _zoomSpeed = zoomSpeed;
         _cameraMoveSpeed = cameraMoveSpeed;
         _mapBordersMargin = mapBordersMargin;
+        _draggable = draggable;
 
         Zoom = _minZoom;
 
 
         if (putToCenter)
         {
-            var screen = new Vector2(_screenWidth, _screenHeight);
+            var screen = _screenBounds.Size.ToVector2();
             var map = new Vector2(_mapWidth, _mapHeight) * Zoom;
             var vpPos = (map - screen) / 2;
 
@@ -116,13 +128,13 @@ public sealed class Camera : ICamera
 
     private void RecalculateMinMaxWidthHeight()
     {
-        SetMinMax(out _minX, out _maxX, _screenWidth, _mapWidth);
-        SetMinMax(out _minY, out _maxY, _screenHeight, _mapHeight);
+        SetMinMax(out _minX, out _maxX, _screenBounds.Width, _mapWidth);
+        SetMinMax(out _minY, out _maxY, _screenBounds.Height, _mapHeight);
     }
 
     private void KeepScreenCentered(float oldZoom)
     {
-        var screenCenter = new Vector2(_screenWidth, _screenHeight) / 2;
+        var screenCenter = _screenBounds.Center.ToVector2();
 
         var oldCenterPosition = (AbsolutePosition + screenCenter) / oldZoom;
 
@@ -167,6 +179,8 @@ public sealed class Camera : ICamera
                 deltaSeconds);
         }
 
+        HandleIsDragged();
+
         HandleMotion(deltaSeconds);
     }
 
@@ -180,10 +194,52 @@ public sealed class Camera : ICamera
             Zoom += _zoomSpeed * gtDelta;
     }
 
+    private void HandleIsDragged()
+    {
+        if (!_draggable)
+            return;
+
+        var mouse = Core.Input.Mouse;
+        if (!_screenBounds.Contains(mouse.Position) || !mouse.IsButtonDown(MouseButton.Middle))
+        {
+            _isDragged = false;
+            return;
+        }
+
+        if (mouse.WasButtonJustPressed(MouseButton.Middle))
+        {
+            _isDragged = true;
+        }
+    }
+
     private void HandleMotion(float gtDelta)
     {
+        var mouse = Core.Input.Mouse;
         var kb = Core.Input.Keyboard;
         int moveHorizontal = 0, moveVertical = 0;
+
+        if (_draggable && _isDragged)
+        {
+            var prevAbsolutePosition = AbsolutePosition;
+            
+            var desiredDelta = mouse.PositionDelta.ToVector2();
+            AbsolutePosition -= desiredDelta;
+            
+            //if camera touches the border, it won't move by the desired delta,
+            //so we calculate the deltas diff to visually keep the mouse 'glued' to the point
+            //by which the camera is getting dragged. 
+            var actualDelta = prevAbsolutePosition - AbsolutePosition;
+            var moveMouse = (actualDelta - desiredDelta).ToPoint();
+            
+            if (moveMouse == Point.Zero)
+                return;
+
+            mouse.Position += moveMouse;
+            
+            return;
+        }
+
+
         if (kb.IsKeyDown(Keys.A))
         {
             moveHorizontal -= 1;

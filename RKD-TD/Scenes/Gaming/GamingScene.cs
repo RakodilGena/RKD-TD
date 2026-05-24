@@ -107,12 +107,13 @@ internal sealed class GamingScene : Scene
         //so there's always free space between map and turret purchase panel
         _camera = new Camera(
             maxZoom: 1,
-            zoomSpeed: 2f,
-            cameraMoveSpeed: 400,
+            zoomSpeed: 3f,
+            cameraMoveSpeed: 800,
             _map,
             putToCenter: true,
             mapBordersMargin: 150,
-            extraBottomMargin: 320);
+            extraBottomMargin: 320,
+            draggable: true);
 
         _map.Camera = _camera;
         _portals.Camera = _camera;
