@@ -91,7 +91,7 @@ internal static class Colors
         public static class CellHighlight
         {
             public static readonly Color
-                Available = new(0, 255, 0, 60),
+                Available = new(0, 180, 0),
                 NotAvailable = new(255, 0, 0, 60);
         }
 

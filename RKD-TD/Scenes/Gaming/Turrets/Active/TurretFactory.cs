@@ -117,8 +117,8 @@ internal sealed class TurretFactory
             gameObjectTextures,
             flashFactory);
 
-        var pendingTurrets = templates.Select(p =>
-            new PendingTurret(p.Value.Name, p.Key, p.Value.Price, p.Value.FiringDistance[0]));
+        var pendingTurrets =
+            templates.Select(p => new PendingTurret(p.Key, p.Value));
         pendingTurretStash = new PendingTurretStash(pendingTurrets);
 
         var selector = gameObjectTextures.CreateSprite(Textures.Game.SELECTED_TURRET_BORDERS);

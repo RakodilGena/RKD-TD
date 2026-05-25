@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLibrary;
 using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Geometrics;
 using RKD_TD.Assets;
@@ -17,6 +18,16 @@ internal sealed class BuildCell
 
     public bool IsOccupied => BuiltTurret is not null;
     public bool IsBuildable { get; init; } = true;
+
+    public static Texture2D BuildOverlay = InitBuiltOverlay();
+
+    private static Texture2D InitBuiltOverlay()
+    {
+        var texture = new Texture2D(Core.GraphicsDevice, 1, 1);
+        texture.SetData([Color.White]);
+
+        return texture;
+    }
 
     public void Occupy(Turret turret)
     {
@@ -36,29 +47,36 @@ internal sealed class BuildCell
         if (turret is null)
             return;
 
-        var (drawSize, screenPos) = camera.WorldToScreen(CellSize, WorldPosition);
-
         var canPlace = IsBuildable && !IsOccupied;
 
         if (canPlace)
         {
-            var circlePosition = WorldPosition + CellSize * 0.5f;
+            var cellCenter = WorldPosition + CellSize * 0.5f;
+
             Circle.DrawCircle(
                 spriteBatch,
                 camera,
-                circlePosition,
+                cellCenter,
                 turret.Radius,
                 Colors.Game.TurretRadius);
+
+            turret.CarriageSprite.Draw(
+                spriteBatch,
+                cellCenter,
+                camera);
+
+            turret.BarrelSprite.Draw(
+                spriteBatch,
+                cellCenter,
+                camera);
         }
-
-        // green = valid, red = blocked
-        Color highlight = canPlace
-            ? Colors.Game.CellHighlight.Available
-            : Colors.Game.CellHighlight.NotAvailable;
-
-        spriteBatch.Draw(
-            turret.Texture,
-            new Rectangle((int)screenPos.X, (int)screenPos.Y, (int)drawSize.X, (int)drawSize.Y),
-            highlight);
+        else
+        {
+            var (drawSize, screenPos) = camera.WorldToScreen(CellSize, WorldPosition);
+            spriteBatch.Draw(
+                BuildOverlay,
+                new Rectangle((int)screenPos.X, (int)screenPos.Y, (int)drawSize.X, (int)drawSize.Y),
+                color: Colors.Game.CellHighlight.NotAvailable);
+        }
     }
 }
