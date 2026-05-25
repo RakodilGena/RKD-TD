@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Geometrics;
@@ -74,6 +75,7 @@ internal sealed class Explosion : Flash
         }
     }
 
+    [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
     public override void Draw(SpriteBatch spriteBatch)
     {
         base.Draw(spriteBatch);

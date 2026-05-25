@@ -53,9 +53,4 @@ internal sealed class GameCore : Core
 
         Cursor.Update();
     }
-
-    protected override void Draw(GameTime gameTime)
-    {
-        base.Draw(gameTime);
-    }
 }

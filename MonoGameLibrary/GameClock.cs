@@ -5,7 +5,7 @@ namespace MonoGameLibrary;
 public sealed class GameClock
 {
     public float TimeScale { get; private set; } = 1f;
-    public bool IsPaused { get; private set; } = false;
+    public bool IsPaused { get; private set; }
 
     public void Pause() => IsPaused = true;
     public void Resume() => IsPaused = false;
