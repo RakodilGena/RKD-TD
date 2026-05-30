@@ -9,9 +9,9 @@
 
         <!--game speed-->
         <Region name="pause_150_200" x="330" y="0" width="150" height="200"/>
-        <Region name="speed1_150_200" x="480" y="0" width="150" height="200"/>
-        <Region name="speed2_150_200" x="630" y="0" width="150" height="200"/>
-        <Region name="speed3_150_200" x="780" y="0" width="150" height="200"/>
+        <Region name="speed1_150_200" x="490" y="0" width="150" height="200"/>
+        <Region name="speed2_150_200" x="650" y="0" width="150" height="200"/>
+        <Region name="speed3_150_200" x="810" y="0" width="150" height="200"/>
 
         <!--enemies-->
         <Region name="soldier0" x="0" y="200" width="200" height="200"/>
