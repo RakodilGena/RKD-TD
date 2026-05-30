@@ -20,7 +20,8 @@ internal sealed class GameCore : Core
         height: ResolutionManager.VirtualHeight,
         targetFps: 120,
         fullScreen: true,
-        exitOnEscape: false)
+        exitOnEscape: false,
+        keepMouseOnScreen: true)
     {
     }
 

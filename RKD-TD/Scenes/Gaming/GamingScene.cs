@@ -336,6 +336,11 @@ internal sealed class GamingScene : Scene
 
     public override void Update(GameTime gameTime)
     {
+        if (!Core.IsActive)
+        {
+            return;
+        }
+
         var uiDelta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         if (_gameState is GameState.Ending)

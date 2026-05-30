@@ -60,9 +60,13 @@ public class Core : Game
         set => ((Game)_instance).IsMouseVisible = value;
     }
 
+    public static bool KeepMouseOnScreen { get; set; }
+
     public static Rectangle ScreenBounds { get; private set; }
 
     public static ResolutionManager Resolution { get; private set; } = null!;
+
+    public new static bool IsActive => ((Game)_instance).IsActive;
 
     /// <summary>
     /// Creates a new Core instance.
@@ -73,13 +77,15 @@ public class Core : Game
     /// <param name="targetFps">Target FPS.</param>
     /// <param name="fullScreen">Indicates if the game should start in fullscreen mode.</param>
     /// <param name="exitOnEscape">Should the game exit when Escape is pressed.</param>
+    /// <param name="keepMouseOnScreen">Should the game keep the mouse cursor on screen.</param>
     protected Core(
         string title,
         int width,
         int height,
         int targetFps,
         bool fullScreen,
-        bool exitOnEscape)
+        bool exitOnEscape,
+        bool keepMouseOnScreen)
     {
         // Ensure that multiple cores are not created.
         if (_instance != null)
@@ -121,6 +127,7 @@ public class Core : Game
         TargetElapsedTime = TimeSpan.FromSeconds(1d / targetFps);
 
         ExitOnEscape = exitOnEscape;
+        KeepMouseOnScreen = keepMouseOnScreen;
 
         ScreenBounds = new Rectangle(
             0,
@@ -152,6 +159,12 @@ public class Core : Game
         // Update the input manager.
         Input.Update(gameTime);
 
+        //implement mouse keep-on-screen here
+        if (IsActive && KeepMouseOnScreen)
+        {
+            DoKeepMouseOnScreen();
+        }
+
         if (ExitOnEscape && Input.Keyboard.WasKeyJustPressed(Keys.Escape))
         {
             Exit();
@@ -168,6 +181,45 @@ public class Core : Game
         _activeScene?.Update(gameTime);
 
         base.Update(gameTime);
+    }
+
+    private static void DoKeepMouseOnScreen()
+    {
+        var mouse = Input.Mouse;
+        var virtualMouse = Resolution.ToVirtualMouse(mouse.Position);
+        if (ScreenBounds.Contains(virtualMouse))
+        {
+            return;
+        }
+
+        int newX, newY;
+        if (virtualMouse.X >= ScreenBounds.Width)
+        {
+            newX = ScreenBounds.Width - 1;
+        }
+        else if (virtualMouse.X < ScreenBounds.X)
+        {
+            newX = ScreenBounds.X;
+        }
+        else
+        {
+            newX = mouse.Position.X;
+        }
+
+        if (virtualMouse.Y >= ScreenBounds.Height)
+        {
+            newY = ScreenBounds.Height - 1;
+        }
+        else if (virtualMouse.Y < ScreenBounds.Y)
+        {
+            newY = ScreenBounds.Y;
+        }
+        else
+        {
+            newY = mouse.Position.Y;
+        }
+
+        mouse.SetPosition(newX, newY);
     }
 
     private static void TransitionScene()
