@@ -634,7 +634,7 @@ internal sealed class GamingScene : Scene
 
         _pendingTurret = pendingTurret;
         _gameState = GameState.PlacingTurret;
-        GameCore.Cursor.Visible = true; //todo
+        GameCore.Cursor.Visible = false;
     }
 
     private void UpdatePlacementMode()

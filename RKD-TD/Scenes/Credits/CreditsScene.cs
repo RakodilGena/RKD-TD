@@ -51,7 +51,7 @@ internal sealed class CreditsScene : Scene
 
     private void InitTitle()
     {
-        var screenCenter = Core.ScreenBounds.Width / 2;
+        var screenCenter = Core.VirtualScreenBounds.Width / 2;
 
         var mstFont = GlobalAssets.FontAtlas.GetFont(Fonts.SCENE_TITLE);
 

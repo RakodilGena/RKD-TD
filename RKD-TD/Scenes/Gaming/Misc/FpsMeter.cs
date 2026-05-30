@@ -17,7 +17,7 @@ internal sealed class FpsMeter
 
         _label = new Label(font)
         {
-            Position = new Vector2(Core.ScreenBounds.Width - size.X, 0),
+            Position = new Vector2(Core.VirtualScreenBounds.Width - size.X, 0),
             Color = Colors.Game.Fps
         };
     }

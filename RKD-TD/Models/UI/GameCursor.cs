@@ -65,7 +65,7 @@ internal sealed class GameCursor
             return;
 
         var virtualPos = Core.Resolution.ToVirtualMouse(mouse.Position);
-        if (!Core.ScreenBounds.Contains(virtualPos))
+        if (!Core.VirtualScreenBounds.Contains(virtualPos))
         {
             _isOnScreen = false;
             return;

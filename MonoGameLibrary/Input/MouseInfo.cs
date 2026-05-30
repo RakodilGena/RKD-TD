@@ -225,6 +225,11 @@ public sealed class MouseInfo
         );
     }
 
+    public void SetPosition(Point point)
+    {
+        SetPosition(point.X, point.Y);
+    }
+
     //gamepad setup there
     //https://docs.monogame.net/articles/tutorials/building_2d_games/11_input_management/index.html
 }

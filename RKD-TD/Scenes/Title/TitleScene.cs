@@ -49,7 +49,7 @@ internal sealed class TitleScene : Scene
 
     private void InitTitleLabel()
     {
-        var screenCenter = Core.ScreenBounds.Width / 2;
+        var screenCenter = Core.VirtualScreenBounds.Width / 2;
 
         var kwFont180 = GlobalAssets.FontAtlas.GetFont(Fonts.MAIN_TITLE);
 

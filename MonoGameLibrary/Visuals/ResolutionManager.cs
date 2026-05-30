@@ -88,4 +88,22 @@ public sealed class ResolutionManager
             (int)((screenMouse.Y - OffsetY) / uniform)
         );
     }
+
+    public Vector2 ToScreenMouse(Vector2 virtualMouse)
+    {
+        float uniform = Scale;
+        return new Vector2(
+            virtualMouse.X * uniform + OffsetX,
+            virtualMouse.Y * uniform + OffsetY
+        );
+    }
+
+    public Point ToScreenMouse(Point virtualMouse)
+    {
+        float uniform = Scale;
+        return new Point(
+            (int)(virtualMouse.X * uniform + OffsetX),
+            (int)(virtualMouse.Y * uniform + OffsetY)
+        );
+    }
 }

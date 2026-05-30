@@ -88,7 +88,7 @@ public sealed class Camera : ICamera
         _mapWidth = tilemap.TileWidth * tilemap.Columns + mapBordersMargin * 2;
         _mapHeight = tilemap.TileHeight * tilemap.Rows + mapBordersMargin * 2 + extraBottomMargin;
 
-        var screenBounds = Core.ScreenBounds;
+        var screenBounds = Core.VirtualScreenBounds;
 
         var minScaleX = screenBounds.Width / _mapWidth;
         var minScaleY = screenBounds.Height / _mapHeight;
@@ -121,14 +121,14 @@ public sealed class Camera : ICamera
 
     private void RecalculateMinMaxWidthHeight()
     {
-        var screenBounds = Core.ScreenBounds;
+        var screenBounds = Core.VirtualScreenBounds;
         SetMinMax(out _minX, out _maxX, screenBounds.Width, _mapWidth);
         SetMinMax(out _minY, out _maxY, screenBounds.Height, _mapHeight);
     }
 
     private void KeepScreenCentered(float oldZoom)
     {
-        var screenCenter = Core.ScreenBounds.Center.ToVector2();
+        var screenCenter = Core.VirtualScreenBounds.Center.ToVector2();
 
         var oldCenterPosition = (AbsolutePosition + screenCenter) / oldZoom;
 
@@ -195,7 +195,7 @@ public sealed class Camera : ICamera
 
         var mouse = Core.Input.Mouse;
         var virtualPos = Core.Resolution.ToVirtualMouse(mouse.Position);
-        if (!Core.ScreenBounds.Contains(virtualPos) || !mouse.IsButtonDown(MouseButton.Middle))
+        if (!Core.VirtualScreenBounds.Contains(virtualPos) || !mouse.IsButtonDown(MouseButton.Middle))
         {
             _isDragged = false;
             return;

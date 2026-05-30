@@ -62,7 +62,7 @@ public class Core : Game
 
     public static bool KeepMouseOnScreen { get; set; }
 
-    public static Rectangle ScreenBounds { get; private set; }
+    public static Rectangle VirtualScreenBounds { get; private set; }
 
     public static ResolutionManager Resolution { get; private set; } = null!;
 
@@ -129,7 +129,7 @@ public class Core : Game
         ExitOnEscape = exitOnEscape;
         KeepMouseOnScreen = keepMouseOnScreen;
 
-        ScreenBounds = new Rectangle(
+        VirtualScreenBounds = new Rectangle(
             0,
             0,
             width,
@@ -187,39 +187,20 @@ public class Core : Game
     {
         var mouse = Input.Mouse;
         var virtualMouse = Resolution.ToVirtualMouse(mouse.Position);
-        if (ScreenBounds.Contains(virtualMouse))
+
+        var bounds = VirtualScreenBounds;
+        if (bounds.Contains(virtualMouse))
         {
             return;
         }
 
-        int newX, newY;
-        if (virtualMouse.X >= ScreenBounds.Width)
-        {
-            newX = ScreenBounds.Width - 1;
-        }
-        else if (virtualMouse.X < ScreenBounds.X)
-        {
-            newX = ScreenBounds.X;
-        }
-        else
-        {
-            newX = mouse.Position.X;
-        }
+        int newX = Math.Clamp(virtualMouse.X, bounds.X, bounds.Width - 1);
+        int newY = Math.Clamp(virtualMouse.Y, bounds.Y, bounds.Height - 1);
 
-        if (virtualMouse.Y >= ScreenBounds.Height)
-        {
-            newY = ScreenBounds.Height - 1;
-        }
-        else if (virtualMouse.Y < ScreenBounds.Y)
-        {
-            newY = ScreenBounds.Y;
-        }
-        else
-        {
-            newY = mouse.Position.Y;
-        }
+        var newPosition = new Point(newX, newY);
+        var screenMousePosition = Resolution.ToScreenMouse(newPosition);
 
-        mouse.SetPosition(newX, newY);
+        mouse.SetPosition(screenMousePosition);
     }
 
     private static void TransitionScene()
