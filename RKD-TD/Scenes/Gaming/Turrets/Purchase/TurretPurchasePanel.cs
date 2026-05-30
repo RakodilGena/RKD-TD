@@ -11,6 +11,18 @@ namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 
 internal sealed class TurretPurchasePanel
 {
+    private const int
+        PANEL_WIDTH = 600,
+        PANEL_HEIGHT = 150,
+        PANEL_OFFSET_X = 80,
+        SHOW_HIDE_BUTTON_WIDTH = 75,
+        SHOW_HIDE_BUTTON_HEIGHT = 138,
+        SHOW_HIDE_BUTTON_OFFSET_Y = 6,
+        PURCHASE_BUTTON_SIZE = 130,
+        PURCHASE_BUTTON_MARGIN_X = 16,
+        PURCHASE_BUTTON_MARGIN_Y = 11;
+
+
     private readonly Vector2 _panelPosition;
     private readonly Sprite _panelSprite;
 
@@ -27,44 +39,35 @@ internal sealed class TurretPurchasePanel
     public TurretPurchasePanel(
         Vector2 position,
         TextureAtlas gameObjects,
-        PendingTurretStash pendingTurretStash,
-        float scale,
-        float panelLayerDepth,
-        float buttonLayerDepth)
+        PendingTurretStash pendingTurretStash)
     {
         var showHideButtonTexture = gameObjects.GetRegion(Textures.Game.TURRET_PANEL_HIDE_BTN_125_250);
 
-        var showHideBtnPosition = position + new Vector2(0, 10) * scale;
-        var showHideBtnScale = new Vector2(scale, 0.92f * scale);
+        var showHideBtnPosition = position + new Vector2(0, SHOW_HIDE_BUTTON_OFFSET_Y);
+
+        var showHideBtnScale = new Vector2(
+            (float)SHOW_HIDE_BUTTON_WIDTH / showHideButtonTexture.Width,
+            (float)SHOW_HIDE_BUTTON_HEIGHT / showHideButtonTexture.Height);
 
         _hideButton = CreateHideButton(
             showHideBtnPosition,
             showHideButtonTexture,
-            showHideBtnScale,
-            panelLayerDepth);
+            showHideBtnScale);
         _hideButton.Clicked += OnHideButtonClicked;
 
         _showButton = CreateShowButton(
             showHideBtnPosition,
             showHideButtonTexture,
-            showHideBtnScale,
-            panelLayerDepth);
+            showHideBtnScale);
         _showButton.Clicked += OnShowButtonClicked;
 
-        _panelPosition = position + new Vector2(130, 0) * scale;
-        _panelSprite = CreatePanelSprite(
-            gameObjects,
-            scale,
-            panelLayerDepth);
+        _panelPosition = position + new Vector2(PANEL_OFFSET_X, 0);
+        _panelSprite = CreatePanelSprite(gameObjects);
 
-        const float turretPurchaseButtonScale = 0.90f;
         _turretPurchaseButtons = CreateTurretPurchaseButtons(
             _panelPosition,
             gameObjects,
-            pendingTurretStash,
-            absoluteMargin: new Vector2(30, 18),
-            scale * turretPurchaseButtonScale,
-            buttonLayerDepth);
+            pendingTurretStash);
 
         _panelBounds = new Rectangle(
             (int)_panelPosition.X,
@@ -119,8 +122,7 @@ internal sealed class TurretPurchasePanel
     private static Button CreateHideButton(
         Vector2 position,
         TextureRegion textureRegion,
-        Vector2 scale,
-        float panelLayerDepth)
+        Vector2 scale)
     {
         var hideButton = new Sprite(textureRegion);
 
@@ -131,14 +133,13 @@ internal sealed class TurretPurchasePanel
             Colors.Buttons.Idle,
             Colors.Buttons.Hovered,
             scale,
-            layerDepth: panelLayerDepth);
+            layerDepth: 0);
     }
 
     private static Button CreateShowButton(
         Vector2 position,
         TextureRegion textureRegion,
-        Vector2 scale,
-        float panelLayerDepth)
+        Vector2 scale)
     {
         var showButton = new Sprite(textureRegion)
         {
@@ -152,17 +153,15 @@ internal sealed class TurretPurchasePanel
             Colors.Buttons.Idle,
             Colors.Buttons.Hovered,
             scale,
-            layerDepth: panelLayerDepth);
+            layerDepth: 0);
     }
 
-    private static Sprite CreatePanelSprite(
-        TextureAtlas gameObjects,
-        float scale,
-        float panelLayerDepth)
+    private static Sprite CreatePanelSprite(TextureAtlas gameObjects)
     {
         var panelSprite = gameObjects.CreateSprite(Textures.Game.TURRET_PANEL_1000_250);
-        panelSprite.LayerDepth = panelLayerDepth;
-        panelSprite.Scale = new Vector2(scale);
+        panelSprite.Scale = new Vector2(
+            PANEL_WIDTH / panelSprite.Width,
+            PANEL_HEIGHT / panelSprite.Height);
 
         return panelSprite;
     }
@@ -171,14 +170,15 @@ internal sealed class TurretPurchasePanel
     private TurretPurchaseButton[] CreateTurretPurchaseButtons(
         Vector2 position,
         TextureAtlas gameObjects,
-        PendingTurretStash pendingTurretStash,
-        Vector2 absoluteMargin,
-        float scale,
-        float buttonLayerDepth)
+        PendingTurretStash pendingTurretStash)
     {
-        var buttonSize = new Vector2(240, 0) * scale;
-        var horizontalMargin = new Vector2(absoluteMargin.X, 0) * scale;
-        var verticalMargin = new Vector2(0, absoluteMargin.Y) * scale;
+        var absoluteMargin = new Vector2(PURCHASE_BUTTON_MARGIN_X, PURCHASE_BUTTON_MARGIN_Y);
+
+        var buttonSizeX = new Vector2(PURCHASE_BUTTON_SIZE, 0);
+
+        var horizontalMargin = new Vector2(absoluteMargin.X, 0);
+        var verticalMargin = new Vector2(0, absoluteMargin.Y);
+
         var nameFont = GlobalAssets.FontAtlas.GetFont(Fonts.TURRET_PURCHASE_BTN_TEXT);
         var priceFont = GlobalAssets.FontAtlas.GetFont(Fonts.TURRET_PURCHASE_BTN_PRICE_TEXT);
 
@@ -191,10 +191,8 @@ internal sealed class TurretPurchasePanel
             nameFont,
             priceFont,
             textureAlias: Textures.Game.TURRET_ICON_MG_240,
-            position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
-            gameObjects,
-            scale,
-            buttonLayerDepth);
+            position + verticalMargin + buttonSizeX * index++ + horizontalMargin * index,
+            gameObjects);
         mgButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.MachineGun);
 
         var shotgunTemplate = pendingTurretStash.GetPendingTurret(TurretType.Shotgun);
@@ -204,10 +202,8 @@ internal sealed class TurretPurchasePanel
             nameFont,
             priceFont,
             textureAlias: Textures.Game.TURRET_ICON_SHOTGUN_240,
-            position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
-            gameObjects,
-            scale,
-            buttonLayerDepth);
+            position + verticalMargin + buttonSizeX * index++ + horizontalMargin * index,
+            gameObjects);
         shotgunButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Shotgun);
 
         var cannonTemplate = pendingTurretStash.GetPendingTurret(TurretType.Cannon);
@@ -217,10 +213,8 @@ internal sealed class TurretPurchasePanel
             nameFont,
             priceFont,
             textureAlias: Textures.Game.TURRET_ICON_CANNON_240,
-            position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
-            gameObjects,
-            scale,
-            buttonLayerDepth);
+            position + verticalMargin + buttonSizeX * index++ + horizontalMargin * index,
+            gameObjects);
         cannonButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Cannon);
 
         var missileTemplate = pendingTurretStash.GetPendingTurret(TurretType.Missile);
@@ -230,10 +224,8 @@ internal sealed class TurretPurchasePanel
             nameFont,
             priceFont,
             textureAlias: Textures.Game.TURRET_ICON_MISSILE_240,
-            position + verticalMargin + buttonSize * index++ + horizontalMargin * index,
-            gameObjects,
-            scale,
-            buttonLayerDepth);
+            position + verticalMargin + buttonSizeX * index++ + horizontalMargin * index,
+            gameObjects);
         missileButton.Clicked += (_, _) => TurretPicked?.Invoke(this, TurretType.Missile);
 
 
@@ -253,11 +245,13 @@ internal sealed class TurretPurchasePanel
         SpriteFont priceFont,
         string textureAlias,
         Vector2 position,
-        TextureAtlas gameObjects,
-        float scale,
-        float buttonLayerDepth)
+        TextureAtlas gameObjects)
     {
         var sprite = gameObjects.CreateSprite(textureAlias);
+
+        var scale = new Vector2(
+            PURCHASE_BUTTON_SIZE / sprite.Width,
+            PURCHASE_BUTTON_SIZE / sprite.Height);
 
         return new TurretPurchaseButton(
             name,
@@ -269,8 +263,8 @@ internal sealed class TurretPurchasePanel
             sprite,
             Colors.Buttons.Idle,
             Colors.Buttons.Hovered,
-            scale: new Vector2(scale),
-            buttonLayerDepth);
+            scale,
+            layerDepth: 0);
     }
 
     public Rectangle[] GetPanelBounds()
