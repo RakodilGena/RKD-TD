@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary.Graphics.Tiles;
 using MonoGameLibrary.Input;
 
-namespace MonoGameLibrary.Cameras;
+namespace MonoGameLibrary.Visuals;
 
 public sealed class Camera : ICamera
 {
@@ -194,7 +194,8 @@ public sealed class Camera : ICamera
             return;
 
         var mouse = Core.Input.Mouse;
-        if (!Core.ScreenBounds.Contains(mouse.Position) || !mouse.IsButtonDown(MouseButton.Middle))
+        var virtualPos = Core.Resolution.ToVirtualMouse(mouse.Position);
+        if (!Core.ScreenBounds.Contains(virtualPos) || !mouse.IsButtonDown(MouseButton.Middle))
         {
             _isDragged = false;
             return;
@@ -217,12 +218,12 @@ public sealed class Camera : ICamera
             var prevAbsolutePosition = AbsolutePosition;
 
             var desiredDelta = mouse.PositionDelta.ToVector2();
-            AbsolutePosition -= desiredDelta;
+            AbsolutePosition -= desiredDelta / Core.Resolution.Scale;
 
             //if camera touches the border, it won't move by the desired delta,
             //so we calculate the deltas diff to visually keep the mouse 'glued' to the point
             //by which the camera is getting dragged. 
-            var actualDelta = prevAbsolutePosition - AbsolutePosition;
+            var actualDelta = (prevAbsolutePosition - AbsolutePosition) * Core.Resolution.Scale;
             var moveMouse = (actualDelta - desiredDelta).ToPoint();
 
             if (moveMouse == Point.Zero)

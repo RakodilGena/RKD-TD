@@ -58,7 +58,8 @@ internal sealed class ButtonToggled
         var (exHovered, exToggled) = (_hovered, _toggled);
 
         var mouseInfo = Core.Input.Mouse;
-        if (_bounds.Contains(mouseInfo.Position))
+        var virtualMouse = Core.Resolution.ToVirtualMouse(mouseInfo.Position);
+        if (_bounds.Contains(virtualMouse))
         {
             _hovered = true;
 

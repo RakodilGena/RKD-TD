@@ -44,7 +44,9 @@ internal sealed class GameCursor
         {
             var current = _isPressed ? _pressed : _idle;
 
-            current.Draw(spriteBatch, _position);
+            var drawPosition = Core.Resolution.ToVirtualMouse(_position);
+
+            current.Draw(spriteBatch, drawPosition);
         }
     }
 
@@ -62,7 +64,8 @@ internal sealed class GameCursor
         if (!mouse.WasMoved)
             return;
 
-        if (!Core.ScreenBounds.Contains(mouse.Position))
+        var virtualPos = Core.Resolution.ToVirtualMouse(mouse.Position);
+        if (!Core.ScreenBounds.Contains(virtualPos))
         {
             _isOnScreen = false;
             return;

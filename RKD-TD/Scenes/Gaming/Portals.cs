@@ -3,9 +3,9 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
+using MonoGameLibrary.Visuals;
 using RKD_TD.Assets;
 
 namespace RKD_TD.Scenes.Gaming;

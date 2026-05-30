@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.Scenes;
+using MonoGameLibrary.Visuals;
 
 namespace MonoGameLibrary;
 
@@ -59,7 +60,9 @@ public class Core : Game
         set => ((Game)_instance).IsMouseVisible = value;
     }
 
-    public static Rectangle ScreenBounds;
+    public static Rectangle ScreenBounds { get; private set; }
+
+    public static ResolutionManager Resolution { get; private set; } = null!;
 
     /// <summary>
     /// Creates a new Core instance.
@@ -137,6 +140,9 @@ public class Core : Game
 
         // Create a new input manager.
         Input = new InputManager();
+
+        Resolution = new ResolutionManager(Graphics, GraphicsDevice);
+        Resolution.Initialize();
 
         base.Initialize();
     }

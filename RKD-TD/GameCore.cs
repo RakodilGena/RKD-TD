@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary;
 using MonoGameLibrary.Graphics;
+using MonoGameLibrary.Visuals;
 using RKD_TD.Assets;
 using RKD_TD.Models.UI;
 using RKD_TD.Scenes.Title;
@@ -16,8 +16,8 @@ internal sealed class GameCore : Core
 
     public GameCore() : base(
         title: "RKD Tower Defense",
-        width: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
-        height: GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height,
+        width: ResolutionManager.VirtualWidth,
+        height: ResolutionManager.VirtualHeight,
         targetFps: 120,
         fullScreen: true,
         exitOnEscape: false)

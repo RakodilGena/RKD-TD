@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace MonoGameLibrary.Cameras;
+namespace MonoGameLibrary.Visuals;
 
 public static class CameraExtensions
 {

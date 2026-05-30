@@ -6,12 +6,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLibrary;
-using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics;
 using MonoGameLibrary.Graphics.Sprites;
 using MonoGameLibrary.Graphics.Tiles;
 using MonoGameLibrary.Input;
 using MonoGameLibrary.Scenes;
+using MonoGameLibrary.Visuals;
 using RKD_TD.Scenes.Gaming.Ending;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Enemies.Spawns;
@@ -258,7 +258,7 @@ internal sealed class GamingScene : Scene
 
     public override void Draw(GameTime gameTime)
     {
-        Core.GraphicsDevice.Clear(Color.DarkGray);
+        Core.Resolution.BeginCapture();
 
         //order of calling draw is important here because apparently by default layerDepth is ignored
         //thus the later draw is called, the higher it is drawn.
@@ -328,6 +328,9 @@ internal sealed class GamingScene : Scene
         GameCore.Cursor.Draw(sb);
 
         sb.End();
+
+        Core.Resolution.EndCaptureAndPresent(sb);
+
         base.Draw(gameTime);
     }
 
@@ -461,7 +464,7 @@ internal sealed class GamingScene : Scene
         {
             if (mouse.WasButtonJustReleased(MouseButton.Left))
             {
-                var mousePosition = mouse.Position;
+                var mousePosition = Core.Resolution.ToVirtualMouse(mouse.Position);
 
                 var cell = _buildGrid.GetCellAtWorld(
                     mousePosition.ToVector2(),
@@ -483,7 +486,7 @@ internal sealed class GamingScene : Scene
         {
             if (mouse.WasButtonJustPressed(MouseButton.Left))
             {
-                var mousePosition = mouse.Position;
+                var mousePosition = Core.Resolution.ToVirtualMouse(mouse.Position);
 
                 var cell = _buildGrid.GetCellAtWorld(
                     mousePosition.ToVector2(),
@@ -528,7 +531,7 @@ internal sealed class GamingScene : Scene
             _userResources.Coins,
             _selectedTurret!.DamageDealt);
 
-        var mouse = Core.Input.Mouse.Position;
+        var mouse = Core.Resolution.ToVirtualMouse(Core.Input.Mouse.Position);
         if (_turretActionsPanel.Bounds.Contains(mouse))
             _clickConsumed = true;
     }
@@ -539,7 +542,7 @@ internal sealed class GamingScene : Scene
 
         _turretPurchasePanel.Update(_userResources.Coins);
 
-        var mouse = Core.Input.Mouse.Position;
+        var mouse = Core.Resolution.ToVirtualMouse(Core.Input.Mouse.Position);
         var bounds = _turretPurchasePanel.GetPanelBounds();
 
         //consume clicks even if no button clicked to prevent clicking through panel.
@@ -557,7 +560,7 @@ internal sealed class GamingScene : Scene
     {
         _gameClockWidget.Update();
 
-        var mouse = Core.Input.Mouse.Position;
+        var mouse = Core.Resolution.ToVirtualMouse(Core.Input.Mouse.Position);
         if (_gameClockWidget.Bounds.Contains(mouse))
             _clickConsumed = true;
     }
@@ -626,13 +629,13 @@ internal sealed class GamingScene : Scene
 
         _pendingTurret = pendingTurret;
         _gameState = GameState.PlacingTurret;
-        GameCore.Cursor.Visible = false;
+        GameCore.Cursor.Visible = true; //todo
     }
 
     private void UpdatePlacementMode()
     {
-        var mousePosition = Core.Input.Mouse.Position.ToVector2();
-        _hoveredCell = _buildGrid.GetCellAtWorld(mousePosition, _camera);
+        var mouse = Core.Resolution.ToVirtualMouse(Core.Input.Mouse.Position);
+        _hoveredCell = _buildGrid.GetCellAtWorld(mouse.ToVector2(), _camera);
     }
 
     private bool PlaceTurret(BuildCell cell)

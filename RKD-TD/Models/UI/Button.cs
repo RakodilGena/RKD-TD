@@ -55,7 +55,9 @@ public class Button
         var exHovered = _hovered;
 
         var mouseInfo = Core.Input.Mouse;
-        if (Bounds.Contains(mouseInfo.Position))
+
+        var virtualMouse = Core.Resolution.ToVirtualMouse(mouseInfo.Position);
+        if (Bounds.Contains(virtualMouse))
         {
             _hovered = true;
 

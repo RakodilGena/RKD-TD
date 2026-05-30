@@ -49,7 +49,7 @@ internal sealed class TitleScene : Scene
 
     private void InitTitleLabel()
     {
-        var screenCenter = Core.GraphicsDevice.Viewport.Width / 2;
+        var screenCenter = Core.ScreenBounds.Width / 2;
 
         var kwFont180 = GlobalAssets.FontAtlas.GetFont(Fonts.MAIN_TITLE);
 
@@ -111,7 +111,7 @@ internal sealed class TitleScene : Scene
 
     public override void Draw(GameTime gameTime)
     {
-        Core.GraphicsDevice.Clear(Color.LightGray);
+        Core.Resolution.BeginCapture();
 
         var sb = Core.SpriteBatch;
 
@@ -124,6 +124,8 @@ internal sealed class TitleScene : Scene
         GameCore.Cursor.Draw(sb);
 
         sb.End();
+
+        Core.Resolution.EndCaptureAndPresent(sb);
 
         base.Draw(gameTime);
     }

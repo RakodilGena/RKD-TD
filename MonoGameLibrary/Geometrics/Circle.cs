@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Cameras;
+using MonoGameLibrary.Visuals;
 
 namespace MonoGameLibrary.Geometrics;
 

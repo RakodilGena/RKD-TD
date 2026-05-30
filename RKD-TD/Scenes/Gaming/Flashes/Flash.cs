@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Graphics.Sprites;
+using MonoGameLibrary.Visuals;
 
 namespace RKD_TD.Scenes.Gaming.Flashes;
 

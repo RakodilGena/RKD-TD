@@ -43,7 +43,7 @@ internal sealed class MapSelectionScene : Scene
 
     private void InitTitle()
     {
-        var screenCenter = Core.GraphicsDevice.Viewport.Width / 2;
+        var screenCenter = Core.ScreenBounds.Width / 2;
 
         var mstFont = GlobalAssets.FontAtlas.GetFont(Fonts.SCENE_TITLE);
 
@@ -145,7 +145,7 @@ internal sealed class MapSelectionScene : Scene
 
     public override void Draw(GameTime gameTime)
     {
-        Core.GraphicsDevice.Clear(Color.LightGray);
+        Core.Resolution.BeginCapture();
 
         var sb = Core.SpriteBatch;
         sb.Begin();
@@ -158,6 +158,9 @@ internal sealed class MapSelectionScene : Scene
         GameCore.Cursor.Draw(sb);
 
         sb.End();
+
+        Core.Resolution.EndCaptureAndPresent(sb);
+
         base.Draw(gameTime);
     }
 }

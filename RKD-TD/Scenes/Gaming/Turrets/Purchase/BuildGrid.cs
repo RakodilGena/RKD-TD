@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
-using MonoGameLibrary.Cameras;
+using MonoGameLibrary.Visuals;
 
 namespace RKD_TD.Scenes.Gaming.Turrets.Purchase;
 

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLibrary.Cameras;
 using MonoGameLibrary.Extensions;
 using MonoGameLibrary.Geometrics;
 using MonoGameLibrary.Graphics.Sprites;
+using MonoGameLibrary.Visuals;
 using RKD_TD.Scenes.Gaming.Enemies;
 using RKD_TD.Scenes.Gaming.Explosions;
 using RKD_TD.Scenes.Gaming.Flashes;
