@@ -10,7 +10,8 @@ public sealed class Camera : ICamera
 {
     private readonly float _mapWidth, _mapHeight, _mapBordersMargin;
 
-    private readonly float _maxZoom, _minZoom, _zoomSpeed, _cameraMoveSpeed;
+    private readonly float _maxZoom, _minZoom, _zoomSpeed;
+    private readonly Vector2 _cameraMoveSpeed;
 
     private float _minX,
         _minY,
@@ -97,7 +98,7 @@ public sealed class Camera : ICamera
         _minZoom = minScale;
         _maxZoom = maxZoom;
         _zoomSpeed = zoomSpeed;
-        _cameraMoveSpeed = cameraMoveSpeed;
+        _cameraMoveSpeed = new Vector2(cameraMoveSpeed, cameraMoveSpeed);
         _mapBordersMargin = mapBordersMargin;
         _draggable = draggable;
 
@@ -205,7 +206,7 @@ public sealed class Camera : ICamera
         }
     }
 
-    private void HandleMotion(float gtDelta)
+    private void HandleMotion(float gameTimeDelta)
     {
         var mouse = Core.Input.Mouse;
         var kb = Core.Input.Keyboard;
@@ -259,7 +260,7 @@ public sealed class Camera : ICamera
         var moveVector = new Vector2(moveHorizontal, moveVertical);
         moveVector.Normalize();
 
-        var moveMultiplier = gtDelta * _cameraMoveSpeed * Zoom;
+        var moveMultiplier = gameTimeDelta * _cameraMoveSpeed * Zoom;
 
         AbsolutePosition += moveVector * moveMultiplier;
     }
